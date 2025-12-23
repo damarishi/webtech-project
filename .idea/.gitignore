@@ -8,3 +8,14 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+# Node
+node_modules/
+# Environment
+.env
+# Angular
+dist/
+.angular/
+# Logs
+npm-debug.log*
+
+
