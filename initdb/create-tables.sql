@@ -11,3 +11,14 @@ VALUES
     ('Tom'),
     ('Daniel'),
     ('Lisa');
+
+CREATE TABLE logs (
+    id SERIAL PRIMARY KEY,
+    description VARCHAR(255) NOT NULL,
+    typeoflog VARCHAR(50) NOT NULL, -- e.g., 'SECURITY', 'USER_MANAGEMENT', 'SYSTEM'
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO logs (description, typeoflog)
+VALUES
+    ('Test Log', 'TestType');

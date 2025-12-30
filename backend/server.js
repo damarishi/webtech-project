@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require('cors');
+const logger = require("./src/events/logger");  //add log listener
 
 const app = express();
 
