@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const pool = require('../pool.js');
+const cfg = require('../config');
 
 
 router.post('/', async (req, res) => { //o or router.get?
@@ -12,9 +13,16 @@ router.post('/', async (req, res) => { //o or router.get?
     const email = req.body.email;
     const password = req.body.password;
 
-    const getUser = `SELECT * FROM users WHERE email=$1`;
+    const getUser = `SELECT * FROM users WHERE email=$1 AND is_deleted = false`;
 
     try{
+        try{
+            await pool.query("SELECT 1");
+        }catch{
+            const err = "DB unreachable"
+            console.error(err)
+            res.status(503).json({error: err});
+        }
         const result = await pool.query(getUser,[email]);
         if(result.length === 0){
             res.status(401).send("Authentication failed");
@@ -26,13 +34,12 @@ router.post('/', async (req, res) => { //o or router.get?
             res.status(401).send("Authentication failed");
             return;
         }
-        const secret = "secret";
 
         const payload = {
             email: email,
             is_Admin: user_data.is_Admin
         }
-        const token = jwt.sign(payload, secret, { expiresIn: '1h' });
+        const token = jwt.sign(payload, cfg.auth.jwt_key, { expiresIn: cfg.auth.expiration });
 
         res.status(200).json({
             "message": "login successful",
