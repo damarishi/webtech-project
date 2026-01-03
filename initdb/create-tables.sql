@@ -13,7 +13,7 @@ CREATE TABLE users
 -- Generate Hash with: https://bcrypt-generator.com/
 INSERT INTO users (email,username,full_name,password,is_admin)
 VALUES
-    ('admin@global.com','admin','Admin I.','$2a$12$pCpivk131i/VzDtaIm13xuxD6JovhcejjVNU92VrL3P8EYDueLw5q',true), --pwd: admin
+    ('admin@global.com','admin','Admin I.','$2a$12$pCpivk131i/VzDtaIm13xuxD6JovhcejjVNU92VrL3P8EYDueLw5q',TRUE), --pwd: admin
     ('alice@example.com', 'alice','Alice Müller','$2a$12$2StF9NhsxsDcjR2wUcHpZO1gclDpO3kKtJXLVOy0njUVgnnGFrHpO',FALSE),--pwd: alice123
     ('bob@example.com','bob42','Bob Schmidt','$2a$12$rpYNMpnZ647YXHmLYemW4OOJkxOHi78KlHs0zDGIUxv.4fvcQaP4q',FALSE);--pdw: bob123
 
