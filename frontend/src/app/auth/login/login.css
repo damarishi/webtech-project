@@ -10,6 +10,10 @@
   font-family: Arial, sans-serif;
 }
 
+.Heading01 {
+  display: none;
+}
+
 /* Heading */
 h2 {
   text-align: center;
