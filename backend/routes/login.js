@@ -17,32 +17,45 @@ router.post('/', async (req, res) => { //o or router.get?
 
 
 
-    const getUser = `SELECT * FROM users WHERE email=$1 AND is_deleted = false`;
+    const getUser = `
+        SELECT u.*,
+               ARRAY_AGG(r.name) AS roles
+        FROM users u
+        LEFT JOIN user_roles ur ON ur.user_id = u.user_id
+        LEFT JOIN roles r ON r.role_id = ur.role_id
+        WHERE u.email = $1 AND u.is_deleted = FALSE
+        GROUP BY u.user_id;
+        `;
 
     try{
         try{
             await pool.query("SELECT 1");
         }catch{
             const err = "DB unreachable"
-            console.error(err)
+            console.error("S: "+err)
             res.status(503).json({error: err});
         }
         const result = await pool.query(getUser,[email]);
         if(result.rowCount === 0){
+            console.error("S: Failed user authentification for \""+email+ "\"");
             res.status(401).send("Authentication failed");
             return;
         }
         const user_data = result.rows[0];
         const ok = await bcrypt.compare(password, user_data.password);
         if(!ok){
+            console.error("S: Failed user authentification for \""+email+ "\"");
             res.status(401).send("Authentication failed");
             return;
         }
 
+        console.log("S: \"" + user_data.username +"\" Logged in");
+
         const payload = {
             email: email,
             is_admin: user_data.is_admin,
-            username: user_data.username
+            username: user_data.username,
+            roles: user_data.roles
         }
         const token = jwt.sign(payload, cfg.auth.jwt_key, { expiresIn: cfg.auth.expiration });
 
@@ -53,12 +66,12 @@ router.post('/', async (req, res) => { //o or router.get?
             token: token
         });
     }catch(error){
-        console.error("Error:", error.message);
+        console.error("S: Internal error \n", error.message);
         res.status(500).json({message: error.message});
     }
 });
 router.get('/auth', isAuth, (req, res) => {
-    res.status(200).json({message: 'You are logged in!!', user: req.user});
+    res.status(200).json({message: 'Login Success', user: req.user});
 });
 
 module.exports = router;
