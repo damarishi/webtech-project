@@ -25,10 +25,10 @@ CREATE TABLE user_roles (
 );
 
 
-INSERT INTO roles (name) VALUES
-    ('ADMIN'),  -- 1
-    ('OWNER'),  -- 2
-    ('USER');   -- 3
+INSERT INTO roles (role_id, name) VALUES
+    (1, 'ADMIN'),
+    (2, 'OWNER'),
+    (3, 'USER');
 
 
 
