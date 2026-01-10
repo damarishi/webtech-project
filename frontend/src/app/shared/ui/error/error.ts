@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-error',
@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './error.css',
 })
 export class Error {
-
+    @Input() visible: boolean = false;
+    @Input() code: number = 404;
+    @Input() message: string = 'Page not found';
 }

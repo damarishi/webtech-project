@@ -5,7 +5,7 @@
   height: 100vh;
   top: 0;       /*vertical position*/
   left: 0;      /*horizontal position*/
-  z-index: 9999;    /*overlay-ranking 0 on bottom - 9999 on top*/
+  z-index: 9998;    /*overlay-ranking 0 on bottom - 9999 on top*/
 
   display: flex;
   align-items: center;
