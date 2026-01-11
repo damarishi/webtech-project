@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require('cors');
+const logger = require("./src/events/logger");  //add log listener
 
 const app = express();
 
@@ -7,9 +8,9 @@ app.use(express.static('public'));
 app.use(cors());
 app.use(express.json());
 
-const loginRoutes = require("./routes/login");
+const authRoutes = require("./routes/auth_route");
 
-app.use('/login', loginRoutes);
+app.use('/auth', authRoutes);
 
 app.get("/", (req, res) => {
     res.setHeader('Content-Type', 'text/html');
