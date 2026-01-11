@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
 import { AuthService } from '../auth-service';
-import { objToEnum } from '../../interfaces/user-roles';
+import { strToEnum } from '../../interfaces/user-roles';
 import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { RedirectService } from '../../services/redirect-service';
@@ -25,9 +25,9 @@ export class LoginComponent {
   onLogin() {
     this.auth.login(this.email, this.password).subscribe({
       next: (res) => {
-        let roles = res.roles.map(role => objToEnum(role));
+        let roles = res.roles.map(role => strToEnum(role));
         this.auth.setSessionData(res.token,res.username, roles);
-        this.router.navigate([this.redirect.getUserRoute('home')]);
+        this.router.navigate([this.redirect.getUserRoute('')]);
         this.cdr.detectChanges();  // force Angular to update view
       },
       error: (err) => {

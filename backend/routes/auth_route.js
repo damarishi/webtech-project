@@ -120,12 +120,13 @@ router.post('/login', async (req, res) => { //o or router.get?
             username: user_data.username,
             roles: user_data.roles
         }
+        console.log(payload);
         const token = jwt.sign(payload, cfg.auth.jwt_key, { expiresIn: cfg.auth.expiration });
 
         res.status(200).json({
             "message": "login successful",
             username: user_data.username,
-            roles: ["role1", "role2","role3"],//TODO
+            roles: user_data.roles,
             token: token
         });
     }catch(error){
@@ -148,7 +149,7 @@ module.exports = router;
 //just for testing purposes, delete later
 //get logEmitter used for sending log events
 const logEmitter = require("../src/events/index.js");
-const userroleEnum = require("../src/interfaces/userrole.enum");
+const userroleEnum = require("../src/interfaces/userrole_enum");
 
 router.get("/test", (req, res) => {
     try {

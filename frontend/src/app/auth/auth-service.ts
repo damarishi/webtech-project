@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
-    return this.http.post<{ token: string, username:string,roles:({id:number,name:string})[]}>(`${this.apiUrl}/login`, { email, password });
+    return this.http.post<{ token: string, username:string,roles:string[]}>(`${this.apiUrl}/login`, { email, password });
   }
 
   register(email: string, password:string, username:string, fullName:string, roles:UserRoles[]){
