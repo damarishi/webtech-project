@@ -1,34 +1,38 @@
-<nav class="navbar">
+@if (isLoggedIn()) {
+  <nav class="navbar">
 
-  <!-- Logo -->
-  <div class="logo">
-    <img src="assets/icons/EatNow.png" alt="EatNow"/>
-  </div>
-
-  <!-- USER MODE -->
-  @if (mode === 'user') {
-    <input
-      type="text"
-      class="search-input"
-      placeholder="Search for a restaurant"
-    />
-
-    <div class="actions">
-      <button class="icon-btn">
-        <img src="assets/icons/ShoppingCart.png" alt="Shopping Cart"/>
-      </button>
-
-      <button class="icon-btn">
-        <img src="assets/icons/GenericAvatar.png" alt="User"/>
-      </button>
+    <!-- Logo -->
+    <div class="logo">
+      <img src="assets/icons/EatNow.png" alt="EatNow"/>
     </div>
-  }
-  @else {   <!-- DEFAULT MODE -->
-    <div class="actions">
-      <button class="icon-btn">
-        <img src="assets/icons/GenericAvatar.png" alt="User"/>
-      </button>
-    </div>
-  }
 
-</nav>
+    <!-- USER MODE -->
+    @if (role === 'USER') {
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search for a restaurant"
+      />
+
+      <div class="actions">
+        <button class="icon-btn">
+          <img src="assets/icons/ShoppingCart.png" alt="Shopping Cart"/>
+        </button>
+
+        <button class="icon-btn">
+          <img src="assets/icons/GenericAvatar.png" alt="User"/>
+        </button>
+      </div>
+    }
+    @else {   <!-- DEFAULT MODE -->
+      <div class="actions">
+        <button class="icon-btn">
+          <img src="assets/icons/GenericAvatar.png" alt="User"/>
+        </button>
+      </div>
+    }
+
+  </nav>
+}
+
+<!--missing owner and admin mode-->
