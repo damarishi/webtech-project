@@ -5,5 +5,9 @@
     "password": "postgres",
     "db": "postgres",
     "port": 5433
+  },
+  "auth": {
+    "jwt_key": "secret",
+    "expiration": "1h"
   }
 }
