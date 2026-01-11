@@ -1,16 +1,16 @@
-export const enum UserRoles {
+export enum UserRoles {
   ADMIN = 'ADMIN',
   OWNER = 'OWNER',
   USER = 'USER'
 }
 
-export function objToEnum(obj: {id:number,name:string}):UserRoles | undefined {
-  switch (obj.id) {
-    case 1:
+export function strToEnum(name:string):UserRoles | undefined {
+  switch (name) {
+    case 'ADMIN':
       return UserRoles.ADMIN;
-    case 2:
+    case 'OWNER':
       return UserRoles.OWNER;
-    case 3:
+    case 'USER':
       return UserRoles.USER;
     default:
       return undefined;

@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { AuthService } from '../auth-service';
-import { objToEnum } from '../../interfaces/user-roles';
+import { strToEnum } from '../../interfaces/user-roles';
 import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { RedirectService } from '../../services/redirect-service';
@@ -11,31 +11,56 @@ import { RedirectService } from '../../services/redirect-service';
     FormsModule,
     RouterLink
   ],
-  templateUrl: './login.html'
+  templateUrl: './login.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   email = '';
   password = '';
-  error = '';
+  bannerMessage = '';
+  bannerType: 'success' | 'error' = 'success';
 
   constructor(private auth: AuthService,private redirect:RedirectService, private router: Router, private cdr: ChangeDetectorRef) {}
 
+  ngOnInit() {
+    const nav = history.state;
+    if (nav.message) {
+      this.bannerMessage = nav.message;
+      this.bannerType = 'success';
+      this.showBanner();
+    }
+  }
+
+  showBanner() {
+    setTimeout(() => {
+      this.bannerMessage = '';
+      this.cdr.detectChanges();
+    }, 3000);
+  }
 
 
   onLogin() {
     this.auth.login(this.email, this.password).subscribe({
       next: (res) => {
-        let roles = res.roles.map(role => objToEnum(role));
+        let roles = res.roles.map(role => strToEnum(role));
         this.auth.setSessionData(res.token,res.username, roles);
-        this.router.navigate([this.redirect.getUserRoute('home')]);
-        this.cdr.detectChanges();  // force Angular to update view
+        this.bannerMessage = 'Login Success';
+        this.bannerType = 'success';
+        this.showBanner();
+        this.router.navigate([this.redirect.getUserRoute('')]);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.log(err.error.message);
-        this.error = 'Login failed';
-        console.log(this.error);
-        this.cdr.detectChanges();  // force Angular to update view
+        this.bannerMessage = 'Login failed';
+        this.bannerType = 'error';
+        this.showBanner();
+        console.log(this.bannerMessage);
+        this.email = '';
+        this.password = '';
+        this.cdr.detectChanges();
       }
     });
   }
+
+  protected readonly onkeyup = onkeyup;
 }

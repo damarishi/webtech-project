@@ -6,7 +6,7 @@ CREATE TABLE users
     email       VARCHAR(255)    NOT NULL UNIQUE,
     username    VARCHAR(100)    NOT NULL,
     full_name   VARCHAR(100),
-    password    VARCHAR(255)    NOT NULL, --use bcrypt, 12 rounds, Generate Hash with: https://bcrypt-generator.com/
+    password    VARCHAR(255)    NOT NULL, --use bcrypt, 12 salt rounds, Generate Hash with: https://bcrypt-generator.com/
     is_admin    BOOLEAN         DEFAULT FALSE,
     is_deleted  BOOLEAN         DEFAULT FALSE
 );

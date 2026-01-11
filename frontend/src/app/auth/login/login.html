@@ -1,31 +1,42 @@
 <link rel="stylesheet" href="login.css">
-<div class="login-container">
-  <h2>Login</h2>
-
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input
-      type="email"
-      id="email"
-      [(ngModel)]="email"
-      placeholder="Enter your email"
-      required
-    />
+<div class="login-background">
+  <div class="logo">
+    <img src="assets/icons/EatNow.png"/>
   </div>
+  <div class="login-container">
+    @if (bannerMessage){
+      <div class="banner"
+           [class.success]="bannerType === 'success'"
+           [class.error]="bannerType === 'error'"
+           animate.enter="fade‑in"
+           animate.leave="fade‑out"
+      >
+        {{ bannerMessage }}
+      </div>
+    }
+    <h2>Login</h2>
 
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      id="password"
-      [(ngModel)]="password"
-      placeholder="Enter your password"
-      required
-    />
-  </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        [(ngModel)]="email"
+        placeholder="Enter your email"
+        required
+      />
+    </div>
 
-  <!-- Error message-->
-  <div class="error">{{ error }}</div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+        required
+      />
+    </div>
 
   <button (click)="onLogin()" [disabled]="!email || !password">
     Login
@@ -34,4 +45,5 @@
   <p class="signup">
     Don’t have an account? <a routerLink="/register">Sign up</a>
   </p>
+</div>
 </div>

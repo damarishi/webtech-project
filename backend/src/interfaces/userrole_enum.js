@@ -4,4 +4,4 @@ const userRole = {
     USER: {id: 3, name: 'USER'},
 }
 
- export default userRole;
+module.exports = userRole;

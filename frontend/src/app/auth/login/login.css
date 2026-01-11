@@ -1,6 +1,21 @@
+/* Background */
+.login-background{
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: #EEF8E8;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 /* Container */
 .login-container {
-  max-width: 400px;
+  width: 100%;
+  max-width: 520px;
   margin: 80px auto;
   padding: 40px;
   border: 1px solid #ddd;
@@ -8,6 +23,38 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   font-family: Arial, sans-serif;
+}
+
+/*Animation*/
+.banner {
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.banner.success { background-color: #4caf50; color: black }
+.banner.error   { background-color: #f44336; color: white }
+
+/* Enter animation */
+.fade‑in {
+  animation: fadeIn 350ms ease‑out forwards;
+}
+
+/* Leave animation */
+.fade‑out {
+  animation: fadeOut 350ms ease‑in forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 .Heading01 {
@@ -48,7 +95,7 @@ button {
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
-  background-color: #1976d2;
+  background-color: #1D902E;
   color: white;
   border: none;
   border-radius: 4px;
@@ -57,11 +104,11 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background-color: #1565c0;
+  background-color: #1D902E95;
 }
 
 button:disabled {
-  background-color: #90caf9;
+  background-color: #1D902E80;
   cursor: not-allowed;
 }
 
@@ -80,7 +127,7 @@ button:disabled {
 }
 
 .signup a {
-  color: #1976d2;
+  color: #1D902E;
   text-decoration: none;
   font-weight: 500;
 }

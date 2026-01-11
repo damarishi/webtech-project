@@ -1,0 +1,145 @@
+/* Container */
+.login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+/*Animation*/
+.banner {
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.banner.success { background-color: #4caf50; color: black }
+.banner.error   { background-color: #f44336; color: white }
+
+/* Enter animation */
+.fade‑in {
+  animation: fadeIn 350ms ease‑out forwards;
+}
+
+/* Leave animation */
+.fade‑out {
+  animation: fadeOut 350ms ease‑in forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.Heading01 {
+  display: none;
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+button:disabled {
+  background-color: #90caf9;
+  cursor: not-allowed;
+}
+
+/* Error message */
+.error {
+  color: #d32f2f;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Signup link */
+.signup {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.signup a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signup a:hover {
+  text-decoration: underline;
+}
+
+select[multiple] {
+  height: auto;
+  min-height: 100px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.roles-options {
+  display: flex;       /* horizontal layout */
+  gap: 10px;           /* space between checkboxes */
+  flex-wrap: wrap;     /* wrap to next line if needed */
+  align-items: center; /* vertical alignment */
+}
+
+.roles-options label {
+  display: flex;
+  align-items: center;
+  gap: 5px;            /* space between box and text */
+  font-size: 14px;
+  margin-bottom: 5px;  /* small vertical spacing */
+}
