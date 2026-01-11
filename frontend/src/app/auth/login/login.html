@@ -4,6 +4,16 @@
     <img src="assets/icons/EatNow.png"/>
   </div>
   <div class="login-container">
+    @if (bannerMessage){
+      <div class="banner"
+           [class.success]="bannerType === 'success'"
+           [class.error]="bannerType === 'error'"
+           animate.enter="fade‑in"
+           animate.leave="fade‑out"
+      >
+        {{ bannerMessage }}
+      </div>
+    }
     <h2>Login</h2>
 
     <div class="form-group">
@@ -28,15 +38,12 @@
       />
     </div>
 
-    <!-- Error message-->
-    <div class="error">{{ error }}</div>
+  <button (click)="onLogin()" [disabled]="!email || !password">
+    Login
+  </button>
 
-    <button (click)="onLogin()" [disabled]="!email || !password">
-      Login
-    </button>
-
-    <p class="signup">
-      Don’t have an account? <a routerLink="/register">Sign up</a>
-    </p>
-  </div>
+  <p class="signup">
+    Don’t have an account? <a routerLink="/register">Sign up</a>
+  </p>
+</div>
 </div>
