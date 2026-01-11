@@ -10,7 +10,6 @@ export class LoginGuard implements CanActivate {
     private auth: AuthService,
     private router: Router,
     private redirect:RedirectService
-
   ) {}
 
   canActivate(): boolean {

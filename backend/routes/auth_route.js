@@ -125,7 +125,7 @@ router.post('/login', async (req, res) => { //o or router.get?
         res.status(200).json({
             "message": "login successful",
             username: user_data.username,
-            roles: ["role1", "role2","role3"],
+            roles: ["role1", "role2","role3"],//TODO
             token: token
         });
     }catch(error){

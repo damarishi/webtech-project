@@ -8,7 +8,7 @@ export class RedirectService {
   constructor( private auth: AuthService) {}
 
   getUserRoute(destination:string){
-    let role = this.auth.getTopRole();
+    let role = this.auth.getCurrentUserRole() ?? this.auth.getTopRole();
 
     if(!role) return '/unauthorized';
 
