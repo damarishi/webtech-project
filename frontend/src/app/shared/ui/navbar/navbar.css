@@ -6,10 +6,24 @@
   background-color: #EEF8E8;
 }
 
-.search-input {
-  flex: 1;
+.page-title {
+  margin: 0 25%;
+  font-size: 1.25rem;
+  white-space: nowrap;
+  color: #052A02;
+  font-family: "Monserrat", sans-serif;
+  font-weight: 600;
+}
+
+.text {
+  flex: 1 1 auto;
   max-width: 600px;
-  margin: 0 24px;
+  margin: 0 24px
+}
+
+.search-input {
+  width: 100%;
+  max-width: 100%;
 }
 
 .actions {
@@ -19,6 +33,7 @@
 
 .logo img{
   width: 80%;
+  cursor: pointer;
 }
 
 
