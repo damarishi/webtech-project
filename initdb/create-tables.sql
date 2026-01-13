@@ -52,3 +52,18 @@ CREATE TABLE logs (
 INSERT INTO logs (description, typeoflog)
 VALUES
     ('Test Log', 'TestType');
+
+
+DROP TABLE IF EXISTS restaurant;
+
+CREATE TABLE restaurant
+(
+    restaurant_id       SERIAL PRIMARY KEY,
+    restaurant_name     VARCHAR(100) NOT NULL
+);
+
+INSERT INTO restaurant (restaurant_id, restaurant_name)
+VALUES
+    (1, 'Due Sicilie'),
+    (2, 'Lemon Tree'),
+    (3, 'Lodenwirt');

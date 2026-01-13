@@ -22,7 +22,7 @@ export function getRoleRoutes(role:UserRoles){
     case UserRoles.ADMIN:
       return 'site-manager';
     case UserRoles.OWNER:
-      return 'restaurant-owner';
+      return 'restaurant-component-owner';
     case UserRoles.USER:
       return 'user';
   }
