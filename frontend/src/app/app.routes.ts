@@ -10,6 +10,7 @@ import {RegisterComponent} from './auth/register/register';
 import {RestaurantOwner} from './pages/restaurant-owner/restaurant-owner';
 
 import {USER_ROUTES} from './pages/user/user.routes';
+import {User} from './pages/user/user';
 
 
 export const routes: Routes = [
@@ -46,6 +47,7 @@ export const routes: Routes = [
   },
   {
     path: 'user',
+    component: User,
     children: USER_ROUTES,
     canActivate: [AuthGuard]
   }

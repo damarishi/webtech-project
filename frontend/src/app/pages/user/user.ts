@@ -15,8 +15,8 @@ import {filter} from 'rxjs';
   styleUrl: './user.css',
 })
 export class User {
-  showSearch = true;
-  title = '';
+  showSearch!: boolean;
+  title!: string;
   protected readonly UserRoles = UserRoles;
 
   constructor(
