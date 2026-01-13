@@ -1,0 +1,9 @@
+<p>restaurant-list works</p>
+<div class="container">
+  <div class="restaurant-list-container">
+    @for (restaurant of restaurants; track restaurant.restaurant_id) {
+      <app-restaurant-component [restaurant]="restaurant"></app-restaurant-component>
+    }
+  </div>
+</div>
+

@@ -8,7 +8,10 @@ import {LoginGuard} from './auth/login-guard';
 import {LoginComponent} from './auth/login/login';
 import {RegisterComponent} from './auth/register/register';
 import {RestaurantOwner} from './pages/restaurant-owner/restaurant-owner';
-import { User } from './pages/user/user'
+
+import {USER_ROUTES} from './pages/user/user.routes';
+import {User} from './pages/user/user';
+
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' }, //redirect to main page when created
@@ -45,6 +48,7 @@ export const routes: Routes = [
   {
     path: 'user',
     component: User,
-    //canActivate: [AuthGuard]
+    children: USER_ROUTES,
+    canActivate: [AuthGuard]
   }
 ];
