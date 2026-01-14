@@ -3,8 +3,10 @@
 get logger instance
 get db connection
 */
-const logger = require('./index');
-const db = require('../../pool');
+const eventEmitter = require('events');
+
+const logger = new eventEmitter();
+const db = require('../pool');
 
 //log event listener
 /*
@@ -28,3 +30,5 @@ logger.on('log', async (data) => {
         console.error('Error logging event:', error);   
     }
 });
+
+module.exports = logger;

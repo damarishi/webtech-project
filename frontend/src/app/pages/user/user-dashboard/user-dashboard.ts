@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FilterSidebar} from '../../../features/restaurant/filter-sidebar/filter-sidebar';
 import {RestaurantList} from '../../../features/restaurant/restaurant-list/restaurant-list';
-import {UserRoles} from '../../../interfaces/user-roles';
+import {UserRoles} from '../../../types/user-roles';
 
 @Component({
   selector: 'app-user-dashboard',

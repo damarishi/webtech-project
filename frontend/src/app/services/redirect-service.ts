@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {getRoleRoutes} from '../interfaces/user-roles';
-import {AuthService} from '../auth/auth-service';
+import {getRoleRoutes} from '../types/user-roles';
+import {AuthService} from '../features/auth/auth-service';
 
 @Injectable({providedIn: 'root'})
 export class RedirectService {

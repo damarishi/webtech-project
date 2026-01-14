@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {UserRoles} from '../interfaces/user-roles';
+import {UserRoles} from '../../types/user-roles';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

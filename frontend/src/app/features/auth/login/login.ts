@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { AuthService } from '../auth-service';
-import { strToEnum } from '../../interfaces/user-roles';
+import { strToEnum } from '../../../types/user-roles';
 import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import { RedirectService } from '../../services/redirect-service';
+import { RedirectService } from '../../../services/redirect-service';
 
 @Component({
   selector: 'app-login',

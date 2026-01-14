@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router, RouterModule} from '@angular/router';
 import {Navbar} from '../../shared/ui/navbar/navbar';
-import {UserRoles} from '../../interfaces/user-roles';
+import {UserRoles} from '../../types/user-roles';
 import {filter} from 'rxjs';
 
 @Component({

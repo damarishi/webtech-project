@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 //controller
-const userCtrl = require('../src/controllers/user.controller');
+const userCtrl = require('../controllers/user.controller');
 
 router.get('/', userCtrl.getAll);
 router.post('/', userCtrl.create);

@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { AuthService } from '../auth-service';
-import { UserRoles } from '../../interfaces/user-roles';
+import { UserRoles } from '../../../types/user-roles';
 
 @Component({
   selector: 'app-register',

@@ -6,18 +6,18 @@
         </div>
     @if (isLoading) {
         <div class="Temporary">Loading data...</div>
-    } 
-    @else if (items && items.length > 0) {
+    }
+    @else if (displayedItems && displayedItems.length > 0) {
         <table>
             <thead>
                 <tr>
-                    @for (key of Object.keys(items[0]); track key) {
+                    @for (key of Object.keys(displayedItems[0]); track key) {
                         <th>{{ key | titlecase }}</th>
                     }
                 </tr>
             </thead>
             <tbody>
-                @for (item of items; track $index) {
+                @for (item of displayedItems; track $index) {
                     <tr>
                         @for (key of Object.keys(item); track key) {
                         <td>{{ item[key] }}</td>
@@ -29,5 +29,5 @@
     } @else {
         <p>No items found for this category.</p>
     }
-  
+
 </div>

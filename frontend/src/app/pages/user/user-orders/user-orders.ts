@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {UserRoles} from '../../../interfaces/user-roles';
+import {UserRoles} from '../../../types/user-roles';
 import {Navbar} from '../../../shared/ui/navbar/navbar';
 
 @Component({
