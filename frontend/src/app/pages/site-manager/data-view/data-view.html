@@ -1,6 +1,9 @@
 <div class="container">
     <h2>Viewing Category: {{ category }}</h2>
-
+        <div>
+            <!-- Button     -->
+             <button class="btn-create" (click)="onCreateItem()">Create New Item</button>
+        </div>
     @if (isLoading) {
         <div class="Temporary">Loading data...</div>
     } 

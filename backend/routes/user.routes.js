@@ -4,8 +4,8 @@ const router = express.Router();
 const userCtrl = require('../src/controllers/user.controller');
 
 router.get('/', userCtrl.getAll);
-/*router.post('/', userCtrl.create);
-router.get('/:id', userCtrl.getItem);
+router.post('/', userCtrl.create);
+/*router.get('/:id', userCtrl.getItem);
 router.patch('/:id', userCtrl.update);
 router.delete('/:id', userCtrl.delete);
 */
