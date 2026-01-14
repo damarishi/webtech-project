@@ -1,2 +1,33 @@
-<p>data-view works!</p>
-{{category}}
+<div class="container">
+    <h2>Viewing Category: {{ category }}</h2>
+        <div>
+            <!-- Button     -->
+             <button class="btn-create" (click)="onCreateItem()">Create New Item</button>
+        </div>
+    @if (isLoading) {
+        <div class="Temporary">Loading data...</div>
+    } 
+    @else if (items && items.length > 0) {
+        <table>
+            <thead>
+                <tr>
+                    @for (key of Object.keys(items[0]); track key) {
+                        <th>{{ key | titlecase }}</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of items; track $index) {
+                    <tr>
+                        @for (key of Object.keys(item); track key) {
+                        <td>{{ item[key] }}</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } @else {
+        <p>No items found for this category.</p>
+    }
+  
+</div>
