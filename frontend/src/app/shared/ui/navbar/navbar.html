@@ -2,32 +2,43 @@
   <nav class="navbar">
 
     <!-- Logo -->
-    <div class="logo">
-      <img src="assets/icons/EatNow.png" alt="EatNow"/>
-    </div>
+    <button class="logo" routerLink="/user">
+      <img src="../../../../../public/assets/icons/EatNow.png" alt="EatNow"/>
+    </button>
 
     <!-- USER MODE -->
-    @if (role === 'USER') {
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Search for a restaurant"
-      />
+    @if (role === UserRoles.USER) {
+      <div class="text">
+        @if (showSearch){
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search for a restaurant"/>
+            <!--(input)="search.emit($event.target.value)"-->
+        } @else {
+          <h1 class="page-title">{{ title }}</h1>
+        }
+      </div>
+
 
       <div class="actions">
-        <button class="icon-btn">
-          <img src="assets/icons/ShoppingCart.png" alt="Shopping Cart"/>
+        <button class="icon-btn" routerLink="/user/loyalty">
+          <img src="../../../../../public/assets/icons/loyalty.png" alt="Loyalty Points"/>
         </button>
 
-        <button class="icon-btn">
-          <img src="assets/icons/GenericAvatar.png" alt="User"/>
+        <button class="icon-btn" routerLink="/user/orders">
+          <img src="../../../../../public/assets/icons/ShoppingCart.png" alt="Shopping Cart"/>
+        </button>
+
+        <button class="icon-btn" routerLink="/user/profile">
+          <img src="../../../../../public/assets/icons/GenericAvatar.png" alt="User"/>
         </button>
       </div>
     }
     @else {   <!-- DEFAULT MODE -->
       <div class="actions">
         <button class="icon-btn">
-          <img src="assets/icons/GenericAvatar.png" alt="User"/>
+          <img src="../../../../../public/assets/icons/GenericAvatar.png" alt="User"/>
         </button>
       </div>
     }

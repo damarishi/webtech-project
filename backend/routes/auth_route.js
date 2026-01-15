@@ -6,9 +6,9 @@ const jwt = require('jsonwebtoken');
 
 const pool = require('../pool.js');
 const cfg = require('../config');
-const userRole = require("../src/interfaces/userrole_enum");
+const userRole = require("../interfaces/userrole_enum");
 
-const isAuth = require('./isAuth');
+const isAuth = require('../services/isAuth');
 
 async function checkDB(){
     try{
@@ -151,7 +151,7 @@ module.exports = router;
 
 //just for testing purposes, delete later
 //get logEmitter used for sending log events
-const logEmitter = require("../src/events/index.js");
+const logEmitter = require("../events/logger.js");
 
 
 router.get("/test", (req, res) => {

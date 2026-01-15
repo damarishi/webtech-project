@@ -1,7 +1,7 @@
 //1. import modules
 const express = require("express");
 const cors = require('cors');
-const logger = require("./src/events/logger");  //add log listener
+const logger = require("./events/logger");  //add log listener
 
 const app = express();
 
@@ -13,16 +13,12 @@ app.use(express.json());
 
 //3. define routes
 const authRoutes = require("./routes/auth_route");
-
-//siteadmin routes
 const restaurantRoutes = require("./routes/restaurant.routes");
-const userRoutes = require("./routes/user.routes");
-
-
-
+const userRoutes = require("./routes/user.routes.js");
 
 //4. route mounting
 app.use('/auth', authRoutes);
+app.use('/restaurants', restaurantRoutes);
 
 
 //site-admin routes mounting

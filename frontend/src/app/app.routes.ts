@@ -3,12 +3,15 @@ import { Routes } from '@angular/router';
 //import Site manager Components here
 import { SiteManager } from './pages/site-manager/site-manager';
 import { DataView } from './pages/site-manager/data-view/data-view';
-import {AuthGuard} from './auth/auth-guard';
-import {LoginGuard} from './auth/login-guard';
-import {LoginComponent} from './auth/login/login';
-import {RegisterComponent} from './auth/register/register';
+import {AuthGuard} from './features/auth/auth-guard';
+import {LoginGuard} from './features/auth/login-guard';
+import {LoginComponent} from './features/auth/login/login';
+import {RegisterComponent} from './features/auth/register/register';
 import {RestaurantOwner} from './pages/restaurant-owner/restaurant-owner';
-import { User } from './pages/user/user'
+
+import {USER_ROUTES} from './pages/user/user.routes';
+import {User} from './pages/user/user';
+
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' }, //redirect to main page when created
@@ -45,6 +48,7 @@ export const routes: Routes = [
   {
     path: 'user',
     component: User,
-    //canActivate: [AuthGuard]
+    children: USER_ROUTES,
+    canActivate: [AuthGuard]
   }
 ];

@@ -1,13 +1,14 @@
-import {Component} from '@angular/core';
-import { AuthService} from '../../../auth/auth-service';
-import {UserRoles} from '../../../interfaces/user-roles';
-import {User} from '../../../pages/user/user';
-
-export type NavbarMode = 'default' | 'user' ;
+import {Component, Input} from '@angular/core';
+import { AuthService} from '../../../features/auth/auth-service';
+import {UserRoles} from '../../../types/user-roles';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  standalone: true,
+  imports: [
+    RouterLink
+  ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -18,12 +19,15 @@ export class Navbar {
     return this.authService.isLoggedIn();
   }
 
-  get role(): UserRoles | undefined {
-    console.log(this.authService.getCurrentUserRole());
-    return this.authService.getCurrentUserRole();
-  }
+  @Input() role!: UserRoles;
+
+  @Input() showSearch!: boolean;
+
+  @Input() title!: String;
 
   logout() {
     this.authService.logout();
   }
+
+  protected readonly UserRoles = UserRoles;
 }
