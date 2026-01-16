@@ -1,1 +1,44 @@
-<p>filter-sidebar works!</p>
+<div class="filter-container">
+  <div class="filter-title">
+    <h4>Filter</h4>
+  </div>
+
+  <!-- Cuisine -->
+  <div class="filter-sections">
+    <h5>Cuisine</h5>
+    @for (cuisine of cuisines; track cuisine) {
+      <label class="filter-option">
+        <input
+          type="checkbox"
+          (change)="toggle(filter.cuisines, cuisine)" />
+        {{ cuisine }}
+      </label>
+    }
+  </div>
+
+  <!-- Category -->
+  <div class="filter-section">
+    <h5>Category</h5>
+    @for (category of categories; track category) {
+      <label class="filter-option">
+        <input
+          type="checkbox"
+          (change)="toggle(filter.categories, category)" />
+        {{ category }}
+      </label>
+    }
+  </div>
+
+  <!-- Price -->
+  <div class="filter-section">
+    <h5>Price</h5>
+    @for (price of prices; track price.value) {
+      <label class="filter-option">
+        <input
+          type="checkbox"
+          (change)="toggle(filter.prices, price.value)" />
+        {{ price.label }}
+      </label>
+    }
+  </div>
+</div>

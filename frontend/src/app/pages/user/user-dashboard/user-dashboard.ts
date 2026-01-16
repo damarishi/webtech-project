@@ -11,4 +11,14 @@ import {UserRoles} from '../../../types/user-roles';
 })
 export class UserDashboard {
   protected readonly UserRoles = UserRoles;
+
+  activeFilter = {
+    cuisines: [],
+    categories: [],
+    prices: []
+  };
+
+  onFilterChange(filter: any){
+    this.activeFilter = {...filter};    //object spread -> erzeugt neue referenz
+  }
 }
