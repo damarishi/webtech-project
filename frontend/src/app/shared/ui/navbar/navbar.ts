@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { AuthService} from '../../../features/auth/auth-service';
 import {UserRoles} from '../../../types/user-roles';
 import {RouterLink} from '@angular/router';
@@ -27,6 +27,12 @@ export class Navbar {
 
   logout() {
     this.authService.logout();
+  }
+
+  @Output() searchChange = new EventEmitter<string>();
+
+  onSearch(value: string) {
+    this.searchChange.emit(value);
   }
 
   protected readonly UserRoles = UserRoles;

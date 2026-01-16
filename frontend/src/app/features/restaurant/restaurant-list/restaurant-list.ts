@@ -35,12 +35,14 @@ export class RestaurantList implements OnInit {
   }
 
   @Input() filter!: RestaurantFilter;
+  @Input() searchText = '';
 
   get filteredRestaurants() {
     return this.restaurants.filter(r =>
       (!this.filter.cuisines.length || this.filter.cuisines.includes(r.cuisine)) &&       //wenn kein filter aktiv !0 -> true
       (!this.filter.categories.length || this.filter.categories.includes(r.category)) &&
-      (!this.filter.prices.length || this.filter.prices.includes(r.priceLevel))
+      (!this.filter.prices.length || this.filter.prices.includes(r.priceLevel)) &&
+      (!this.searchText || r.restaurant_name.toLowerCase().includes(this.searchText))
     );
   }
 }

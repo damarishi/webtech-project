@@ -13,8 +13,9 @@
           <input
             type="text"
             class="search-input"
-            placeholder="Search for a restaurant"/>
-            <!--(input)="search.emit($event.target.value)"-->
+            placeholder="Search for a restaurant"
+            (input)="onSearch($any($event.target).value)"  /> <!--@any = hier wird sicher ein input sein-->
+
         } @else {
           <h1 class="page-title">{{ title }}</h1>
         }
