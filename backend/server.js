@@ -14,6 +14,7 @@ app.use(express.json());
 //3. define routes
 const authRoutes = require("./routes/auth_route");
 const restaurantRoutes = require("./routes/restaurant.routes");
+const restaurantRequestRoutes = require("./routes/restaurant_requests.routes");
 const userRoutes = require("./routes/user.routes.js");
 
 //4. route mounting
@@ -21,9 +22,12 @@ app.use('/auth', authRoutes);
 app.use('/restaurants', restaurantRoutes);
 
 
+
 //site-admin routes mounting
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/restaurant_requests', restaurantRequestRoutes);
+
 
 
 //default route

@@ -54,12 +54,25 @@ VALUES
     ('Test Log', 'TestType');
 
 
+CREATE TABLE restaurant_status (
+    status_id    SERIAL PRIMARY KEY,
+    status_name  VARCHAR(20) NOT NULL UNIQUE -- 'Pending', 'Approved', 'Rejected'
+);
+
+INSERT INTO restaurant_status (status_name) 
+VALUES ('Pending'), ('Approved'), ('Rejected');
+
+
 DROP TABLE IF EXISTS restaurant;
 
+-- Note from Fabian: restaurants will only be created after admin approval of registration request
+-- Not yet approved requests are stored in restaurant_registration_requests table
+-- Once approved, a new restaurant is created here
 CREATE TABLE restaurant
 (
     restaurant_id       SERIAL PRIMARY KEY,
     restaurant_name     VARCHAR(100) NOT NULL
+    -- Add additional Information from the restaurant as needed, match with registration request
 );
 
 INSERT INTO restaurant (restaurant_id, restaurant_name)
@@ -67,3 +80,20 @@ VALUES
     (1, 'Due Sicilie'),
     (2, 'Lemon Tree'),
     (3, 'Lodenwirt');
+
+
+CREATE TABLE restaurant_requests (
+    request_id      SERIAL PRIMARY KEY,
+    restaurant_name VARCHAR(100) NOT NULL,
+    requested_by    INT NOT NULL,
+    FOREIGN KEY (requested_by) REFERENCES users(user_id), -- TODO: ON DELETE CASCADE?
+    requested_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- Add additional Information from the restaurant as needed, match with restaurant table
+    status_id       INT DEFAULT 1,  -- Default to 'Pending'
+    FOREIGN KEY (status_id) REFERENCES restaurant_status(status_id),
+    admin_notes    text     -- Explanation from Admin why approved/rejected
+);
+
+INSERT INTO restaurant_requests (restaurant_name, requested_by, status_id, admin_notes)
+VALUES 
+    ('The Pizza Palace', 3, 1, '');     -- example request, userId 3 is bob42, no admin notes
