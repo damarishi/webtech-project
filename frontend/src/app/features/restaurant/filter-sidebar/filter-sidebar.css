@@ -1,0 +1,27 @@
+.filter-container {
+  width: 260px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.filter-title {
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.filter-section h5 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #052A02;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 6px;
+}

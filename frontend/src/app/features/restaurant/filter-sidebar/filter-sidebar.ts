@@ -1,11 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RestaurantFilter} from '../../../types/RestaurantFilter';
 
 @Component({
   selector: 'app-filter-sidebar',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './filter-sidebar.html',
   styleUrl: './filter-sidebar.css',
 })
 export class FilterSidebar {
+  @Output() filterChange = new EventEmitter<RestaurantFilter>();
 
+  cuisines = ['Italian', 'Asian', 'Austrian', 'Mexican'];
+  categories = ['Restaurant', 'Cafe', 'FastFood', 'Bistro'];
+  prices = [
+    {label: '€', value: 1},
+    {label: '€€', value: 2},
+    {label: '€€€', value: 3},
+  ];
+
+  filter: RestaurantFilter = {
+    cuisines: [],
+    categories: [],
+    prices: []
+  };
+
+  toggle<T>(list: T[], value: T) {        //T = type declared at run-time
+    const index = list.indexOf(value);    //schauen ob filter schon existiert
+    index >= 0 ? list.splice(index, 1) : list.push(value);    //entfernen oder hinzufügen
+    this.filterChange.emit(this.filter);      //filter zustand senden
+  }
 }

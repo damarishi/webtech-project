@@ -1,5 +1,10 @@
 <div class="dashboard-layout">
-  <app-filter-sidebar/>
-  <app-restaurant-component-list></app-restaurant-component-list>
+  <app-filter-sidebar
+    (filterChange)="onFilterChange($event)"
+  />
+  <app-restaurant-component-list
+    [filter]="activeFilter"
+    [searchText]="searchText"
+  />
 </div>
 

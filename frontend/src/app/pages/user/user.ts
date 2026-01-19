@@ -3,6 +3,7 @@ import {ActivatedRoute, NavigationEnd, Router, RouterModule} from '@angular/rout
 import {Navbar} from '../../shared/ui/navbar/navbar';
 import {UserRoles} from '../../types/user-roles';
 import {filter} from 'rxjs';
+import {RestaurantStateService} from '../../services/restaurant-state-service';
 
 @Component({
   selector: 'app-user',
@@ -20,6 +21,7 @@ export class User {
   protected readonly UserRoles = UserRoles;
 
   constructor(
+    private state: RestaurantStateService,
     private router: Router,
     private route: ActivatedRoute   //aktuelle route
   ) {
@@ -31,4 +33,11 @@ export class User {
         this.showSearch = data?.['showSearch'] ?? false;
       });
   }
+
+  searchText = '';
+
+  onSearchChange(text: string) {
+    this.state.setSearch(text);
+  }
+
 }
