@@ -2,6 +2,7 @@
   [role]="UserRoles.USER"
   [showSearch]="showSearch"
   [title]="title"
+  (searchChange)="onSearchChange($event)"
 />
 
 <router-outlet></router-outlet>
