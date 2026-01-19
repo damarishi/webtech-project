@@ -22,4 +22,36 @@ export class DataService {
     const url = `${this.apiUrl}/${category}`;
     return firstValueFrom(this.http.post<any[]>(url, data));
   }
+
+  async updateData(category: string, data: any): Promise<any[]> {
+    console.log(`Updating data for category: ${category}`);
+    const id = this.getIdentifierKey(data);
+    const url = `${this.apiUrl}/${category}/${id}`; // Assuming 'id' is the identifier
+    return firstValueFrom(this.http.put<any[]>(url, data));
+  }
+
+  async approveRequest(category: string, data: any): Promise<any[]> {
+    console.log(`Updating data for category: ${category}`);
+    const id = this.getIdentifierKey(data);
+    const url = `${this.apiUrl}/${category}/approve/${id}`; // Assuming 'id' is the identifier
+    return firstValueFrom(this.http.put<any[]>(url, data));
+  }
+
+  async rejectRequest(category: string, data: any): Promise<any[]> {
+    console.log(`Updating data for category: ${category}`);
+    const id = this.getIdentifierKey(data);
+    const url = `${this.apiUrl}/${category}/reject/${id}`; // Assuming 'id' is the identifier
+    return firstValueFrom(this.http.put<any[]>(url, data));
+  }
+
+
+  getIdentifierKey(item: any): any {
+    const idKey = Object.keys(item).find(key => key.toLowerCase().endsWith('id'));
+    if(idKey) {
+      console.log(`Test output DataId: ${item[idKey]}`);
+      console.log(item);
+    }
+    return idKey ? item[idKey] : null; 
+  }
+
 }
