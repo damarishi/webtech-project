@@ -13,6 +13,21 @@ const CATEGORY_FIELDS: Record<string, string[]> = {
   'users': ['username', 'email', 'full_name', 'role']
 };
 
+//display filter options based on category
+const FILTERS: Record<string, { label: string, value: any }[]> = {
+  'restaurant_requests': [
+    { label: 'Pending', value: 1 },
+    { label: 'Accepted', value: 2 },
+    { label: 'Rejected', value: 3 }
+  ],
+  'users': [
+    { label: 'Active Users', value: false }, // mapping to is_deleted = false
+    { label: 'Deleted Users', value: true }  // mapping to is_deleted = true
+  ]
+};
+
+
+
 @Component({
   selector: 'app-data-view',
   standalone: true,
@@ -25,12 +40,42 @@ export class DataView {
   category: string | null = "";   //category from route parameter
   displayedItems: any[] = []; //data items to display
   isLoading: boolean = false; //loading state
-  Object = Object; //to use Object.keys in template
+  Object = Object; //to use Object.keys in html for dynamic display
 
-  //display filtered restaurant requests
-  //1 = pending, 2 = accepted, 3 = rejected
-  filterStatus: 1 | 2 | 3 = 1;
 
+  //Filter Settings
+  /*current filter status
+    Possible Values:
+    For restaurant_requests: 1 (Pending), 2 (Accepted), 3 (Rejected)
+    For users: false (Active Users), true (Deleted Users)
+  */
+  filterStatus: any = 1; // Default filter value
+
+  // Get filters for the current category
+  get currentFilters() {
+    return this.category ? FILTERS[this.category] : [];
+  }
+
+  // Update setFilter to handle the default filter when switching categories
+  setFilter(value: any) {
+    this.filterStatus = value;
+  }
+
+  // Helper function to determine if an item should be shown based on the current filter
+  shouldShowItem(item: any): boolean {
+    if (this.category === 'restaurant_requests') {
+      // Check if the item's request status matches our filter
+      return item.status_id === this.filterStatus;
+    }
+    if (this.category === 'users') {
+      // Check if the user's is_deleted matches our filter (true/false)
+      return item.is_deleted === this.filterStatus;
+    }
+    return true; // Show all for other categories
+  }
+
+
+  //Modal Settings
   //modal popup window for creating new item
   isModalOpen: boolean = false;
   modalMode: 'create' | 'edit' | 'delete' | 'approve' | 'reject' = 'create'; //modal mode, Union type with initial value
@@ -53,9 +98,19 @@ export class DataView {
       this.category = params.get('category');
       
       if(this.category) {
+        this.setDefaultFilter(this.category); //set default filter based on category
         await this.loadData(this.category);
       }
     });
+  }
+
+  //sets default filter based on category when the page is loaded (first filter option)
+  private setDefaultFilter(category: string) {
+    if(this.category && FILTERS[this.category] && FILTERS[this.category].length > 0 ) {
+      this.filterStatus = FILTERS[this.category][0].value; //set to first filter option
+    } else {
+      this.filterStatus = null; //no filter, should never happen
+    }
   }
 
   /*
@@ -129,29 +184,25 @@ export class DataView {
     }
   }
 
+  //TODO Fabian: maybe i'll just change function call to immediatly open modal with keywords
   //edit item (opens modal)
   async onEditItem(item: any) {
-    //TODO Fabian: implement edit functionality
     this.openModal('edit', item);
   }
 
   //delete item (opens modal)
   async onDeleteItem(item: any) {
-    //TODO Fabian: implement delete functionality
     this.openModal('delete', item);
   }
-
 
   // #### Case Specific Functionality (Restaurant Requests Approval, etc) ####
   //approve request (opens modal)
   async onApproveRequest(item: any) {
-    //TODO Fabian: implement approve functionality for restaurant requests
     this.openModal('approve', item);
   }
 
   //reject request (opens modal)
   async onRejectRequest(item: any) {
-    //TODO Fabian: implement reject functionality for restaurant requests
     this.openModal('reject', item);
   }
 
@@ -199,7 +250,17 @@ export class DataView {
           await this.dataService.updateData(currentCategory, dataToSave);
           break;
         case 'delete':
-          console.log('Deleting item:', this.selectedItem);
+          if(this.category === 'users' && this.filterStatus === true)
+          {
+            console.log('Permanently Purging user:', this.selectedItem);
+            await this.dataService.deleteData(currentCategory, dataToSave);
+            break;
+          }
+          else {
+            console.log('Marking item as deleted:', this.selectedItem);
+            await this.dataService.updateData(currentCategory, dataToSave);
+            break;
+          }
           break;
         case 'approve':
           console.log('Approving item:', this.selectedItem);
@@ -225,10 +286,6 @@ export class DataView {
       this.isLoading = false;
       this.cdr.detectChanges(); //forces render update
     }
-  }
-
-  setFilter(status: 1 | 2 | 3) {
-    this.filterStatus = status;   
   }
 }
 

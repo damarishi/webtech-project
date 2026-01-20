@@ -1,10 +1,14 @@
 <div class="container">
     <h2>Viewing Category: {{ category }}</h2>
-     @if(category === "restaurant_requests") {
-        <button class="btn-filter" (click)="setFilter(1)">Pending</button>
-        <button class="btn-filter" (click)="setFilter(2)">Accepted</button>
-        <button class="btn-filter" (click)="setFilter(3)">Rejected</button>
-     }
+     <div class="filter-bar">
+        @for (f of currentFilters; track f.value) {
+            <button 
+                class="btn-filter" 
+                (click)="setFilter(f.value)">
+                {{ f.label }}
+            </button>
+        }
+    </div>
     <div>
         <!-- Button     -->
         <button class="btn-create" (click)="onCreateItem()">Create New Item</button>
@@ -14,35 +18,36 @@
     }
     @else if (displayedItems && displayedItems.length > 0) {
         <table>
-            <thead>
+           <thead>
                 <tr>
                     @for (key of Object.keys(displayedItems[0]); track key) {
-                        <th>{{ key | titlecase }}</th>
+                        @if (key !== 'is_deleted') { <th>{{ key | titlecase }}</th> }
                     }
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @for (item of displayedItems; track trackById($index, item)) {
-                    <tr>
-                        @if(category === "restaurant_requests") {   <!-- Filter Requests by Status  -->
-                            @if(item.status_id === filterStatus) {
-                                @for (key of Object.keys(item); track key) {
-                                    <td>{{ item[key] }}</td>
-                                }
-                                <td><button type="button" class="btn-approve" (click)="onApproveRequest(item)">Approve</button></td>
-                                <td><button type="button" class="btn-reject" (click)="onRejectRequest(item)">Reject</button></td>
+                    @if (shouldShowItem(item)) {
+                        <tr>
+                            @for (key of Object.keys(item); track key) {
+                                @if (key !== 'is_deleted') { <td>{{ item[key] }}</td> }
                             }
                             
-                        }
-                        @else {
-                            @for (key of Object.keys(item); track key) {
-                                <td>{{ item[key] }}</td>
-                            }
-                            <td><button type="button" class="btn-edit" (click)="onEditItem(item)">Edit</button></td>
-                            <td><button type="button" class="btn-delete" (click)="onDeleteItem(item)">Delete</button></td>
-                        }
-                        
-                    </tr>  
+                            <td>
+                                @if (category === 'restaurant_requests') {
+                                    <button class="btn-approve" (click)="onApproveRequest(item)">Approve</button>
+                                    <button class="btn-reject" (click)="onRejectRequest(item)">Reject</button>
+                                } @else {
+                                    <button class="btn-edit" (click)="onEditItem(item)">Edit</button>
+                                    
+                                    <button class="btn-delete" (click)="onDeleteItem(item)">
+                                        {{ filterStatus === true ? 'Purge' : 'Delete' }}
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

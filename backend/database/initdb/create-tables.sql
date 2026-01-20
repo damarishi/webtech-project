@@ -101,7 +101,7 @@ CREATE TABLE restaurant_requests (
     request_id      SERIAL PRIMARY KEY,
     restaurant_name VARCHAR(100) NOT NULL,
     requested_by    INT NOT NULL,
-    FOREIGN KEY (requested_by) REFERENCES users(user_id), -- TODO: ON DELETE CASCADE?
+    FOREIGN KEY (requested_by) REFERENCES users(user_id),
     requested_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     -- Add additional Information from the restaurant as needed, match with restaurant table
     status_id       INT DEFAULT 1,  -- Default to 'Pending'
@@ -127,3 +127,5 @@ CREATE TABLE platform_settings (
 -- Insert Platform settings
 INSERT INTO platform_settings (setting_name, flat_fee, percent_cut, is_active)
 VALUES ('default_service_fee', 1.00, 0.00, true); -- $1.00 flat fee, 0% cut
+
+

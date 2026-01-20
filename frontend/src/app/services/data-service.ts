@@ -30,6 +30,13 @@ export class DataService {
     return firstValueFrom(this.http.put<any[]>(url, data));
   }
 
+    async deleteData(category: string, data: any): Promise<any[]> {
+    console.log(`Deleting data for category: ${category}`);
+    const id = this.getIdentifierKey(data);
+    const url = `${this.apiUrl}/${category}/${id}`; // Assuming 'id' is the identifier
+    return firstValueFrom(this.http.delete<any[]>(url));
+  }
+
   async approveRequest(category: string, data: any): Promise<any[]> {
     console.log(`Updating data for category: ${category}`);
     const id = this.getIdentifierKey(data);
