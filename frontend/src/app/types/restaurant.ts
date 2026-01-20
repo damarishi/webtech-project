@@ -1,4 +1,7 @@
 export interface Restaurant {
   restaurant_id: number;
   restaurant_name: string;
+  cuisine: 'Italian' | 'Asian' | 'Austrian' | 'Mexican';
+  category: 'Restaurant' | 'Cafe' |'FastFood' | 'Bistro';
+  priceLevel: 1 | 2 | 3;
 }
