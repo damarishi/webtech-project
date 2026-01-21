@@ -2,12 +2,14 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { AuthService} from '../../../features/auth/auth-service';
 import {UserRoles} from '../../../types/user-roles';
 import {RouterLink} from '@angular/router';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    NgOptimizedImage
   ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',

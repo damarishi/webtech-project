@@ -1,1 +1,8 @@
-<p>restaurant-owner works!</p>
+<app-navbar
+  [role]="UserRoles.OWNER"
+  [showSearch]="showSearch"
+  [title]="title"
+  (searchChange)="onSearchChange($event)"
+/>
+
+<router-outlet></router-outlet>
