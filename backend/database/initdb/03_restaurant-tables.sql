@@ -1,5 +1,15 @@
 DROP TABLE IF EXISTS restaurant, restaurant_requests, restaurant_status CASCADE;
 
+
+CREATE TABLE restaurant_status (
+    status_id    SERIAL PRIMARY KEY,
+    status_name  VARCHAR(20) NOT NULL UNIQUE -- 'Pending', 'Approved', 'Rejected'
+);
+
+INSERT INTO restaurant_status (status_name)
+VALUES ('Pending'), ('Approved'), ('Rejected');
+
+
 CREATE TABLE restaurant_requests (
     request_id      SERIAL PRIMARY KEY,
     restaurant_name VARCHAR(100) NOT NULL,
@@ -16,14 +26,6 @@ INSERT INTO restaurant_requests (restaurant_name, requested_by, status_id, admin
 VALUES
     ('The Pizza Palace', 3, 1, '');     -- example request, userId 3 is bob42, no admin notes
 
-
-CREATE TABLE restaurant_status (
-    status_id    SERIAL PRIMARY KEY,
-    status_name  VARCHAR(20) NOT NULL UNIQUE -- 'Pending', 'Approved', 'Rejected'
-);
-
-INSERT INTO restaurant_status (status_name)
-VALUES ('Pending'), ('Approved'), ('Rejected');
 
 
 -- Note from Fabian: restaurants will only be created after admin approval of registration request
