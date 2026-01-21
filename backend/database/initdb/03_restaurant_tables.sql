@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS restaurant, restaurant_requests, restaurant_status;
+DROP TABLE IF EXISTS restaurant, restaurant_requests, restaurant_status CASCADE;
 
 CREATE TABLE restaurant_requests (
     request_id      SERIAL PRIMARY KEY,
@@ -34,20 +34,19 @@ CREATE TABLE restaurant
     restaurant_id       SERIAL PRIMARY KEY,
     restaurant_name     VARCHAR(100) NOT NULL,
     owner_id            INT NOT NULL UNIQUE, --Only one restaurant per owner
-    address_id          INT NOT NULL,
+    location            POINT NOT NULL,
     logo_id             INT,
     banner_id           INT,
     FOREIGN KEY (owner_id) REFERENCES users(user_id),
-    FOREIGN KEY (Address_id) REFERENCES address(address_id),
     FOREIGN KEY (logo_id) REFERENCES images(image_id),
     FOREIGN KEY (banner_id) REFERENCES images(image_id)
 );
 
-INSERT INTO restaurant (restaurant_id, restaurant_name, owner_id, address_id)--Temp data
+INSERT INTO restaurant (restaurant_id, restaurant_name, owner_id, location)--Temp data
 VALUES
-    (1, 'Due Sicilie',1,1),
-    (2, 'Lemon Tree',1,1),
-    (3, 'Lodenwirt',1,1);
+    (1, 'Due Sicilie',1, '(10,10)'),
+    (2, 'Lemon Tree',1, '(20,10)'),
+    (3, 'Lodenwirt',1,'(20,20)');
 
 CREATE TABLE opening_times
 (
@@ -76,14 +75,21 @@ CREATE TABLE items
     name            VARCHAR(100) NOT NULL,
     position        INT NOT NULL,
     price           DECIMAL(10,2) NOT NULL,
-    image_id        INT,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id),
-    FOREIGN KEY (image_id) REFERENCES images(image_id)
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
 CREATE UNIQUE INDEX dishes_restaurant_position
 ON items(restaurant_id,position); --Assert unique positions for a restaurant
+
+CREATE TABLE item_images
+(
+    item_id     INT NOT NULL,
+    image_id    INT NOT NULL,
+    PRIMARY KEY (item_id,image_id),
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
+    FOREIGN KEY (image_id) REFERENCES images(image_id)
+);
 
 CREATE TABLE tags
 (
@@ -107,12 +113,11 @@ CREATE TABLE orders
     user_id         INT NOT NULL,
     total           DECIMAL(10,2) NOT NULL,
     discount_id     INT NOT NULL,
-    fee_id          INT NOT NULL,
+    fee             INT NOT NULL,
     date            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (discount_id) REFERENCES discounts(discount_id),
-    FOREIGN KEY (fee_id) REFERENCES fees(fee_id)
+    FOREIGN KEY (discount_id) REFERENCES discounts(discount_id)
 );
 
 CREATE TABLE order_item
@@ -120,6 +125,7 @@ CREATE TABLE order_item
     order_id    INT NOT NULL,
     item_id     INT NOT NULL,
     quantity    SMALLINT DEFAULT 1,
+    PRIMARY KEY (order_id,item_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (item_id) REFERENCES items(item_id)
 );

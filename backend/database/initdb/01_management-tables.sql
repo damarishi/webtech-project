@@ -25,8 +25,6 @@ VALUES
     ('Test Log', 1);
 -- End of Logging Tables
 
-
-
 -- Global Platform Settings Table
 CREATE TABLE platform_settings (
     id SERIAL PRIMARY KEY,
@@ -40,3 +38,20 @@ CREATE TABLE platform_settings (
 -- Insert Platform settings
 INSERT INTO platform_settings (setting_name, flat_fee, percent_cut, is_active)
 VALUES ('default_service_fee', 1.00, 0.00, true); -- $1.00 flat fee, 0% cut
+
+
+CREATE TABLE discounts
+(
+    discount_id    SERIAL PRIMARY KEY,
+    code            VARCHAR(10) UNIQUE NOT NULL,
+    value           DECIMAL(10,2) NOT NULL,
+    active          BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE images
+(
+    image_id        SERIAL PRIMARY KEY,
+    link            VARCHAR(200),
+    name            VARCHAR(100),
+    description     text
+);
