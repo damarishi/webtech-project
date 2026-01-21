@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import {CanActivate, Router, UrlTree} from '@angular/router';
 import { AuthService } from './auth-service';
 import {RedirectService} from '../../services/redirect-service';
 
@@ -12,9 +12,10 @@ export class LoginGuard implements CanActivate {
     private redirect:RedirectService
   ) {}
 
-  canActivate(): boolean {
+  canActivate(): boolean{
     if (this.auth.isLoggedIn()) {
-      this.router.navigate([this.redirect.getUserRoute('home')]);
+      console.log('Already Logged in');
+      this.router.navigate([this.redirect.getUserRoute('')]);
       return false;
     }
     return true;
