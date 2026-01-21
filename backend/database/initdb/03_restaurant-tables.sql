@@ -47,18 +47,18 @@ CREATE TABLE restaurant
 INSERT INTO restaurant (restaurant_id, restaurant_name, owner_id, location)--Temp data
 VALUES
     (1, 'Due Sicilie',1, '(10,10)'),
-    (2, 'Lemon Tree',1, '(20,10)'),
-    (3, 'Lodenwirt',1,'(20,20)');
+    (2, 'Lemon Tree',2, '(20,10)'),
+    (3, 'Lodenwirt',3,'(20,20)');
 
 CREATE TABLE opening_times
 (
     opening_time_id     SERIAL PRIMARY KEY,
     restaurant_id       INT NOT NULL,
     weekday             SMALLINT, -- 1->Monday,..., 7->Sunday
-    open                TIME NOT NULL,
-    close               TIME NOT NULL,
+    open_time           TIME NOT NULL,
+    close_time          TIME NOT NULL,
     CHECK(weekday BETWEEN 1 AND 7),
-    CHECK(open < close),
+    CHECK(open_time < close_time),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id)
 );
 
@@ -98,6 +98,8 @@ CREATE TABLE tags
     tag_id  SERIAL PRIMARY KEY,
     name    VARCHAR(50) NOT NULL UNIQUE
 );
+
+INSERT INTO tags (name) VALUES ('drinks'),('Pizza'),('Desserts');
 
 CREATE TABLE dish_tags
 (
