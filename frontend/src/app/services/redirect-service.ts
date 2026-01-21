@@ -8,11 +8,10 @@ export class RedirectService {
   constructor( private auth: AuthService) {}
 
   getUserRoute(destination:string){
-    let role = this.auth.getCurrentUserRole() ?? this.auth.getTopRole();
-
-    if(!role) return '/unauthorized';
-
-    this.auth.setCurrentUserRole(role);
-    return `/${getRoleRoutes(role)}/${destination}`;
+    let role;
+    if(this.auth.initializeRoles() && (role = this.auth.getCurrentUserRole())){
+      return `/${getRoleRoutes(role)}/${destination}`;
+    }
+    return '/unauthorized';
   }
 }

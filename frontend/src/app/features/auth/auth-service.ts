@@ -17,6 +17,17 @@ export class AuthService {
   register(email: string, password:string, username:string, fullName:string, roles:UserRoles[]){
     return this.http.post<void>(`${this.apiUrl}/register`, { email, password, username, fullName, roles});
   }
+
+  initializeRoles(){
+    let currentRole = this.getCurrentUserRole();
+    if(!currentRole){
+      currentRole = this.getTopRole();
+      if(!currentRole) return false;
+      this.setCurrentUserRole(currentRole);
+    }
+    return true;
+  }
+
   getRoles() {
     const value = sessionStorage.getItem('roles');
     if(!value) return [];
