@@ -59,7 +59,12 @@ DROP TABLE IF EXISTS restaurant;
 CREATE TABLE restaurant
 (
     restaurant_id       SERIAL PRIMARY KEY,
-    restaurant_name     VARCHAR(100) NOT NULL
+    restaurant_name     VARCHAR(100) NOT NULL,
+
+    image_url           TEXT,
+    cuisine             VARCHAR(50),
+    category            VARCHAR(50),
+    description         TEXT
 );
 
 INSERT INTO restaurant (restaurant_id, restaurant_name)

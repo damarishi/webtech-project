@@ -11,6 +11,7 @@ import {RestaurantOwner} from './pages/restaurant-owner/restaurant-owner';
 
 import {USER_ROUTES} from './pages/user/user.routes';
 import {User} from './pages/user/user';
+import {RestaurantDetail} from './features/restaurant/restaurant-detail/restaurant-detail';
 
 
 export const routes: Routes = [

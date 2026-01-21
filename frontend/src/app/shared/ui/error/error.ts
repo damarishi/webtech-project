@@ -7,7 +7,6 @@ import {Component, Input} from '@angular/core';
   styleUrl: './error.css',
 })
 export class Error {
-    @Input() visible: boolean = false;
     @Input() code: number = 404;
     @Input() message: string = 'Page not found';
 }
