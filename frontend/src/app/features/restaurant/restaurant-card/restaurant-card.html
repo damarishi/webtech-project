@@ -1,0 +1,19 @@
+<div class="card" [routerLink]="['/user/restaurant', restaurant.restaurant_id]">
+  <div class="image">
+    <img alt="{{ restaurant.restaurant_name}}"/>
+  </div>
+
+  <div class="content">
+    <h3>{{ restaurant.restaurant_name }}</h3>
+
+    <p class="meta">
+      {{ restaurant.cuisine }}
+    </p>
+
+    <p class="info">
+      <!--restaurant.delivery_time-->
+      delivery_time
+    </p>
+  </div>
+
+</div>
