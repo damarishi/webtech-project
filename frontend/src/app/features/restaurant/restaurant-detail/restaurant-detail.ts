@@ -1,0 +1,31 @@
+import {Component, OnInit, signal} from '@angular/core';
+import {RestaurantService} from '../../../services/restaurant-service';
+import {CommonModule} from '@angular/common';
+import {Restaurant} from '../../../types/restaurant';
+import {ActivatedRoute} from '@angular/router';
+import {Loading} from '../../../shared/ui/loading/loading';
+import {Error} from '../../../shared/ui/error/error';
+import {Observable} from 'rxjs';
+
+@Component({
+  selector: 'app-restaurant-detail',
+  standalone: true,
+  imports: [CommonModule, Loading, Error],
+  templateUrl: './restaurant-detail.html',
+  styleUrl: './restaurant-detail.css',
+})
+export class RestaurantDetail implements OnInit {
+  restaurant$!: Observable<Restaurant>;
+
+  constructor(
+    private route: ActivatedRoute,
+    private restaurantService: RestaurantService
+  ) {}
+
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this.restaurant$ = this.restaurantService.getRestaurantById(+id);
+  }
+}

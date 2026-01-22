@@ -7,5 +7,6 @@ const restaurantCtrl = require('../controllers/restaurant.controller');
 
 
 router.get('/', restaurantCtrl.getAll);
+router.get('/:id', restaurantCtrl.getItem);
 
 module.exports = router;
