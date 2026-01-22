@@ -78,7 +78,7 @@ export class DataView {
   //Modal Settings
   //modal popup window for creating new item
   isModalOpen: boolean = false;
-  modalMode: 'create' | 'edit' | 'delete' | 'approve' | 'reject' = 'create'; //modal mode, Union type with initial value
+  modalMode: 'create' | 'edit' | 'delete' | 'approve' | 'reject' | 'warnUser' | 'banUser' = 'create'; //modal mode, Union type with initial value
   selectedItem: any = {}; // handles Create, Edit, and Delete
   modalFields: string[] = []; //fields to display in modal form, only used for create/edit
 
@@ -206,10 +206,18 @@ export class DataView {
     this.openModal('reject', item);
   }
 
+  // Warn User and Ban User functions for user_moderation category
+  async onWarnUser(item: any) {
+    this.openModal('warnUser', item);
+  }
+  async onBanUser(item: any) {
+    this.openModal('banUser', item);
+  }
+
 
 
   //open modal window form for creating new item
-  openModal(mode: 'create' | 'edit' | 'delete' | 'approve' | 'reject', item: any = {}, fields?: string[]) {
+  openModal(mode: 'create' | 'edit' | 'delete' | 'approve' | 'reject' | 'warnUser' | 'banUser', item: any = {}, fields?: string[]) {
     //initialize modal form fields here
     this.modalMode = mode;
     this.selectedItem = { ...item };  //shallow copy to avoid direct changes
@@ -270,6 +278,16 @@ export class DataView {
           console.log('Rejecting item:', this.selectedItem);
           await this.dataService.rejectRequest(currentCategory, dataToSave);
           break;
+        case 'warnUser':
+          console.log('Warning user:', this.selectedItem);
+          await this.dataService.updateData(currentCategory, dataToSave);  //TODO Fabian: implement warn user functionality in backend
+          break;
+        case 'banUser':
+          console.log('Banning user:', this.selectedItem);
+          await this.dataService.updateData(currentCategory, dataToSave); //TODO Fabian: implement ban user functionality in backend
+          break;
+        default:
+          throw new Error("Unknown modal mode");
       }
   
       

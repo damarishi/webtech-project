@@ -38,9 +38,11 @@
                                 @if (category === 'restaurant_requests') {
                                     <button class="btn-approve" (click)="onApproveRequest(item)">Approve</button>
                                     <button class="btn-reject" (click)="onRejectRequest(item)">Reject</button>
+                                } @else if(category === 'user_moderation') {
+                                    <button class="btn-warnUser" (click)="onApproveRequest(item)">Warn User</button>
+                                    <button class="btn-banUser" (click)="onRejectRequest(item)">Ban User</button>
                                 } @else {
                                     <button class="btn-edit" (click)="onEditItem(item)">Edit</button>
-                                    
                                     <button class="btn-delete" (click)="onDeleteItem(item)">
                                         {{ filterStatus === true ? 'Purge' : 'Delete' }}
                                     </button>
