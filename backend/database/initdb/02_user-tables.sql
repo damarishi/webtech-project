@@ -42,34 +42,3 @@ INSERT INTO user_roles(user_id, role_id) VALUES
     (1,1),(1,2),(1,3),
     (2,2),
     (3,3);
-
-CREATE TABLE logs (
-      id SERIAL PRIMARY KEY,
-      description VARCHAR(255) NOT NULL,
-      typeoflog VARCHAR(50) NOT NULL, -- e.g., 'SECURITY', 'USER_MANAGEMENT', 'SYSTEM'
-      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO logs (description, typeoflog)
-VALUES
-    ('Test Log', 'TestType');
-
-
-DROP TABLE IF EXISTS restaurant;
-
-CREATE TABLE restaurant
-(
-    restaurant_id       SERIAL PRIMARY KEY,
-    restaurant_name     VARCHAR(100) NOT NULL,
-
-    image_url           TEXT,
-    cuisine             VARCHAR(50),
-    category            VARCHAR(50),
-    description         TEXT
-);
-
-INSERT INTO restaurant (restaurant_id, restaurant_name)
-VALUES
-    (1, 'Due Sicilie'),
-    (2, 'Lemon Tree'),
-    (3, 'Lodenwirt');
