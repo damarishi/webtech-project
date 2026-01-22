@@ -26,9 +26,6 @@ export class RestaurantDetail implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
-    this.restaurantService.getRestaurantById(+id).subscribe({
-      next: (data) => this.restaurant.set(data),
-      error: (err) => console.error(err)
-    });
+    this.restaurant$ = this.restaurantService.getRestaurantById(+id);
   }
 }

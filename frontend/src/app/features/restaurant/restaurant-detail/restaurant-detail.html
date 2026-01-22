@@ -1,5 +1,5 @@
 <p>restaurant-detail works!</p>
-@if (restaurant) {
+@if (restaurant$ | async; as restaurant) {
   <div class="restaurant-detail">
 
     <img alt="{{ restaurant.restaurant_name }}"/>
