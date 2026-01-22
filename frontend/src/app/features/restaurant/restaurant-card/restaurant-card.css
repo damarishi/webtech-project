@@ -1,0 +1,33 @@
+.card {
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  bakcground: white;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.image img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.content {
+  padding: 12px;
+}
+
+.meta {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.info {
+  font-size: 0.85rem;
+  color: #888;
+}

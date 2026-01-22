@@ -31,6 +31,8 @@ CREATE TABLE platform_settings (
     setting_name VARCHAR(50) UNIQUE NOT NULL, -- e.g., 'default_service_fee'
     flat_fee DECIMAL(10, 2) DEFAULT 0.00,    -- Flat amount (e.g., $2.00)
     percent_cut DECIMAL(5, 2) DEFAULT 0.00,  -- Percentage (e.g., 10.5 for 10.5%)
+    estimated_delivery_speed INT DEFAULT 30, -- in distance/h
+    max_delivery_distance INT DEFAULT 10, -- in distance units
     is_active BOOLEAN DEFAULT true,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -45,7 +47,7 @@ CREATE TABLE discounts
     discount_id    SERIAL PRIMARY KEY,
     code            VARCHAR(10) UNIQUE NOT NULL,
     value           DECIMAL(10,2) NOT NULL,
-    active          BOOLEAN DEFAULT TRUE
+    active          BOOLEAN DEFAULT true
 );
 
 CREATE TABLE images

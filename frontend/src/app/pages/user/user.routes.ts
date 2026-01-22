@@ -4,6 +4,7 @@ import {UserLoyalty} from './user-loyalty/user-loyalty';
 import {UserOrders} from './user-orders/user-orders';
 import {UserProfile} from './user-profile/user-profile';
 import {User} from './user';
+import {RestaurantDetail} from '../../features/restaurant/restaurant-detail/restaurant-detail';
 
 
 export const USER_ROUTES: Routes = [
@@ -15,6 +16,16 @@ export const USER_ROUTES: Routes = [
       showSearch: true,
       }
     },
+
+    {
+      path: 'restaurant/:id',
+      component: RestaurantDetail,
+      data: {
+        title: '',
+        showSearch: false
+      }
+    },
+
     {
       path: 'loyalty',
       component: UserLoyalty,

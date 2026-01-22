@@ -5,11 +5,12 @@ import {RestaurantService} from '../../../services/restaurant-service';
 import {RestaurantComponent} from '../restaurant-component/restaurant-component';
 import {ChangeDetectorRef} from '@angular/core';
 import {RestaurantFilter} from '../../../types/RestaurantFilter';
+import {RestaurantCard} from '../restaurant-card/restaurant-card';
 
 @Component({
   selector: 'app-restaurant-component-list',
   standalone: true,
-  imports: [RestaurantComponent, CommonModule],
+  imports: [RestaurantComponent, CommonModule, RestaurantCard],
   templateUrl: './restaurant-list.html',
   styleUrl: './restaurant-list.css',
 })

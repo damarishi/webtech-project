@@ -8,6 +8,8 @@ CREATE TABLE users
     full_name   VARCHAR(100),
     password    VARCHAR(255)    NOT NULL, --use bcrypt, 12 salt rounds, Generate Hash with: https://bcrypt-generator.com/
     location    POINT           NOT NULL,
+    times_warned INT            DEFAULT 0,
+    banned_until TIMESTAMP      DEFAULT NULL,
     is_admin    BOOLEAN         DEFAULT FALSE,
     is_deleted  BOOLEAN         DEFAULT FALSE
 );

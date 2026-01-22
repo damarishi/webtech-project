@@ -2,7 +2,11 @@ import { Routes } from '@angular/router';
 
 //import Site manager Components here
 import { SiteManager } from './pages/site-manager/site-manager';
-import { DataView } from './pages/site-manager/data-view/data-view';
+import { RestaurantDataView } from './pages/site-manager/data-view/restaurant-data-view/restaurant-data-view';
+import { RequestDataView } from './pages/site-manager/data-view/request-data-view/request-data-view';
+import { UserDataView } from './pages/site-manager/data-view/user-data-view/user-data-view';
+
+
 import {AuthGuard} from './features/auth/auth-guard';
 import {LoginGuard} from './features/auth/login-guard';
 import {LoginComponent} from './features/auth/login/login';
@@ -36,10 +40,31 @@ export const routes: Routes = [
       canActivate: [AuthGuard],
       data: { role: UserRoles.ADMIN },
   },
-
-  {
+/*
+  {   //soon deprecated
       path: 'site-manager/data-view/:category',
       component: DataView,
+      canActivate: [AuthGuard],
+      data: { roles: UserRoles.ADMIN },
+  },*/
+
+  {
+      path: 'site-manager/data-view/restaurants',
+      component: RestaurantDataView,
+      canActivate: [AuthGuard],
+      data: { role: UserRoles.ADMIN },
+  },
+
+  {
+      path: 'site-manager/data-view/restaurant_requests',
+      component: RequestDataView,
+      canActivate: [AuthGuard],
+      data: { role: UserRoles.ADMIN },
+  },
+
+  {
+      path: 'site-manager/data-view/users',
+      component: UserDataView,
       canActivate: [AuthGuard],
       data: { role: UserRoles.ADMIN },
   },
