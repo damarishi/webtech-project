@@ -14,6 +14,8 @@ import {NgOptimizedImage} from '@angular/common';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
+
+
 export class Navbar {
   constructor(private authService: AuthService) {}
 
@@ -38,4 +40,5 @@ export class Navbar {
   }
 
   protected readonly UserRoles = UserRoles;
+  protected readonly Object = Object;
 }

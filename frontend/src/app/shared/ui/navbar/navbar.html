@@ -39,6 +39,17 @@
     @else if (role === UserRoles.OWNER){  <!-- RESTAURANT OWNER MODE -->
       <h1 class="page-title">{{ title }}</h1>
       <div class="actions">
+        @if(title==="Profile"){
+
+          <button
+            class = "px-3 py-1.5
+            bg-red-400 text-white
+            border-none rounded cursor-pointer
+            text-sm transition-colors duration-200 hover:bg-red-500"
+            (click)="logout()">
+            Logout
+          </button>
+        }
         <button class="icon-btn" routerLink="/restaurant-owner/dashboard">
           <img ngSrc="assets/icons/home.png" alt="Analytics" height="500" width="500"/>
         </button>

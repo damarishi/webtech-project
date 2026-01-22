@@ -1,2 +1,10 @@
 <p>owner-profile works!</p>
-<button (click)="logout()">Logout</button>
+
+<mat-form-field appearance="fill">
+  <mat-label>Role Selection</mat-label>
+  <mat-select [(value)]="newRole" (selectionChange)="onRoleChange()">
+    @for (role of Object.values(UserRoles); track role) {
+      <mat-option [value]="role">{{role}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
