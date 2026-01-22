@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
-    return this.http.post<{ token: string, username:string,roles:string[]}>(`${this.apiUrl}/login`, { email, password });
+    return this.http.post<{ token: string, username:string, email:string, roles:string[]}>(`${this.apiUrl}/login`, { email, password });
   }
 
   register(email: string, password:string, username:string, fullName:string,location:string, roles:UserRoles[]){
@@ -51,9 +51,10 @@ export class AuthService {
     return JSON.parse(value) as UserRoles;
   }
 
-  setSessionData(token: string, username:string, roles:(UserRoles | undefined)[]) {
+  setSessionData(token: string, username:string, email:string, roles:(UserRoles | undefined)[]) {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('username',username);
+    sessionStorage.setItem('email',email);
     sessionStorage.setItem('roles', JSON.stringify(roles));
   }
 
@@ -65,13 +66,17 @@ export class AuthService {
     return sessionStorage.getItem('username');
   }
 
-
+  getEmail(){
+    return sessionStorage.getItem('email');
+  }
 
   logout() {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('roles');
+    sessionStorage.removeItem('email');
     sessionStorage.removeItem('currentRole');
+    //sessionStorage.clear();
     this.router.navigate(['/login']);
   }
 

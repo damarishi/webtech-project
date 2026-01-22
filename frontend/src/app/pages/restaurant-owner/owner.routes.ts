@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import {OwnerDashboard} from './owner-dashboard/owner-dashboard';
 import {OwnerProfile} from './owner-profile/owner-profile';
 import {OwnerAnalytics} from './owner-analytics/owner-analytics';
+import {OwnerRestaurantSettings} from './owner-restaurant-settings/owner-restaurant-settings';
 
 export const OWNER_ROUTES: Routes = [
   {
@@ -14,6 +15,13 @@ export const OWNER_ROUTES: Routes = [
     component: OwnerDashboard,
     data: {
       title: 'Dashboard'
+    }
+  },
+  {
+    path: 'restaurant-settings',
+    component: OwnerRestaurantSettings,
+    data: {
+      title: 'Restaurant Settings'
     }
   },
   {

@@ -132,6 +132,7 @@ router.post('/login', async (req, res) => { //o or router.get?
         res.status(200).json({
             "message": "login successful",
             username: user_data.username,
+            user_id: user_data.email,
             roles: user_data.roles,
             location: user_data.location,
             token: token

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { OwnerService } from '../../../services/owner-service'
 
 @Component({
   selector: 'app-owner-dashboard',
