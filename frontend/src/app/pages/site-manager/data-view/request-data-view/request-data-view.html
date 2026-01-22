@@ -1,0 +1,79 @@
+<div class="container">
+    <h2>Viewing Category: {{ category }}</h2>
+    @if(filters.length > 0) {
+        <div class="filter-bar">
+            @for (f of filters; track f.value) {
+                <button 
+                    class="btn-filter" 
+                    (click)="(setFilter(f.value))">
+                    {{ f.label }}
+                </button>
+            }
+        </div>
+    }
+    <div>
+        <!-- Button     -->
+        <button class="btn-create" (click)="onCreateItem()">Create New Item</button>
+    </div>
+    @if (isLoading) {
+        <div class="Temporary">Loading data...</div>
+    }
+    @else if (filteredItems && filteredItems.length > 0) {
+        <table>
+           <thead>
+                <tr>
+                    @for (key of Object.keys(filteredItems[0]); track key) {
+                        @if (key !== 'is_deleted') { <th>{{ key }}</th> }
+                    }
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of filteredItems; track trackById($index, item)) {
+                    <tr>
+                        @for (key of Object.keys(item); track key) {
+                            @if (key !== 'is_deleted') { <td>{{ item[key] }}</td> }
+                        }
+                        <td>
+                            <button class="btn-edit" (click)="onApproveItem(item)">Approve</button>
+                            <button class="btn-delete" (click)="onRejectItem(item)">Reject</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } @else {
+        <p>No items found for this category.</p>
+    }
+    <!--  Modal Window for Create/Edit/Delete  -->
+    @if (isModalOpen) {
+        <div class="modal-overlay" (click)="closeModal()">
+            <div class="modal-window" (click)="$event.stopPropagation()">
+                <h3>{{ modalMode }} Item</h3>
+
+                <div class="modal-body">
+                    @for (field of CATEGORY_FIELDS; track field) {
+                        <!-- Filters Ids and Timestamps -->
+                        @if (!field.toLowerCase().endsWith('id') && !field.toLowerCase().endsWith('at')) {  
+                            <div class="form-group">
+                                <label>{{ field }}</label>
+                                <input 
+                                    type="text" 
+                                    [(ngModel)]="selectedItem[field]" 
+                                    class="form-control" 
+                                    [placeholder]="'Enter ' + field">
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+                    <button type="button" class="btn-confirm" (click)="confirmModal()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
