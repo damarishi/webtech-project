@@ -11,7 +11,7 @@ import {RestaurantOwner} from './pages/restaurant-owner/restaurant-owner';
 
 import {USER_ROUTES} from './pages/user/user.routes';
 import {User} from './pages/user/user';
-import {RestaurantDetail} from './features/restaurant/restaurant-detail/restaurant-detail';
+import {UserRoles} from './types/user-roles';
 
 
 export const routes: Routes = [
@@ -32,24 +32,28 @@ export const routes: Routes = [
   {
       path: 'site-manager',
       component: SiteManager,
-      canActivate: [AuthGuard]
+      canActivate: [AuthGuard],
+    data: { roles: [UserRoles.ADMIN] },
   },
 
   {
       path: 'site-manager/data-view/:category',
       component: DataView,
-      canActivate: [AuthGuard]
+      canActivate: [AuthGuard],
+      data: { roles: [UserRoles.ADMIN] },
   },
 
   {
     path: 'restaurant-owner',
     component: RestaurantOwner,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { roles: [UserRoles.OWNER] },
   },
   {
     path: 'user',
     component: User,
     children: USER_ROUTES,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { roles: [UserRoles.USER] },
   }
 ];
