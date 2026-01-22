@@ -47,7 +47,7 @@ CREATE TABLE discounts
     discount_id    SERIAL PRIMARY KEY,
     code            VARCHAR(10) UNIQUE NOT NULL,
     value           DECIMAL(10,2) NOT NULL,
-    active          BOOLEAN DEFAULT TRUE
+    active          BOOLEAN DEFAULT true
 );
 
 CREATE TABLE images

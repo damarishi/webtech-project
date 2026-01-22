@@ -39,8 +39,8 @@
                                     <button class="btn-approve" (click)="onApproveRequest(item)">Approve</button>
                                     <button class="btn-reject" (click)="onRejectRequest(item)">Reject</button>
                                 } @else if(category === 'user_moderation') {
-                                    <button class="btn-warnUser" (click)="onApproveRequest(item)">Warn User</button>
-                                    <button class="btn-banUser" (click)="onRejectRequest(item)">Ban User</button>
+                                    <button class="btn-warnUser" (click)="onWarnUser(item)">Warn User</button>
+                                    <button class="btn-banUser" (click)="onBanUser(item)">Ban User</button>
                                 } @else {
                                     <button class="btn-edit" (click)="onEditItem(item)">Edit</button>
                                     <button class="btn-delete" (click)="onDeleteItem(item)">
@@ -63,8 +63,9 @@
                 <h3>{{ modalMode | titlecase }} Item</h3>
 
                 <div class="modal-body">
-                    @if (modalMode === 'delete') {
-                        <p>Are you sure you want to delete <strong>{{ selectedItem.restaurant_name || selectedItem.name }}</strong>?</p>
+                    @if (modalMode === 'delete' || modalMode === 'warnUser' || modalMode === 'banUser') {
+                        <p>Are you sure you want to {{modalMode}} 
+                            <strong>{{ selectedItem.restaurant_name || selectedItem.name || selectedItem.username }}</strong>?</p>
                     } @else {
                         @for (field of modalFields; track field) {
                             <!-- Filters Ids and Timestamps -->

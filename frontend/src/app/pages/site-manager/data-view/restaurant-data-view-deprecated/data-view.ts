@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
-import { DataService } from '../../../services/data-service';
+import { DataService } from '../../../../services/data-service';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
 const CATEGORY_FIELDS: Record<string, string[]> = {
   'restaurants': ['restaurant_name', 'address', 'cuisine_type'],
   'restaurant_requests': ['restaurant_name', 'requested_by', 'requested_at', 'admin_notes'],
-  'users': ['username', 'email', 'full_name', 'role']
+  'users': ['username', 'email', 'full_name', 'role'],
+  'discounts': ['code', 'value', 'active']
 };
 
 //display filter options based on category
@@ -25,6 +26,8 @@ const FILTERS: Record<string, { label: string, value: any }[]> = {
     { label: 'Deleted Users', value: true }  // mapping to is_deleted = true
   ]
 };
+
+const SOFT_DELETE_CATEGORIES = ['users', 'restaurants'];
 
 
 
@@ -160,6 +163,7 @@ export class DataView {
   async onCreateItem() {
     try {
       let fields: string[] = [];
+      console.log('Creating new item for category:', this.category);
       switch(this.category) {
         case "restaurant_requests":
           fields = CATEGORY_FIELDS['restaurant_requests'];
@@ -170,10 +174,13 @@ export class DataView {
         case "users":
           fields = CATEGORY_FIELDS['users'];
           break;
+        case "discounts":
+          fields = CATEGORY_FIELDS['discounts'];
+          break;
         default:
           throw new Error("Unknown category for creating item");
       }
-
+      console.log('Creating new item with fields:', fields);
       let newItem: any = {};
       for (const field of fields) {
         newItem[field] = '';
@@ -258,15 +265,15 @@ export class DataView {
           await this.dataService.updateData(currentCategory, dataToSave);
           break;
         case 'delete':
-          if(this.category === 'users' && this.filterStatus === true)
-          {
-            console.log('Permanently Purging user:', this.selectedItem);
-            await this.dataService.deleteData(currentCategory, dataToSave);
+          if(SOFT_DELETE_CATEGORIES.includes(currentCategory) && this.filterStatus === false)
+         {
+            console.log('Marking item as deleted:', this.selectedItem);
+            await this.dataService.updateData(currentCategory, dataToSave);
             break;
           }
           else {
-            console.log('Marking item as deleted:', this.selectedItem);
-            await this.dataService.updateData(currentCategory, dataToSave);
+            console.log('Permanently Purging user:', this.selectedItem);
+            await this.dataService.deleteData(currentCategory, dataToSave);
             break;
           }
           break;
