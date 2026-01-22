@@ -33,9 +33,10 @@ router.post('/register', async (req, res) => {
     const password = await bcrypt.hash(req.body.password,12);
     const username = req.body.username;
     const full_name = req.body.fullName;
+    const location = req.body.location;
     const roles = req.body.roles;
 
-    console.log(roles);
+    //console.log(location);
 
     if(!await checkDB()){
         const err = "DB unreachable"
@@ -46,13 +47,14 @@ router.post('/register', async (req, res) => {
     const editExistingUserQuery = `
         UPDATE users SET
         password = $1, username = $2,
-        full_name = $3
-        where email = $4;
+        full_name = $3,
+        location = $4
+        where email = $5;
     `;
 
     const addUserQuery =`
-        INSERT INTO users (email, username, full_name, password) 
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO users (email, username, full_name, password, location) 
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING user_id
     `;
 
@@ -73,7 +75,7 @@ router.post('/register', async (req, res) => {
                 return;
             }
             //User is deleted -> Reactivate Account, keep roles, add roles if requested
-            const updatedUserResult = await pool.query(editExistingUserQuery,[email, username, full_name, password]);
+            const updatedUserResult = await pool.query(editExistingUserQuery,[email, username, full_name, location, password]);
             if(user.roles.length !== 3){
                 const newUserRoles = roles.filter(item => !user.roles.includes(item)).map(name => userRole[name].id);
                 await pool.query(addUserRolesQuery,[user.user_id,newUserRoles]);
@@ -83,7 +85,7 @@ router.post('/register', async (req, res) => {
         }
         //Create new user from scratch
         const newUserRoles = roles.map(name => userRole[name].id);
-        const createNewUserResult = await pool.query(addUserQuery,[email, username, full_name, password]);
+        const createNewUserResult = await pool.query(addUserQuery,[email, username, full_name, password, location]);
         const addUserRolesResult = await pool.query(addUserRolesQuery, [createNewUserResult.rows[0].user_id,newUserRoles]);
 
         res.status(200).json({message: 'new user created successfully', email});
@@ -121,7 +123,8 @@ router.post('/login', async (req, res) => { //o or router.get?
             email: email,
             is_admin: user_data.is_admin,
             username: user_data.username,
-            roles: user_data.roles
+            roles: user_data.roles,
+            location: user_data.location,
         }
         console.log(payload);
         const token = jwt.sign(payload, cfg.auth.jwt_key, { expiresIn: cfg.auth.expiration });
@@ -130,6 +133,7 @@ router.post('/login', async (req, res) => { //o or router.get?
             "message": "login successful",
             username: user_data.username,
             roles: user_data.roles,
+            location: user_data.location,
             token: token
         });
     }catch(error){

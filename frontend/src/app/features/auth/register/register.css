@@ -144,11 +144,14 @@ select[multiple] {
   border: 1px solid #ccc;
 }
 
+.location-setting {
+  display: flex;
+  gap: 20px;
+}
+
 .roles-options {
   display: flex;       /* horizontal layout */
   gap: 10px;           /* space between checkboxes */
-  flex-wrap: wrap;     /* wrap to next line if needed */
-  align-items: center; /* vertical alignment */
 }
 
 .roles-options label {

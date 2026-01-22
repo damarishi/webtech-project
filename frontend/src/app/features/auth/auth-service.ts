@@ -14,8 +14,8 @@ export class AuthService {
     return this.http.post<{ token: string, username:string,roles:string[]}>(`${this.apiUrl}/login`, { email, password });
   }
 
-  register(email: string, password:string, username:string, fullName:string, roles:UserRoles[]){
-    return this.http.post<void>(`${this.apiUrl}/register`, { email, password, username, fullName, roles});
+  register(email: string, password:string, username:string, fullName:string,location:string, roles:UserRoles[]){
+    return this.http.post<void>(`${this.apiUrl}/register`, { email, password, username, fullName, location, roles});
   }
 
   initializeRoles(){

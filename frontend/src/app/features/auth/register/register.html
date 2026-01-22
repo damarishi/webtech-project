@@ -75,7 +75,32 @@
     </div>
 
     <div class="form-group">
-      <label>Select Roles:</label>
+      <label>Set Location</label>
+      <div class="location-setting">
+        <input
+          type="number"
+          id="location-x"
+          min="{{min}}"
+          max="{{max}}"
+          [(ngModel)]="location_x"
+          placeholder="X (0-100)"
+          required
+        />
+
+        <input
+          type="number"
+          id="location-y"
+          min="{{min}}"
+          max="{{max}}"
+          [(ngModel)]="location_y"
+          placeholder="Y (0-100)"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Select Roles</label>
       <div class="roles-options">
         <label>
           <input type="checkbox" [value]="UserRoles.ADMIN" (change)="toggleRole($event)"> ADMIN
@@ -91,7 +116,11 @@
 
     <button type="button"
             (click)="onRegister()"
-            [disabled]="!email || !username || !password || !repeatPassword || password !== repeatPassword">
+            [disabled]="!email || !username || !password || !repeatPassword ||
+             password !== repeatPassword ||
+             Number(location_y) < min ||Number(location_y) > max ||
+             Number(location_x) < min ||Number(location_x) > max
+    ">
       Register
     </button>
     <p class="login">
