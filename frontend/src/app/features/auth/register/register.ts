@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { AuthService } from '../auth-service';
 import { UserRoles } from '../../../types/user-roles';
@@ -7,7 +7,8 @@ import { UserRoles } from '../../../types/user-roles';
 @Component({
   selector: 'app-register',
   imports: [
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './register.html',
   styleUrl: './register.css',
