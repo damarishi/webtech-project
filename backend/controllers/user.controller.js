@@ -86,7 +86,6 @@ exports.delete = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete user' });
     }
-
 };
 
 exports.getMe = async (req, res) => {
@@ -109,7 +108,7 @@ exports.getMe = async (req, res) => {
         console.error("Error while laoding user profile:" + error.message);
         res.status(500).json({error: 'Failed to load user profile' + error.message});
     }
-}
+};
 
 exports.updateMe = async (req, res) => {
     try {
@@ -129,4 +128,5 @@ exports.updateMe = async (req, res) => {
         console.error("Error while updating user profile:" + error.message);
         res.status(500).json({ error: 'Failed to update user' + error.message });
     }
-}
+};
+
