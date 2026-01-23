@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {Restaurant} from '../types/restaurant';
+import {MenuCategory} from '../types/MenuCategory';
 
 const restaurantsURL = 'http://localhost:3000/api/restaurants';
 
@@ -20,4 +21,32 @@ export class RestaurantService {
     return this.http.get<Restaurant>(`${restaurantsURL}/${id}`);
   }
 
+  getMenu(restarantId: number): Observable<MenuCategory[]> {
+    return this.http
+      .get<any[]>(`${restaurantsURL}/${restarantId}/menu`)
+      .pipe(map(data => this.groupMenu(data)));
+  }
+
+  private groupMenu(data: any[]): MenuCategory[] {
+    const map = new Map<number, MenuCategory>();
+
+    for (const row of data) {
+      if (!map.has(row.category_id)) {
+        map.set(row.category_id, {
+          category_id: row.category_id,
+          category_name: row.category_name,
+          items: []
+        });
+      }
+
+      map.get(row.category_id)!.items.push({
+        item_id: row.item_id,
+        item_name: row.item_name,
+        price: row.price,
+        tags: row.tags
+      });
+    }
+
+    return Array.from(map.values());
+  }
 }

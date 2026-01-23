@@ -6,6 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Loading} from '../../../shared/ui/loading/loading';
 import {Error} from '../../../shared/ui/error/error';
 import {Observable} from 'rxjs';
+import {MenuCategory} from '../../../types/MenuCategory';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -16,6 +17,7 @@ import {Observable} from 'rxjs';
 })
 export class RestaurantDetail implements OnInit {
   restaurant$!: Observable<Restaurant>;
+  menu$!: Observable<MenuCategory[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,9 +25,10 @@ export class RestaurantDetail implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!id) return;
 
-    this.restaurant$ = this.restaurantService.getRestaurantById(+id);
+    this.restaurant$ = this.restaurantService.getRestaurantById(id);
+    this.menu$ = this.restaurantService.getMenu(id);
   }
 }

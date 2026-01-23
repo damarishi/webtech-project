@@ -20,5 +20,24 @@
       description
     </p>
   </div>
+
+  @if (menu$ | async; as menu) {
+    @for (category of menu; track category.category_id) {
+      <h2>{{ category.category_name }}</h2>
+
+      @for (item of category.items; track item.item_id) {
+        <div class="menu-item">
+          <span>{{ item.item_name }}</span>
+          <span>{{ item.price | number:'1.2-2' }} €</span>
+
+          @if (item.tags.length) {
+            <small>{{ item.tags.join(', ')}}</small>
+          }
+
+          <button (click)="addToCart(item)">Add</button>
+        </div>
+      }
+    }
+  }
 }
 
