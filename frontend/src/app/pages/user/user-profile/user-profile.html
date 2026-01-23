@@ -1,1 +1,48 @@
+@if (user$ | async; as user) {
+  <section class="profile-card">
+    <form #f="ngForm" (ngSubmit)="save()">
 
+      <div class="form-group">
+        <label>Username</label>
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="form.username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          [value]="user.email"
+          disabled
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Full name</label>
+        <input
+          type="text"
+          name="full_name"
+          [(ngModel)]="form.full_name"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Location</label>
+        <input
+          type="text"
+          name="location"
+          [(ngModel)]="form.location"
+        />
+      </div>
+
+      <button type="submit" [disabled]="f.invalid">
+        Save changes
+      </button>
+
+    </form>
+  </section>
+}
