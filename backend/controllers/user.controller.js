@@ -79,11 +79,11 @@ exports.delete = async (req, res) => {
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.status(200).json({ 
+        res.status(200).json({
             message: 'User permanently removed from system',
-            deletedUser: result.rows[0].username 
+            deletedUser: result.rows[0].username
         });
-    } catch (error) {   
+    } catch (error) {
         res.status(500).json({ error: 'Failed to delete user' });
     }
 };
