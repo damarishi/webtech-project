@@ -1,23 +1,9 @@
-<p>restaurant-detail works!</p>
 @if (restaurant$ | async; as restaurant) {
   <div class="restaurant-detail">
-
-    <img alt="{{ restaurant.restaurant_name }}"/>
-
     <h1>{{ restaurant.restaurant_name }}</h1>
 
     <p>
-      {{ restaurant.cuisine }}
-      price_level
-    </p>
-
-    <p>
-      delivery_time
-    </p>
-
-
-    <p class="description">
-      description
+      delivery time
     </p>
   </div>
 
