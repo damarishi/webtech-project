@@ -5,7 +5,9 @@ import { SiteManager } from './pages/site-manager/site-manager';
 import { RestaurantDataView } from './pages/site-manager/data-view/restaurant-data-view/restaurant-data-view';
 import { RequestDataView } from './pages/site-manager/data-view/request-data-view/request-data-view';
 import { UserDataView } from './pages/site-manager/data-view/user-data-view/user-data-view';
-
+import { DiscountDataView } from './pages/site-manager/data-view/discount-data-view/discount-data-view';
+import { UserModerationDataView } from './pages/site-manager/data-view/user-moderation-data-view/user-moderation-data-view';
+import { SiteSettingsDataView } from './pages/site-manager/data-view/site-settings-data-view/site-settings-data-view'
 
 import {AuthGuard} from './features/auth/auth-guard';
 import {LoginGuard} from './features/auth/login-guard';
@@ -64,6 +66,27 @@ export const routes: Routes = [
   {
       path: 'site-manager/data-view/users',
       component: UserDataView,
+      canActivate: [AuthGuard],
+      data: { roles: [UserRoles.ADMIN] },
+  },  
+
+  {
+      path: 'site-manager/data-view/discounts',
+      component: DiscountDataView,
+      canActivate: [AuthGuard],
+      data: { roles: [UserRoles.ADMIN] },
+  },  
+
+  {
+      path: 'site-manager/data-view/user_moderation',
+      component: UserModerationDataView,
+      canActivate: [AuthGuard],
+      data: { roles: [UserRoles.ADMIN] },
+  },  
+
+  {
+      path: 'site-manager/platform_settings',
+      component: SiteSettingsDataView,
       canActivate: [AuthGuard],
       data: { roles: [UserRoles.ADMIN] },
   },  
