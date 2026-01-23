@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../features/auth/auth-service';
 import {StorageService} from './storage.service';
 import {OwnerDataService} from './owner-data-service';
+import {OwnerRestaurant} from '../types/owner-restaurant';
+import {OwnerApiResponse} from '../types/owner-api-response';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +17,7 @@ export class OwnerService {
 
   restaurant_id = '';
 
-
-  //TODO: REST-ful Restaurant
+  /*RESTAURANT START*/
 
   /**
    * Fetch Restaurant ID at OWNER Session start
@@ -40,12 +41,34 @@ export class OwnerService {
     return false;//Uh, unreachable?
   }
 
-  getRestaurant(){
+
+  getRestaurant():Promise<OwnerRestaurant|null>{
     if(!this.getRestaurantId()){
-      return;//No Restaurant ID found
+      return Promise.resolve(null);//No Restaurant ID found
     }
     return this.data.get(`${this.url}/restaurants/${this.getRestaurantId()}`);
   }
+
+  postRestaurant(restaurant:OwnerRestaurant):Promise<OwnerApiResponse|null>{//Create propper Restaurant Interface
+    return this.data.post(`${this.url}/restaurants`, this.data);
+  }
+
+  putRestaurant(restaurant:OwnerRestaurant):Promise<OwnerApiResponse|null>{
+    if(!this.getRestaurantId()){
+      return Promise.resolve(null);//No Restaurant ID found
+    }
+    return this.data.put(`${this.url}/restaurants`,this.restaurant_id, restaurant);
+  }
+
+  deleteRestaurant():Promise<OwnerApiResponse|null>{
+    if(!this.getRestaurantId()){
+      return Promise.resolve(null);
+    }
+    return this.data.delete(`${this.url}/restaurants`, this.restaurant_id);
+  }
+  /*RESTAURANT END*/
+
+  /*ORDERS START*/
 
   //TODO: REST-ful Orders
 
