@@ -47,7 +47,7 @@ CREATE TABLE restaurant
 INSERT INTO restaurant (restaurant_id, restaurant_name, owner_id, location)--Temp data
 VALUES
     (1, 'Due Sicilie',1, '(10,10)'),
-    (2, 'Lemon Tree',2, '(20,10)'),
+    (2, 'Lemon Tree',2, '(20,10)'), -- Correct Owner ID
     (3, 'Lodenwirt',3,'(20,20)');
 
 CREATE TABLE opening_times
@@ -75,6 +75,7 @@ CREATE TABLE items
     restaurant_id   INT NOT NULL,
     category_id     INT NOT NULL,
     name            VARCHAR(100) NOT NULL,
+    description     text,
     position        INT NOT NULL,
     price           DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id) ON DELETE CASCADE,
@@ -99,14 +100,13 @@ CREATE TABLE tags
     name    VARCHAR(50) NOT NULL UNIQUE
 );
 
-INSERT INTO tags (name) VALUES ('drinks'),('Pizza'),('Desserts');
 
-CREATE TABLE dish_tags
+CREATE TABLE item_tags
 (
-    dish_id INT NOT NULL,
+    item_id INT NOT NULL,
     tag_id INT NOT NULL,
-    PRIMARY KEY (dish_id,tag_id),
-    FOREIGN KEY (dish_id) REFERENCES items(item_id),
+    PRIMARY KEY (item_id,tag_id),
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id)
 );
 

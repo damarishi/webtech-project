@@ -18,6 +18,9 @@ export class OwnerService {
 
   //TODO: REST-ful Restaurant
 
+  /**
+   * Fetch Restaurant ID at OWNER Session start
+   */
   getRestaurantId():boolean{
     if(this.restaurant_id) return true; //ID already present
     const id = this.store.getRestaurantId();
