@@ -118,6 +118,7 @@ router.post('/login', async (req, res) => { //o or router.get?
         console.log("S: \"" + user_data.username +"\" Logged in");
 
         const payload = {
+            user_id: user_data.user_id,
             email: email,
             is_admin: user_data.is_admin,
             username: user_data.username,
