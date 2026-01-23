@@ -1,13 +1,15 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { AuthService } from '../auth-service';
 import { UserRoles } from '../../../types/user-roles';
+import {Position} from '../../../types/position';
 
 @Component({
   selector: 'app-register',
   imports: [
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './register.html',
   styleUrl: './register.css',
@@ -15,11 +17,17 @@ import { UserRoles } from '../../../types/user-roles';
 export class RegisterComponent {
   UserRoles = UserRoles;
 
+  //Position constraints
+  min = 0;
+  max = 100;
+
   email = '';
   password = '';
   repeatPassword = '';
   username = '';
   fullName = '';
+  location_x = '';
+  location_y = '';
   roles: UserRoles[] = [];
 
   bannerMessage = '';
@@ -56,6 +64,7 @@ export class RegisterComponent {
       this.password,
       this.username,
       this.fullName,
+      new Position(this.location_x, this.location_y).getPair(),
       this.roles
     ).subscribe({
       next: () => {
@@ -74,4 +83,6 @@ export class RegisterComponent {
       }
     });
   }
+
+  protected readonly Number = Number;
 }

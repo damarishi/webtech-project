@@ -1,91 +1,130 @@
 <link rel="stylesheet" href="register.css">
 
-<div class="login-container">
-  @if (bannerMessage) {
-    <div class="banner"
-         [class.success]="bannerType === 'success'"
-         [class.error]="bannerType === 'error'"
-         animate.enter="fade-in"
-         animate.leave="fade-out"
-    >
-      {{ bannerMessage }}
+<div class="register-background">
+
+  <div class="logo">
+    <img src="/assets/icons/EatNow.png" alt="EatNow"/>
+  </div>
+
+  <div class="register-container">
+    @if (bannerMessage) {
+      <div class="banner"
+           [class.success]="bannerType === 'success'"
+           [class.error]="bannerType === 'error'"
+           animate.enter="fade-in"
+           animate.leave="fade-out"
+      >
+        {{ bannerMessage }}
+      </div>
+    }
+
+    <h2>Register</h2>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        [(ngModel)]="email"
+        placeholder="Enter your email"
+        required
+      />
     </div>
-  }
 
-  <h2>Register</h2>
-
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input
-      type="email"
-      id="email"
-      [(ngModel)]="email"
-      placeholder="Enter your email"
-      required
-    />
-  </div>
-
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input
-      type="text"
-      id="username"
-      [(ngModel)]="username"
-      placeholder="Enter your username"
-      required
-    />
-  </div>
-
-  <div class="form-group">
-    <label for="fullName">Full Name</label>
-    <input
-      type="text"
-      id="fullName"
-      [(ngModel)]="fullName"
-      placeholder="Enter your full name"
-    />
-  </div>
-
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      id="password"
-      [(ngModel)]="password"
-      placeholder="Enter your password"
-      required
-    />
-  </div>
-
-  <div class="form-group">
-    <label for="repeatPassword">Repeat Password</label>
-    <input
-      type="password"
-      id="repeatPassword"
-      [(ngModel)]="repeatPassword"
-      placeholder="Repeat your password"
-      required
-    />
-  </div>
-
-  <div class="form-group">
-    <label>Roles</label>
-    <div class="roles-options">
-      <label>
-        <input type="checkbox" [value]="UserRoles.ADMIN" (change)="toggleRole($event)"> ADMIN
-      </label>
-      <label>
-        <input type="checkbox" [value]="UserRoles.OWNER" (change)="toggleRole($event)"> OWNER
-      </label>
-      <label>
-        <input type="checkbox" [value]="UserRoles.USER" (change)="toggleRole($event)"> USER
-      </label>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        [(ngModel)]="username"
+        placeholder="Enter your username"
+        required
+      />
     </div>
-  </div>
 
-  <button type="button"
-          (click)="onRegister()"
-          [disabled]="!email || !username || !password || !repeatPassword || password !== repeatPassword">
-    Register
-  </button>
+    <div class="form-group">
+      <label for="fullName">Full Name</label>
+      <input
+        type="text"
+        id="fullName"
+        [(ngModel)]="fullName"
+        placeholder="Enter your full name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="repeatPassword">Repeat Password</label>
+      <input
+        type="password"
+        id="repeatPassword"
+        [(ngModel)]="repeatPassword"
+        placeholder="Repeat your password"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Set Location</label>
+      <div class="location-setting">
+        <input
+          type="number"
+          id="location-x"
+          min="{{min}}"
+          max="{{max}}"
+          [(ngModel)]="location_x"
+          placeholder="X (0-100)"
+          required
+        />
+
+        <input
+          type="number"
+          id="location-y"
+          min="{{min}}"
+          max="{{max}}"
+          [(ngModel)]="location_y"
+          placeholder="Y (0-100)"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Select Roles</label>
+      <div class="roles-options">
+        <label>
+          <input type="checkbox" [value]="UserRoles.ADMIN" (change)="toggleRole($event)"> ADMIN
+        </label>
+        <label>
+          <input type="checkbox" [value]="UserRoles.OWNER" (change)="toggleRole($event)"> OWNER
+        </label>
+        <label>
+          <input type="checkbox" [value]="UserRoles.USER" (change)="toggleRole($event)"> USER
+        </label>
+      </div>
+    </div>
+
+    <button type="button"
+            (click)="onRegister()"
+            [disabled]="!email || !username || !password || !repeatPassword ||
+             password !== repeatPassword ||
+             Number(location_y) < min ||Number(location_y) > max ||
+             Number(location_x) < min ||Number(location_x) > max
+    ">
+      Register
+    </button>
+    <p class="login">
+      <a routerLink="/login">Login</a> to an existing account instead
+    </p>
+  </div>
 </div>

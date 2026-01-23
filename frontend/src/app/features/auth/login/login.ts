@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit{
     this.auth.login(this.email, this.password).subscribe({
       next: (res) => {
         let roles = res.roles.map(role => strToEnum(role));
-        this.auth.setSessionData(res.token,res.username, roles);
+        this.auth.setSessionData(res.token,res.username,res.email, roles);
         this.bannerMessage = 'Login Success';
         this.bannerType = 'success';
         this.showBanner();
