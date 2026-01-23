@@ -52,7 +52,7 @@ exports.markAsDeleted = async (req, res) => {
     const userId = req.params.id;
 
     try {
-        const query = 'UPDATE users SET is_deleted = TRUE WHERE id = $1 RETURNING *';
+        const query = 'UPDATE users SET is_deleted = TRUE WHERE user_id = $1 RETURNING *';
         const values = [userId];
 
         const result = await db.query(query, values);
@@ -62,13 +62,31 @@ exports.markAsDeleted = async (req, res) => {
         }
         res.status(200).json( { message: 'User marked as deleted', user: result.rows[0].username });
     } catch (error) {   
-        res.status(500).json({ error: 'Failed to update user' });
+        res.status(500).json({ error: 'Failed to mark user as deleted' });
     }
 
 }
 
 exports.delete = async (req, res) => {
-    // To be implemented
+    const userId = req.params.id;
+
+    try {
+        // This permanently removes the record
+        const query = 'DELETE FROM users WHERE user_id = $1 RETURNING *';
+        const values = [userId];
+        const result = await db.query(query, values);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(200).json({
+            message: 'User permanently removed from system',
+            deletedUser: result.rows[0].username
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+
 };
 
 exports.getMe = async (req, res) => {

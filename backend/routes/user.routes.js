@@ -6,10 +6,8 @@ const userCtrl = require('../controllers/user.controller');
 
 router.get('/', userCtrl.getAll);
 router.post('/', userCtrl.create);
-/*router.get('/:id', userCtrl.getItem);
-router.patch('/:id', userCtrl.update);
-router.delete('/:id', userCtrl.delete);
-*/
+router.put('/:id', userCtrl.markAsDeleted);
+router.delete('/:id', userCtrl.delete);     //hard delete, never used
 
 router.get('/me', isAuth, userCtrl.getMe);
 router.patch('/me', isAuth, userCtrl.updateMe);
