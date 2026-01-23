@@ -7,6 +7,7 @@ import {Loading} from '../../../shared/ui/loading/loading';
 import {Error} from '../../../shared/ui/error/error';
 import {Observable} from 'rxjs';
 import {MenuCategory} from '../../../types/MenuCategory';
+import {CartService} from '../../../services/cart-service';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -21,7 +22,8 @@ export class RestaurantDetail implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private restaurantService: RestaurantService
+    private restaurantService: RestaurantService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -30,5 +32,13 @@ export class RestaurantDetail implements OnInit {
 
     this.restaurant$ = this.restaurantService.getRestaurantById(id);
     this.menu$ = this.restaurantService.getMenu(id);
+  }
+
+  addToCart(item: any) {
+    this.cartService.addItem({
+      item_id: item.item_id,
+      item_name: item.item_name,
+      price: item.price
+    });
   }
 }

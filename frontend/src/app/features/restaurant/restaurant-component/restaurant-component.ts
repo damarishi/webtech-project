@@ -3,6 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { Restaurant } from '../../../types/restaurant';
 import { RestaurantService} from '../../../services/restaurant-service';
 import {RestaurantList} from '../restaurant-list/restaurant-list';
+import {CartService} from '../../../services/cart-service';
 
 
 @Component({
@@ -18,13 +19,9 @@ export class RestaurantComponent {
 
   @Output() deleteSuccess: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor(private restaurantService: RestaurantService) {
-  }
-
-  deleteItem() {
-    if (this.restaurant) {
-
-    }
-  }
+  constructor(
+    private restaurantService: RestaurantService,
+    private cartService: CartService
+  ) {}
 
 }
