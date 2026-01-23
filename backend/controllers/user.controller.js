@@ -70,3 +70,45 @@ exports.markAsDeleted = async (req, res) => {
 exports.delete = async (req, res) => {
     // To be implemented
 };
+
+exports.getMe = async (req, res) => {
+    try {
+        const email = req.user.email;        // kommt aus JWT Middleware
+
+        const query = {
+            text: 'SELECT user_id, email, username, full_name, is_admin FROM users WHERE email = $1 AND is_deleted = FALSE',
+            values: [email]
+        };
+
+        const result = await db.query(query);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({message: 'User not found'});
+        }
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Error while laoding user profile:" + error.message);
+        res.status(500).json({error: 'Failed to load user profile' + error.message});
+    }
+}
+
+exports.updateMe = async (req, res) => {
+    try {
+        const userId = req.user.user_id;
+        const { username, full_name, location } = req.body;
+
+        const query = {
+            text: 'UPDATE users SET username = COALESCE($1, username), full_name = COALESCE($2, full_name), location = COALESCE($3, location) WHERE user_id = $4 RETURNING user_id, email, username, full_name, location',
+            values: [username, full_name, location, userId]
+        };
+
+        const result = await db.query(query);
+        console.log(result);
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Error while updating user profile:" + error.message);
+        res.status(500).json({ error: 'Failed to update user' + error.message });
+    }
+}
