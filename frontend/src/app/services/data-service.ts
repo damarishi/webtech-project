@@ -57,14 +57,14 @@ export class DataService {
     console.log(`Updating data for category: ${category}`);
     const id = this.getIdentifierKey(data);
     const url = `${this.apiUrl}/${category}/warn/${id}`; // Assuming 'id' is the identifier
-    return firstValueFrom(this.http.put<any[]>(url, data));
+    return firstValueFrom(this.http.patch<any[]>(url, data));
   }
 
-  async banUser(category: string, data: any): Promise<any[]> {
+  async suspendUser(category: string, data: any, weeks: number): Promise<any[]> {
     console.log(`Updating data for category: ${category}`);
     const id = this.getIdentifierKey(data);
-    const url = `${this.apiUrl}/${category}/ban/${id}`; // Assuming 'id' is the identifier
-    return firstValueFrom(this.http.put<any[]>(url, data));
+    const url = `${this.apiUrl}/${category}/suspend/${id}`; // Assuming 'id' is the identifier
+    return firstValueFrom(this.http.patch<any[]>(url, {weeks}));
   }
 
 

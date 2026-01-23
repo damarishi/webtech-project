@@ -38,9 +38,11 @@ INSERT INTO roles (role_id, name) VALUES
 INSERT INTO users (email,username,full_name,password,is_admin, location) VALUES
     ('admin@global.com','admin','Admin I.','$2a$12$pCpivk131i/VzDtaIm13xuxD6JovhcejjVNU92VrL3P8EYDueLw5q',TRUE, '(25,25)'), --pwd: admin
     ('alice@example.com', 'alice','Alice Müller','$2a$12$2StF9NhsxsDcjR2wUcHpZO1gclDpO3kKtJXLVOy0njUVgnnGFrHpO',FALSE,'(1,1)'),--pwd: alice123
-    ('bob@example.com','bob42','Bob Schmidt','$2a$12$rpYNMpnZ647YXHmLYemW4OOJkxOHi78KlHs0zDGIUxv.4fvcQaP4q',FALSE, '(1,2)');--pdw: bob123
+    ('bob@example.com','bob42','Bob Schmidt','$2a$12$rpYNMpnZ647YXHmLYemW4OOJkxOHi78KlHs0zDGIUxv.4fvcQaP4q',FALSE, '(1,2)'),--pdw: bob123
+    ('deleteme@example.com','delete','Test Delete','$2a$12$rpYNMpnZ647YXHmLYemW4OOJkxOHi78KlHs0zDGIUxv.4fvcQaP4q',FALSE, '(1,2)');--pdw: bob123
 
 INSERT INTO user_roles(user_id, role_id) VALUES
     (1,1),(1,2),(1,3),
     (2,2),
-    (3,3);
+    (3,3),
+    (4,1);

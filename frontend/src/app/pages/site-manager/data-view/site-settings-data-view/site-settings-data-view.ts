@@ -4,33 +4,21 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
 
-
 @Component({
-  selector: 'app-request-data-view',
+  selector: 'app-site-settings-data-view',
   imports: [CommonModule, FormsModule],
-  standalone: true,
-  templateUrl: './request-data-view.html',
-  styleUrl: './request-data-view.css',
+  templateUrl: './site-settings-data-view.html',
+  styleUrl: './site-settings-data-view.css',
 })
+export class SiteSettingsDataView {
 
-export class RequestDataView {
-
-  category: any = 'restaurant_requests';
-  CATEGORY_FIELDS: any[] = ['restaurant_name', 'requested_by','requested_at', 'status_id'];
+  category: any = 'platform_settings';
+  CATEGORY_FIELDS: any[] = ['setting_name', 'flat_fee', 'percent_cut', 'estimated_delivery_speed', 'max_delivery_distance', 'is_active'];
   // Define filters if needed, e.g. active/markedAsDeleted restaurants
-  filters: {label: string, value: any}[] = 
-  [ 
-    {label: 'pending', value: 1},
-    {label: 'approved', value: 2},
-    {label: 'rejected', value: 3},
 
-  ];   //no filters for restaurant data view
-  currentFilter = null;
-
-  modalMode: 'create' | 'approve' | 'reject' = 'create';
+  modalMode: 'create' | 'edit' | 'delete' = 'create';
 
   loadedItems: any = [];
-  filteredItems: any = [];
 
   selectedItem: any = {};
 
@@ -47,7 +35,6 @@ export class RequestDataView {
   ) {}
 
   async ngOnInit() {
-    this.currentFilter = this.filters[0].value;
     await this.loadData(this.category);
   }
 
@@ -60,7 +47,17 @@ export class RequestDataView {
     try {
       console.log('Creating new item for category:', this.category);
       console.log('Creating new item with fields:', this.CATEGORY_FIELDS);
-      let newItem: any = {};
+      let newItem: any = {      //default values
+        setting_name: '',
+        flat_fee: 0,
+        percent_cut: 0,
+        estimated_delivery_speed: 30,
+        max_delivery_distance: 10,
+        is_active: true
+      };
+
+
+
       for (const field of this.CATEGORY_FIELDS) {
         newItem[field] = '';
       }
@@ -72,18 +69,18 @@ export class RequestDataView {
 
   //TODO Fabian: maybe i'll just change function call to immediatly open modal with keywords
   //edit item (opens modal)
-  async onApproveItem(item: any) {
-    this.openModal('approve', item);
+  async onEditItem(item: any) {
+    this.openModal('edit', item);
   }
 
   //delete item (opens modal)
-  async onRejectItem(item: any) {
-    this.openModal('reject', item);
+  async onDeleteItem(item: any) {
+    this.openModal('delete', item);
   }
 
 
   //open modal window form for creating new item
-  openModal(mode: 'create' | 'approve' | 'reject' , item: any = {}, fields?: string[]) {
+  openModal(mode: 'create' | 'edit' | 'delete' , item: any = {}, fields?: string[]) {
     //initialize modal form fields here
     this.modalMode = mode;
     this.selectedItem = { ...item };  //shallow copy to avoid direct changes
@@ -113,16 +110,16 @@ export class RequestDataView {
 
       switch (currentModalMode) {
         case 'create':
-          console.log('Creating item in category:', currentCategory, 'with data:', dataToSave);
+          console.log('Creating Settings in category:', currentCategory, 'with data:', dataToSave);
           await this.dataService.postData(currentCategory, dataToSave);
           break;
-        case 'approve':
-          console.log('Approving request in category:', currentCategory, 'with data:', dataToSave);
-          await this.dataService.approveRequest(currentCategory, dataToSave);
+        case 'edit':
+          console.log('Editing Settings in category:', currentCategory, 'with data:', dataToSave);
+          await this.dataService.updateData(currentCategory, dataToSave);
           break;
-        case 'reject':
-          console.log('Rejecting request in category:', currentCategory, 'with data:', dataToSave);
-          await this.dataService.rejectRequest(currentCategory, dataToSave);
+        case 'delete':
+          console.log('Deleting Settings in category:', currentCategory, 'with data:', dataToSave);
+          await this.dataService.deleteData(currentCategory, dataToSave);
           break;
         default:
           throw new Error(`Unknown modal mode: ${currentModalMode}`);
@@ -145,23 +142,6 @@ export class RequestDataView {
     }
   }
 
-  async setFilter(filter: any)
-  {
-    this.currentFilter = filter;
-    this.filterItems();
-
-  }
-
-  filterItems()
-  {
-    if(this.currentFilter === null)
-    { 
-      this.filteredItems = this.loadedItems;
-    }
-    this.filteredItems = this.loadedItems.filter( (item: any) => {
-      return item.status_id === this.currentFilter;
-    });
-  }
 
   async loadData(category: string) {
     this.isLoading = true;
@@ -169,7 +149,7 @@ export class RequestDataView {
       this.loadedItems = await this.dataService.fetchData(category);
       if(this.loadedItems === null) throw new Error("No data received");
 
-      this.filterItems();
+
 
     } catch (error) {
       console.error('Error fetching data:', error);
