@@ -21,9 +21,9 @@ export class RestaurantService {
     return this.http.get<Restaurant>(`${restaurantsURL}/${id}`);
   }
 
-  getMenu(restarantId: number): Observable<MenuCategory[]> {
+  getMenu(restaurantId: number): Observable<MenuCategory[]> {
     return this.http
-      .get<any[]>(`${restaurantsURL}/${restarantId}/menu`)
+      .get<any[]>(`${restaurantsURL}/${restaurantId}/menu`)
       .pipe(map(data => this.groupMenu(data)));
   }
 
