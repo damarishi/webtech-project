@@ -4,30 +4,20 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
 
-
 @Component({
-  selector: 'app-request-data-view',
+  selector: 'app-user-moderation-data-view',
   imports: [CommonModule, FormsModule],
-  standalone: true,
-  templateUrl: './request-data-view.html',
-  styleUrl: './request-data-view.css',
+  templateUrl: './user-moderation-data-view.html',
+  styleUrl: './user-moderation-data-view.css',
 })
+export class UserModerationDataView {
 
-export class RequestDataView {
-
-  category: any = 'restaurant_requests';
-  CATEGORY_FIELDS: any[] = ['restaurant_name', 'requested_by','requested_at', 'status_id'];
-  // Define filters if needed, e.g. active/markedAsDeleted restaurants
-  filters: {label: string, value: any}[] = 
-  [ 
-    {label: 'pending', value: 1},
-    {label: 'approved', value: 2},
-    {label: 'rejected', value: 3},
-
-  ];   //no filters for restaurant data view
+  category: any = 'user_moderation';
+  CATEGORY_FIELDS: any[] = ['user_id', 'username', 'times_warned', 'banned_until'];
+  filters: {label: string, value: any}[] = [];   //no filters for restaurant data view
   currentFilter = null;
 
-  modalMode: 'create' | 'approve' | 'reject' = 'create';
+  modalMode: 'create' | 'warn' | 'suspend' = 'create';
 
   loadedItems: any = [];
   filteredItems: any = [];
@@ -38,6 +28,7 @@ export class RequestDataView {
   isModalOpen: boolean = false;
   isLoading: boolean = false;
 
+  suspensionWeeks: number = 1;  //default 1 Week suspension
   
   
   constructor(
@@ -47,7 +38,6 @@ export class RequestDataView {
   ) {}
 
   async ngOnInit() {
-    this.currentFilter = this.filters[0].value;
     await this.loadData(this.category);
   }
 
@@ -72,18 +62,18 @@ export class RequestDataView {
 
   //TODO Fabian: maybe i'll just change function call to immediatly open modal with keywords
   //edit item (opens modal)
-  async onApproveItem(item: any) {
-    this.openModal('approve', item);
+  async onWarnUser(item: any) {
+    this.openModal('warn', item);
   }
 
   //delete item (opens modal)
-  async onRejectItem(item: any) {
-    this.openModal('reject', item);
+  async onSuspendUser(item: any) {
+    this.openModal('suspend', item);
   }
 
 
   //open modal window form for creating new item
-  openModal(mode: 'create' | 'approve' | 'reject' , item: any = {}, fields?: string[]) {
+  openModal(mode: 'create' | 'warn' | 'suspend' , item: any = {}, fields?: string[]) {
     //initialize modal form fields here
     this.modalMode = mode;
     this.selectedItem = { ...item };  //shallow copy to avoid direct changes
@@ -116,13 +106,13 @@ export class RequestDataView {
           console.log('Creating item in category:', currentCategory, 'with data:', dataToSave);
           await this.dataService.postData(currentCategory, dataToSave);
           break;
-        case 'approve':
-          console.log('Approving request in category:', currentCategory, 'with data:', dataToSave);
-          await this.dataService.approveRequest(currentCategory, dataToSave);
+        case 'warn':
+          console.log('Editing item in category:', currentCategory, 'with data:', dataToSave);
+          await this.dataService.warnUser(currentCategory, dataToSave);
           break;
-        case 'reject':
-          console.log('Rejecting request in category:', currentCategory, 'with data:', dataToSave);
-          await this.dataService.rejectRequest(currentCategory, dataToSave);
+        case 'suspend':
+          console.log('Deleting item in category:', currentCategory, 'with data:', dataToSave);
+          await this.dataService.suspendUser(currentCategory, dataToSave, this.suspensionWeeks);
           break;
         default:
           throw new Error(`Unknown modal mode: ${currentModalMode}`);
@@ -145,31 +135,16 @@ export class RequestDataView {
     }
   }
 
-  async setFilter(filter: any)
-  {
-    this.currentFilter = filter;
-    this.filterItems();
-
-  }
-
-  filterItems()
-  {
-    if(this.currentFilter === null)
-    { 
-      this.filteredItems = this.loadedItems;
-    }
-    this.filteredItems = this.loadedItems.filter( (item: any) => {
-      return item.status_id === this.currentFilter;
-    });
-  }
-
   async loadData(category: string) {
     this.isLoading = true;
     try {
       this.loadedItems = await this.dataService.fetchData(category);
       if(this.loadedItems === null) throw new Error("No data received");
 
-      this.filterItems();
+      if(true)
+      {
+        this.filteredItems = this.loadedItems;
+      }
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -185,5 +160,3 @@ export class RequestDataView {
   }
 
 }
-
-
