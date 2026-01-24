@@ -109,6 +109,85 @@ h2 {
   background-color: #052A02;
 }
 
+/* --- Reviews Section --- */
+h3 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+.reviews {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review {
+  padding: 1rem;
+  border-radius: 12px;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.review strong {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.review span {
+  margin-left: 0.5rem;
+  color: #f5a623;
+}
+
+.review p {
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.review small {
+  color: #888;
+}
+
+/* --- Review Form --- */
+
+.review-form {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.review-form select,
+.review-form textarea {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+
+.review-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.review-form button {
+  align-self: flex-end;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  border: none;
+  background: #1D902E;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.review-form button:hover {
+  background: #052A02;
+}
 
 /* Responsive Anpassung */
 @media screen and (max-width: 600px) {

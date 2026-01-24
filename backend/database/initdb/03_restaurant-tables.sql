@@ -133,3 +133,12 @@ CREATE TABLE order_item
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (item_id) REFERENCES items(item_id)
 );
+
+CREATE TABLE reviews (
+    review_id       SERIAL PRIMARY KEY,
+    user_id         INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    restaurant_id   INT NOT NULL REFERENCES restaurant(restaurant_id) ON DELETE CASCADE,
+    rating          INT CHECK (rating BETWEEN 1 AND 5),
+    comment         TEXT,
+    created_at      TIMESTAMP DEFAULT NOW()
+)

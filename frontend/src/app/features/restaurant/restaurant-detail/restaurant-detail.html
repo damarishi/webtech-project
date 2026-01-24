@@ -27,5 +27,35 @@
 
     }
   }
+  <br/>
+  <h3>Reviews</h3>
+
+  <div class="review-form">
+    <select [(ngModel)]="rating">
+      @for (r of [1,2,3,4,5]; track r) {
+        <option [value]="r">{{ r }} ★</option>
+      }
+    </select>
+
+    <textarea
+      [(ngModel)]="comment"
+      placeholder="Write your review..."
+    ></textarea>
+
+    <button (click)="submitReview()">Submit</button>
+  </div>
+
+  @if (reviews$ | async; as reviews) {
+    <div class="reviews">
+      @for (review of reviews; track review.review_id) {
+        <div class="review">
+          <strong>{{ review.username }}</strong>
+          <span>{{ review.rating }} ★</span>
+          <p>{{ review.comment }}</p>
+          <small>{{ review.created_at | date:'short' }}</small>
+        </div>
+      }
+    </div>
+  }
 }
 
