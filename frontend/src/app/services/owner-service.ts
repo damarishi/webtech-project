@@ -27,12 +27,12 @@ export class OwnerService {
   }
 
   postRestaurant(restaurant:OwnerRestaurant):Promise<OwnerApiResponse>{
-    return this.data.post(this.url, restaurant);
+    return this.data.post(this.url, {restaurant});
   }
 
   putRestaurant(restaurant:OwnerRestaurant):Promise<OwnerApiResponse>{
     if(!restaurant.restaurant_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(this.url,restaurant.restaurant_id, restaurant);
+    return this.data.put(this.url,restaurant.restaurant_id, {restaurant});
   }
 
   deleteRestaurant(restaurant_id:string):Promise<OwnerApiResponse>{
@@ -51,12 +51,12 @@ export class OwnerService {
   }
 
   postOrder(order:OwnerOrder):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/order`, order);
+    return this.data.post(`${this.url}/order`, {order});
   }
 
   putOrder(order:OwnerOrder):Promise<OwnerApiResponse>{
     if(!order.order_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/order}`,order.order_id, order);
+    return this.data.put(`${this.url}/order}`,order.order_id, {order});
   }
 
   deleteOrder(order_id:string):Promise<OwnerApiResponse>{
@@ -75,12 +75,12 @@ export class OwnerService {
   }
 
   postTag(tag:OwnerTag):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/tag`, tag);
+    return this.data.post(`${this.url}/tag`, {tag});
   }
 
   putTag(tag:OwnerTag):Promise<OwnerApiResponse>{
     if(!tag.tag_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/tag`,tag.tag_id,tag);
+    return this.data.put(`${this.url}/tag`,tag.tag_id, {tag});
   }
 
   deleteTag(tag_id:string):Promise<OwnerApiResponse>{
@@ -99,12 +99,12 @@ export class OwnerService {
   }
 
   postCategory(category:OwnerCategory):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/category`, category);
+    return this.data.post(`${this.url}/category`, {category});
   }
 
   putCategory(category:OwnerCategory):Promise<OwnerApiResponse>{
     if(!category.category_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/category`, category.category_id, category);
+    return this.data.put(`${this.url}/category`, category.category_id, {category});
   }
 
   deleteCategory(category_id:string):Promise<OwnerApiResponse>{
@@ -123,12 +123,12 @@ export class OwnerService {
   }
 
   postItem(item:OwnerItem):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/item`, item);
+    return this.data.post(`${this.url}/item`, {item});
   }
 
   putItem(item:OwnerItem):Promise<OwnerApiResponse>{
     if(!item.item_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/item`, item.item_id, item);
+    return this.data.put(`${this.url}/item`, item.item_id, {item});
   }
 
   deleteItem(item_id:string):Promise<OwnerApiResponse>{
@@ -147,7 +147,7 @@ export class OwnerService {
   }
 
   postTime(time:OwnerOpeningTime):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/time`, time);
+    return this.data.post(`${this.url}/time`, {time});
   }
 
   putTime(time:OwnerOpeningTime):Promise<OwnerApiResponse>{

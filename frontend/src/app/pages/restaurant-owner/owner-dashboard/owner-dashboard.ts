@@ -31,4 +31,12 @@ export class OwnerDashboard implements OnInit {
         this.cdr.detectChanges()
       }).catch(error => console.log(error));
   }
+
+  putRestaurant(){
+    this.ownerService.putRestaurant(this.restaurant!).then(
+      res => {
+        console.log("Restaurant Updated")
+      }
+    ).catch(error => console.log(error));
+  }
 }

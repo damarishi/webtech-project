@@ -1,6 +1,7 @@
 const db = require('../pool')
 const pool = require("../pool");
 const results = require("pg/lib/query");
+const position = require('../interfaces/Positon');
 
 /*
     Get all restaurants
