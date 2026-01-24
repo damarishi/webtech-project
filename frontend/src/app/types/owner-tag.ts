@@ -1,3 +1,4 @@
 export interface OwnerTag {
-  //TODO: Tag interface
+  tag_id: string;
+  name: string;
 }

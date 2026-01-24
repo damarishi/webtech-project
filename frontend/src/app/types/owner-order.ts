@@ -1,3 +1,9 @@
+import {OwnerItem} from './owner-item';
+
 export interface OwnerOrder {
-  //TODO: Order Interface
+  order_id: string;
+  user_id: string;
+  total: number;
+  date:Date;
+  items:OwnerItem[];
 }

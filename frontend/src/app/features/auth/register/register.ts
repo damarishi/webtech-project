@@ -64,7 +64,7 @@ export class RegisterComponent {
       this.password,
       this.username,
       this.fullName,
-      new Position(this.location_x, this.location_y).getPair(),
+      new Position(Number(this.location_x), Number(this.location_y)).getPair(),
       this.roles
     ).subscribe({
       next: () => {

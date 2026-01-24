@@ -1,3 +1,8 @@
+import {Weekday} from './weekday';
+
 export interface OwnerOpeningTime {
-  //TODO: Opening Time Interface
+  opening_time_id:string;
+  weekday:Weekday;
+  open_time:string;
+  close_time:string;
 }

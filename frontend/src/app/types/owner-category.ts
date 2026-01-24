@@ -1,3 +1,6 @@
 export interface OwnerCategory {
-  //TODO: Category Interface
+  category_id: string;
+  name: string;
+  position: number;
+  description: string;
 }

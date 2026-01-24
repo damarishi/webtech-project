@@ -66,6 +66,7 @@ CREATE TABLE categories --Equal for all Restaurants
 (
     category_id     SERIAL PRIMARY KEY,
     name            VARCHAR(50) NOT NULL,
+    position        INT NOT NULL UNIQUE,
     description     text
 );
 
