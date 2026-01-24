@@ -1,8 +1,8 @@
-INSERT INTO categories (name, description) VALUES
-    ('Starters', 'Small dishes served before the main course'),
-    ('Main Courses', 'Hearty main dishes'),
-    ('Desserts', 'Sweet dishes served after meals'),
-    ('Drinks', 'Alcoholic and non-alcoholic beverages');
+INSERT INTO categories (name, description, position) VALUES
+    ('Starters', 'Small dishes served before the main course', 1),
+    ('Main Courses', 'Hearty main dishes', 2),
+    ('Desserts', 'Sweet dishes served after meals', 3),
+    ('Drinks', 'Alcoholic and non-alcoholic beverages', 4);
 
 -------------------------------Items-------------------------------------
 

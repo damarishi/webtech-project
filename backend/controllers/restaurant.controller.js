@@ -62,7 +62,7 @@ exports.getMenu = async (req, res) => {
                 ARRAY_REMOVE(ARRAY_AGG(t.name), NULL) AS tags
             FROM categories c
             JOIN items i ON i.category_id = c.category_id
-            LEFT JOIN dish_tags dt ON dt.dish_id = i.item_id
+            LEFT JOIN item_tags dt ON dt.item_id = i.item_id
             LEFT JOIN tags t ON t.tag_id = dt.tag_id
             WHERE i.restaurant_id = $1
             GROUP BY c.category_id, i.item_id 
