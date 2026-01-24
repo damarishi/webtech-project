@@ -1,33 +1,63 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FilterSidebar} from '../../../features/restaurant/filter-sidebar/filter-sidebar';
 import {RestaurantList} from '../../../features/restaurant/restaurant-list/restaurant-list';
 import {UserRoles} from '../../../types/user-roles';
 import {RestaurantStateService} from '../../../services/restaurant-state-service';
+import {RestaurantFilter} from '../../../types/RestaurantFilter';
+import {Restaurant} from '../../../types/restaurant';
+import {RestaurantService} from '../../../services/restaurant-service';
+import {BehaviorSubject} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-user-dashboard',
-  imports: [FilterSidebar, RestaurantList],
+  imports: [FilterSidebar, RestaurantList, AsyncPipe],
   templateUrl: './user-dashboard.html',
   styleUrl: './user-dashboard.css',
 })
-export class UserDashboard {
+export class UserDashboard implements OnInit {
   protected readonly UserRoles = UserRoles;
 
-  activeFilter = {
+  activeFilter: RestaurantFilter = {
     cuisines: [],
     categories: [],
-    prices: []
+    prices: [],
+    maxMinutes: 999
   };
 
-  onFilterChange(filter: any){
-    this.activeFilter = {...filter};    //object spread -> erzeugt neue referenz
-  }
-
+  restaurants: Restaurant[] = [];
   searchText = '';
 
-  constructor(private state: RestaurantStateService) {
+  constructor(
+    private state: RestaurantStateService,
+    private restaurantService: RestaurantService
+  ) {
     this.state.search$.subscribe(text => {
       this.searchText = text.toLowerCase();
     });
+  }
+
+  ngOnInit() {
+    // initial alle Restaurants laden
+    this.loadRestaurants(this.activeFilter.maxMinutes);
+  }
+
+  loadRestaurants(maxMinutes: number) {
+    console.log('Loading restaurants with maxMinutes:', maxMinutes);
+    this.restaurantService.getDashboardRestaurants(maxMinutes).subscribe({
+      next: restaurants => {
+        this.restaurants = restaurants;
+        console.log('Received restaurants:', this.restaurants);
+      },
+      error: err => {
+        console.error('Error loading restaurants:', err);
+      }
+    });
+  }
+
+  onFilterChange(filter: RestaurantFilter) {
+    console.log('Filter changed:', filter);
+    this.activeFilter = { ...filter };
+    this.loadRestaurants(filter.maxMinutes ?? 999);
   }
 }

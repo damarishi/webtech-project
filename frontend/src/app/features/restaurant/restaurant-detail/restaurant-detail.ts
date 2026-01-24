@@ -8,22 +8,29 @@ import {Error} from '../../../shared/ui/error/error';
 import {Observable} from 'rxjs';
 import {MenuCategory} from '../../../types/MenuCategory';
 import {CartService} from '../../../services/cart-service';
+import {Review} from '../../../types/review';
+import {ReviewService} from '../../../services/review-service';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-restaurant-detail',
   standalone: true,
-  imports: [CommonModule, Loading, Error],
+  imports: [CommonModule, Loading, Error, FormsModule],
   templateUrl: './restaurant-detail.html',
   styleUrl: './restaurant-detail.css',
 })
 export class RestaurantDetail implements OnInit {
   restaurant$!: Observable<Restaurant>;
   menu$!: Observable<MenuCategory[]>;
+  reviews$!: Observable<Review[]>;
+  rating = 5;
+  comment = '';
 
   constructor(
     private route: ActivatedRoute,
     private restaurantService: RestaurantService,
-    private cartService: CartService
+    private cartService: CartService,
+    private reviewService: ReviewService
   ) {}
 
   ngOnInit() {
@@ -32,6 +39,8 @@ export class RestaurantDetail implements OnInit {
 
     this.restaurant$ = this.restaurantService.getRestaurantById(id);
     this.menu$ = this.restaurantService.getMenu(id);
+    this.reviews$ = this.reviewService.getByRestaurant(id);
+    console.log(this.menu$);
   }
 
   addToCart(item: any) {
@@ -41,4 +50,20 @@ export class RestaurantDetail implements OnInit {
       price: item.price
     });
   }
+
+  submitReview() {
+    console.log('submitReview');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.reviewService.create({
+      restaurantId: id,
+      rating: this.rating,
+      comment: this.comment
+    }).subscribe(() => {
+      this.comment = '';
+      this.rating = 5;
+      this.reviews$ = this.reviewService.getByRestaurant(id);
+    });
+  }
+
 }

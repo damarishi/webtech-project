@@ -1,7 +1,7 @@
 @if (restaurant$ | async; as restaurant) {
   <div class="restaurant-detail">
     <h1>{{ restaurant.restaurant_name }}</h1>
-
+    <p>opening hours</p>
     <p>
       delivery time
     </p>
@@ -10,20 +10,52 @@
   @if (menu$ | async; as menu) {
     @for (category of menu; track category.category_id) {
       <h2>{{ category.category_name }}</h2>
+      <div class="menu-items">
+        @for (item of category.items; track item.item_id) {
+          <div class="menu-item">
+            <div class="item-info">
+              <span class="name">{{ item.item_name }}</span>
+              @if (item.tags.length) {
+              <small>{{ item.tags.join(', ') }}</small>
+              }
+            </div>
+            <span class="item-price">{{ item.price | number:'1.2-2' }} €</span>
+            <button (click)="addToCart(item)">Add</button>
+          </div>
+        }
+      </div>
 
-      @for (item of category.items; track item.item_id) {
-        <div class="menu-item">
-          <span>{{ item.item_name }}</span>
-          <span>{{ item.price | number:'1.2-2' }} €</span>
+    }
+  }
+  <br/>
+  <h3>Reviews</h3>
 
-          @if (item.tags.length) {
-            <small>{{ item.tags.join(', ')}}</small>
-          }
+  <div class="review-form">
+    <select [(ngModel)]="rating">
+      @for (r of [1,2,3,4,5]; track r) {
+        <option [value]="r">{{ r }} ★</option>
+      }
+    </select>
 
-          <button (click)="addToCart(item)">Add</button>
+    <textarea
+      [(ngModel)]="comment"
+      placeholder="Write your review..."
+    ></textarea>
+
+    <button (click)="submitReview()">Submit</button>
+  </div>
+
+  @if (reviews$ | async; as reviews) {
+    <div class="reviews">
+      @for (review of reviews; track review.review_id) {
+        <div class="review">
+          <strong>{{ review.username }}</strong>
+          <span>{{ review.rating }} ★</span>
+          <p>{{ review.comment }}</p>
+          <small>{{ review.created_at | date:'short' }}</small>
         </div>
       }
-    }
+    </div>
   }
 }
 
