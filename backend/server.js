@@ -18,7 +18,8 @@ const restaurantRequestRoutes = require("./routes/restaurant_requests.routes");
 const userRoutes = require("./routes/user.routes.js");
 const userModerationRoutes = require("./routes/user_moderation.routes");
 const discountRoutes = require("./routes/discount.routes");
-const settingsRoutes = require("./routes/platform_settings.routes")
+const settingsRoutes = require("./routes/platform_settings.routes");
+const logsRoutes = require("./routes/logs.routes");
 
 //4. route mounting
 app.use('/auth', authRoutes);
@@ -32,7 +33,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/restaurant_requests', restaurantRequestRoutes);
 app.use('/api/user_moderation', userModerationRoutes);
 app.use('/api/discounts', discountRoutes);
-app.use('/api/platform_settings', settingsRoutes)
+app.use('/api/platform_settings', settingsRoutes);
+app.use('/api/logs', logsRoutes);
 
 
 

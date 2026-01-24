@@ -1,4 +1,4 @@
-const db = require('../pool')
+const db = require('../pool');
 
 /*
     Returns promise with data depending on query

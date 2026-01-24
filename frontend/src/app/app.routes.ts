@@ -8,6 +8,8 @@ import { UserDataView } from './pages/site-manager/data-view/user-data-view/user
 import { DiscountDataView } from './pages/site-manager/data-view/discount-data-view/discount-data-view';
 import { UserModerationDataView } from './pages/site-manager/data-view/user-moderation-data-view/user-moderation-data-view';
 import { SiteSettingsDataView } from './pages/site-manager/data-view/site-settings-data-view/site-settings-data-view'
+import { LogsDataView } from './pages/site-manager/data-view/logs-data-view/logs-data-view';
+import { FinancialOverviewDataView } from './pages/site-manager/data-view/financial-overview-data-view/financial-overview-data-view';
 
 import {AuthGuard} from './features/auth/auth-guard';
 import {LoginGuard} from './features/auth/login-guard';
@@ -85,8 +87,22 @@ export const routes: Routes = [
   },  
 
   {
+      path: 'site-manager/data-view/logs',
+      component: LogsDataView,
+      canActivate: [AuthGuard],
+      data: { roles: [UserRoles.ADMIN] },
+  },  
+
+  {
       path: 'site-manager/platform_settings',
       component: SiteSettingsDataView,
+      canActivate: [AuthGuard],
+      data: { roles: [UserRoles.ADMIN] },
+  },  
+
+  {
+      path: 'site-manager/data-view/financial-overview',
+      component: FinancialOverviewDataView,
       canActivate: [AuthGuard],
       data: { roles: [UserRoles.ADMIN] },
   },  
