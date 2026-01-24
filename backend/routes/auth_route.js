@@ -20,7 +20,7 @@ async function checkDB(){
 }
 const getUserQuery = `
         SELECT u.*,
-               ARRAY_REMOVE(ARRAY_AGG(r.name),NULL) AS roles
+               ARRAY_AGG(r.name) FILTER (WHERE r.name IS NOT NULL) AS roles
         FROM users u
         LEFT JOIN user_roles ur ON ur.user_id = u.user_id
         LEFT JOIN roles r ON r.role_id = ur.role_id

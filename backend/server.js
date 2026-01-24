@@ -25,7 +25,7 @@ const isAuth = require("./services/isAuth");
 //4. route mounting
 app.use('/auth', authRoutes);
 app.use('/restaurants',isAuth, restaurantRoutes);
-app.use('api/owner/restaurant',isAuth, ownerRoutes);
+app.use('/api/owner/restaurant',isAuth, ownerRoutes);
 
 
 
