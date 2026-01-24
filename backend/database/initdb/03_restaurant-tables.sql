@@ -118,6 +118,7 @@ CREATE TABLE orders
     user_id         INT NOT NULL,
     total           DECIMAL(10,2) NOT NULL,
     discount_id     INT NOT NULL,
+    status          INT NOT NULL,
     fee             INT NOT NULL,
     date            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id),
