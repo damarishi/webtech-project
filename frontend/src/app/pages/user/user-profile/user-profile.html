@@ -31,11 +31,20 @@
       </div>
 
       <div class="form-group">
-        <label>Location</label>
+        <label>Location X</label>
         <input
-          type="text"
-          name="location"
-          [(ngModel)]="form.location"
+          type="number"
+          name="locationX"
+          [(ngModel)]="form.location!.x"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Location Y</label>
+        <input
+          type="number"
+          name="locationY"
+          [(ngModel)]="form.location!.y"
         />
       </div>
 
