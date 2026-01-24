@@ -41,3 +41,10 @@ exports.updateRestaurant = (restaurant, id) => {
     }
     return pool.query(updateRestaurantQuery);
 }
+
+exports.deleteRestaurant = (id) => {
+    const deleteRestaurantQuery = {
+        text:`DELETE FROM restaurant WHERE restaurant_id = $1`,
+        values: [id]
+    }
+}

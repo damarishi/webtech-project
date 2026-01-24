@@ -33,8 +33,17 @@ router.post('', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const restaurant = req.body.restaurant;
     const id = req.params.id;
-    console.log(restaurant, id);
-    res.status(200).json({message: "success"});
+    restaurantCtrl.updateRestaurant(restaurant, id).then( result => {
+        console.log(result);
+        res.status(200).json({message: "success"});
+    }).catch(error => {
+        console.log(error);
+        res.status(503).json({error: error});
+    })
+})
+
+router.get('orders', async (req, res) => {
+    const email = req.user.email;
 })
 
 module.exports = router;
