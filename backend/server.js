@@ -22,6 +22,7 @@ const settingsRoutes = require("./routes/platform_settings.routes");
 const ownerRoutes = require("./routes/owner_routes");
 const isAuth = require("./services/isAuth");
 const logsRoutes = require("./routes/logs.routes");
+const orderRoutes = require("./routes/orders.routes");
 
 //4. route mounting
 app.use('/auth', authRoutes);
@@ -38,7 +39,7 @@ app.use('/api/user_moderation',isAuth, userModerationRoutes);
 app.use('/api/discounts',isAuth, discountRoutes);
 app.use('/api/platform_settings',isAuth, settingsRoutes)
 app.use('/api/logs',isAuth, logsRoutes);
-
+app.use('/api/orders',isAuth, orderRoutes);
 
 
 //default route
