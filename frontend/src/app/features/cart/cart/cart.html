@@ -1,14 +1,19 @@
-<p>cart works!</p>
 @if (items$ | async; as items) {
   @for (item of items; track item.item_id) {
     <div>
-      {{ item.item_name }}
-      ({{ item.quantity }} × {{ item.price | currency:'EUR' }})
+      <span>
+        {{ item.item_name }}<br />
+        <small>{{ item.quantity }} × {{ item.price | currency:'EUR' }}</small>
+      </span>
 
       <button (click)="remove(item.item_id)">✕</button>
     </div>
   }
 
   <hr />
-  <strong>Total: {{ getTotalPrice() | currency:'EUR' }}</strong>
+
+  <strong>
+    <span>Total</span>
+    <span>{{ getTotalPrice() | currency:'EUR' }}</span>
+  </strong>
 }
