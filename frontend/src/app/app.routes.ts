@@ -20,10 +20,11 @@ import {RestaurantOwner} from './pages/restaurant-owner/restaurant-owner';
 import {USER_ROUTES} from './pages/user/user.routes';
 import {User} from './pages/user/user';
 import {UserRoles} from './types/user-roles';
+import {OWNER_ROUTES} from './pages/restaurant-owner/owner.routes';
 
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' }, //redirect to main page when created
+  { path: '',redirectTo: 'login', pathMatch: 'full'  }, //redirect to main page when created
 
   {
     path: 'login',
@@ -41,36 +42,36 @@ export const routes: Routes = [
       path: 'site-manager',
       component: SiteManager,
       canActivate: [AuthGuard],
-    data: { roles: [UserRoles.ADMIN] },
+      data: { role: UserRoles.ADMIN },
   },
 /*
   {   //soon deprecated
       path: 'site-manager/data-view/:category',
       component: DataView,
       canActivate: [AuthGuard],
-      data: { roles: [UserRoles.ADMIN] },
+      data: { roles: UserRoles.ADMIN },
   },*/
 
   {
       path: 'site-manager/data-view/restaurants',
       component: RestaurantDataView,
       canActivate: [AuthGuard],
-      data: { roles: [UserRoles.ADMIN] },
+      data: { role: UserRoles.ADMIN },
   },
 
   {
       path: 'site-manager/data-view/restaurant_requests',
       component: RequestDataView,
       canActivate: [AuthGuard],
-      data: { roles: [UserRoles.ADMIN] },
+      data: { role: UserRoles.ADMIN },
   },
 
   {
       path: 'site-manager/data-view/users',
       component: UserDataView,
       canActivate: [AuthGuard],
-      data: { roles: [UserRoles.ADMIN] },
-  },  
+      data: { role: UserRoles.ADMIN },
+  },
 
   {
       path: 'site-manager/data-view/discounts',
@@ -110,14 +111,15 @@ export const routes: Routes = [
   {
     path: 'restaurant-owner',
     component: RestaurantOwner,
+    children: OWNER_ROUTES,
     canActivate: [AuthGuard],
-    data: { roles: [UserRoles.OWNER] },
+    data: { role: UserRoles.OWNER },
   },
   {
     path: 'user',
     component: User,
     children: USER_ROUTES,
     canActivate: [AuthGuard],
-    data: { roles: [UserRoles.USER] },
+    data: { role: UserRoles.USER },
   }
 ];

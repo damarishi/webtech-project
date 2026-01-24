@@ -30,10 +30,14 @@ export class UserProfile implements OnInit {
 
     //User -> Form einmal kopieren
     this.user$.subscribe(user => {
+      console.log(user.location.x);
       this.form = {
         username: user.username,
         full_name: user.full_name,
-        location: user.location,
+        location: {
+          x: user.location?.x ?? 0,
+          y: user.location?.y ?? 0,
+        },
       };
     });
   }
