@@ -90,11 +90,11 @@ exports.delete = async (req, res) => {
 
 exports.getMe = async (req, res) => {
     try {
-        const email = req.user.email;        // kommt aus JWT Middleware
+        const id = req.user.user_id;        // kommt aus JWT Middleware
 
         const query = {
-            text: 'SELECT user_id, email, username, full_name, is_admin FROM users WHERE email = $1 AND is_deleted = FALSE',
-            values: [email]
+            text: 'SELECT user_id, email, username, full_name, location, is_admin FROM users WHERE user_id = $1 AND is_deleted = FALSE',
+            values: [id]
         };
 
         const result = await db.query(query);
@@ -102,7 +102,7 @@ exports.getMe = async (req, res) => {
         if (result.rowCount === 0) {
             return res.status(404).json({message: 'User not found'});
         }
-
+        console.log(result.rows[0]);
         res.json(result.rows[0]);
     } catch (error) {
         console.error("Error while laoding user profile:" + error.message);
@@ -115,9 +115,25 @@ exports.updateMe = async (req, res) => {
         const userId = req.user.user_id;
         const { username, full_name, location } = req.body;
 
+        // location optional behandeln
+        const point =
+            location && location.x !== undefined && location.y !== undefined
+            ? `(${location.x},${location.y})` : null;
+
+        console.log('BODY:', req.body);
+        console.log('POINT:', point);
+
         const query = {
-            text: 'UPDATE users SET username = COALESCE($1, username), full_name = COALESCE($2, full_name), location = COALESCE($3, location) WHERE user_id = $4 RETURNING user_id, email, username, full_name, location',
-            values: [username, full_name, location, userId]
+            text: `
+                UPDATE users 
+                SET 
+                    username = COALESCE($1, username), 
+                    full_name = COALESCE($2, full_name), 
+                    location = COALESCE($3, location) 
+                WHERE user_id = $4 
+                RETURNING user_id, email, username, full_name, location
+            `,
+            values: [username, full_name, point, userId]
         };
 
         const result = await db.query(query);
