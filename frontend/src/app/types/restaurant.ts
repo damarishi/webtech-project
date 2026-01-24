@@ -4,4 +4,9 @@ export interface Restaurant {
   cuisine: 'Italian' | 'Asian' | 'Austrian' | 'Mexican';
   category: 'Restaurant' | 'Cafe' |'FastFood' | 'Bistro';
   priceLevel: 1 | 2 | 3;
+  location: {
+    x: number;
+    y: number;
+  }
+  estimatedDeliveryTime: number;
 }

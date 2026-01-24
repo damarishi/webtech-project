@@ -14,36 +14,24 @@ import {RestaurantCard} from '../restaurant-card/restaurant-card';
   templateUrl: './restaurant-list.html',
   styleUrl: './restaurant-list.css',
 })
-export class RestaurantList implements OnInit {
-  restaurants: Restaurant[] = [];
-
-  constructor(
-    private restaurantService: RestaurantService,
-    private changeDetector: ChangeDetectorRef
-  ) {}
-
-  ngOnInit() {
-    this.fetchData();
-    console.log('RestaurantList init');
-  }
-
-  fetchData() {
-    this.restaurantService.getRestaurants().subscribe(data => {
-      this.restaurants = data;
-      this.changeDetector.detectChanges();    //damit for-Schleife beim ersten laden angezeigt wird, ansonsten wird kein 'change' erkannt
-      console.log(this.restaurants);
-    })
-  }
-
+export class RestaurantList {
+  @Input() restaurants: Restaurant[] = [];
   @Input() filter!: RestaurantFilter;
   @Input() searchText = '';
 
   get filteredRestaurants() {
-    return this.restaurants.filter(r =>
-      (!this.filter.cuisines.length || this.filter.cuisines.includes(r.cuisine)) &&       //wenn kein filter aktiv !0 -> true
-      (!this.filter.categories.length || this.filter.categories.includes(r.category)) &&
-      (!this.filter.prices.length || this.filter.prices.includes(r.priceLevel)) &&
-      (!this.searchText || r.restaurant_name.toLowerCase().includes(this.searchText))
-    );
+    console.log('RestaurantList:' + this.restaurants);
+    const max = this.filter?.maxMinutes ?? 999;
+    const result = this.restaurants.filter(r => {
+      return (
+        (!this.filter.cuisines.length || this.filter.cuisines.includes(r.cuisine)) &&
+        (!this.filter.categories.length || this.filter.categories.includes(r.category)) &&
+        (!this.filter.prices.length || this.filter.prices.includes(r.priceLevel)) &&
+        r.estimatedDeliveryTime <= max &&
+        (!this.searchText || r.restaurant_name.toLowerCase().includes(this.searchText))
+      );
+    });
+    console.log('Filtered restaurants:', JSON.stringify(result, null, 2)); // Debug hier
+    return result;
   }
 }

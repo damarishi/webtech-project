@@ -23,7 +23,7 @@ export class RestaurantDetail implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private restaurantService: RestaurantService,
-    private cartService: CartService
+    private cartService: CartService,
   ) {}
 
   ngOnInit() {
@@ -32,6 +32,7 @@ export class RestaurantDetail implements OnInit {
 
     this.restaurant$ = this.restaurantService.getRestaurantById(id);
     this.menu$ = this.restaurantService.getMenu(id);
+    console.log(this.menu$);
   }
 
   addToCart(item: any) {
@@ -41,4 +42,5 @@ export class RestaurantDetail implements OnInit {
       price: item.price
     });
   }
+
 }

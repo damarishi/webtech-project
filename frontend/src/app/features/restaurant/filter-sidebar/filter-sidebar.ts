@@ -19,12 +19,23 @@ export class FilterSidebar {
     {label: '€€', value: 2},
     {label: '€€€', value: 3},
   ];
+  deliveryTimes = [
+    { label: '≤ 30 min', value: 30 },
+    { label: '≤ 60 min', value: 60 },
+    { label: 'All', value: 999 },
+  ];
 
   filter: RestaurantFilter = {
     cuisines: [],
     categories: [],
-    prices: []
+    prices: [],
+    maxMinutes: 999
   };
+
+  setMaxMinutes(value: number) {
+    this.filter.maxMinutes = value;
+    this.filterChange.emit({ ...this.filter });
+  }
 
   toggle<T>(list: T[], value: T) {        //T = type declared at run-time
     const index = list.indexOf(value);    //schauen ob filter schon existiert

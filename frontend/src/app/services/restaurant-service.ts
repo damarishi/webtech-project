@@ -17,6 +17,12 @@ export class RestaurantService {
     return this.http.get<Restaurant>(`${restaurantsURL}`);
   }
 
+  getDashboardRestaurants(maxMinutes?: number) {
+    return this.http.get<Restaurant[]>(`${restaurantsURL}`,
+      { params: maxMinutes ? { maxMinutes } : {} }
+    );
+  }
+
   getRestaurantById(id: number) {
     return this.http.get<Restaurant>(`${restaurantsURL}/${id}`);
   }
