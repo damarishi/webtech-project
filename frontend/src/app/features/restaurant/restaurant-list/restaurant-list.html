@@ -1,3 +1,5 @@
+<pre>{{ filteredRestaurants | json }}</pre>
+
 <div class="grid">
     @for (restaurant of filteredRestaurants; track restaurant.restaurant_id) {
       <app-restaurant-card

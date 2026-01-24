@@ -1,0 +1,36 @@
+<div class="container">
+    <h2>Viewing Category: {{ category }}</h2>
+    <div class="summary">
+        <div>Total Order Count:  {{summaryTotalOrders}}</div>
+        <div>Total Revenue:  {{summaryRevenue}}</div>
+        <div>Average Order Price:  {{summaryAverageOrderPrice}}</div>
+    </div>
+    @if (isLoading) {
+        <div class="Temporary">Loading data...</div>
+    }
+    @else if (loadedItems && loadedItems.length > 0) {
+        <table>
+           <thead>
+                <tr>
+                    @for (key of Object.keys(loadedItems[0]); track key) {
+                        @if (key !== 'is_deleted') { <th>{{ key }}</th> }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of loadedItems; track trackById($index, item)) {
+                    <tr>
+                        @for (key of Object.keys(item); track key) {
+                            @if (key !== 'is_deleted') { <td>{{ item[key] }}</td> }
+                        }    
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } @else {
+        <p>No items found for this category.</p>
+    }
+</div>
+
+
+

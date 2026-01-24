@@ -3,8 +3,10 @@
     (filterChange)="onFilterChange($event)"
   />
   <app-restaurant-component-list
+    [restaurants]="restaurants"
     [filter]="activeFilter"
     [searchText]="searchText"
   />
+
 </div>
 

@@ -1,5 +1,7 @@
 const db = require('../pool')
 
+const logger = require('../events/logger.js');
+
 /*
     Returns promise with data depending on query
     TODO: maybe use DTOs here later
@@ -11,6 +13,12 @@ const db = require('../pool')
 exports.getAll = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM discounts');
+        
+        logger.emit('log', { 
+            description: `Discounts have been fetched`, 
+            typeOfLog: 1 
+        });
+
         res.status(200).json(result.rows);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch discounts' });

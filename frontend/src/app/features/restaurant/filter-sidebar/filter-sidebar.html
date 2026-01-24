@@ -41,4 +41,20 @@
       </label>
     }
   </div>
+
+  <!-- Delivery Time -->
+  <div class="filter-section">
+    <h5>Delivery time</h5>
+    @for (time of deliveryTimes; track time.label) {
+      <label class="filter-option">
+        <input
+          type="radio"
+          name="deliveryTime"
+          [checked]="filter.maxMinutes === time.value"
+          (change)="setMaxMinutes(time.value)"
+        />
+        {{ time.label }}
+      </label>
+    }
+  </div>
 </div>
