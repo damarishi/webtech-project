@@ -21,6 +21,7 @@ import {FormsModule} from '@angular/forms';
 })
 export class RestaurantDetail implements OnInit {
   restaurant$!: Observable<Restaurant>;
+  restaurantId!: number;
   menu$!: Observable<MenuCategory[]>;
   reviews$!: Observable<Review[]>;
   rating = 5;
@@ -37,6 +38,8 @@ export class RestaurantDetail implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!id) return;
 
+    this.restaurantId = id;
+
     this.restaurant$ = this.restaurantService.getRestaurantById(id);
     this.menu$ = this.restaurantService.getMenu(id);
     this.reviews$ = this.reviewService.getByRestaurant(id);
@@ -45,10 +48,12 @@ export class RestaurantDetail implements OnInit {
 
   addToCart(item: any) {
     this.cartService.addItem({
-      item_id: item.item_id,
-      item_name: item.item_name,
-      price: item.price
-    });
+        item_id: item.item_id,
+        item_name: item.item_name,
+        price: item.price
+      },
+      this.restaurantId   //kommt aus Route / restaurant$
+    );
   }
 
   submitReview() {
