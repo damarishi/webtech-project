@@ -29,4 +29,14 @@ export class Cart implements OnInit {
   getTotalPrice() {
     return this.cartService.getTotal();
   }
+
+  checkout() {
+    this.cartService.checkout().subscribe({
+      next: order => {
+        console.log('Order created', order);
+        this.cartService.clear();
+      },
+      error: err => console.error(err),
+    })
+  }
 }
