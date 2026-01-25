@@ -42,7 +42,7 @@ export class OwnerService {
 
 
   /*ORDERS START*/
-  getAllOrders():Promise<OwnerOrder[]>{
+  getAllOrders():Promise<{orders: OwnerOrder[]}>{
     return this.data.get(`${this.url}/orders`);
   }
 
@@ -66,7 +66,7 @@ export class OwnerService {
 
 
   /*TAGS START*/
-  getAllTags():Promise<OwnerTag[]>{
+  getAllTags():Promise<{ tags: OwnerTag[] }>{
     return this.data.get(`${this.url}/tags`);
   }
 
@@ -90,7 +90,7 @@ export class OwnerService {
 
 
   /*CATEGORIES START*/
-  getAllCategories():Promise<OwnerCategory[]>{
+  getAllCategories():Promise<{ categories: OwnerCategory[] }>{
     return this.data.get(`${this.url}/categories`);
   }
 
@@ -114,7 +114,7 @@ export class OwnerService {
 
 
   /*ITEMS START*/
-  getAllItems():Promise<OwnerItem[]>{
+  getAllItems():Promise<{ items: OwnerItem[] }>{
     return this.data.get(`${this.url}/items`);
   }
 
@@ -138,7 +138,7 @@ export class OwnerService {
 
 
   /*OPENING-TIMES START*/
-  getAllTimes():Promise<OwnerOpeningTime[]>{
+  getAllTimes():Promise<{ times: OwnerOpeningTime[] }>{
     return this.data.get(`${this.url}/times`);
   }
 

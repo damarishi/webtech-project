@@ -1,0 +1,16 @@
+<div class="order-card">
+  <h3>Order #{{ order?.order_id }}</h3>
+  <p><strong>Restaurant:</strong> {{ order?.restaurant_id }}</p>
+  <p><strong>User ID:</strong> {{ order?.user_id }}</p>
+  <p><strong>Date:</strong> {{ formatDate(order!.date) }}</p>
+  <p><strong>Total:</strong> € {{ order?.total || totalPrice }}</p>
+  <p><strong>Status:</strong> {{ order?.status }}</p>
+  <h4>Items</h4>
+  @for (item of order?.items; track item.item_id){
+    <div class="order-item">
+      <div class="item-header">
+        <strong>{{ item.name }}</strong> - Qty: {{ item.quantity }} - Price: € {{ item.price }} - Subtotal: € {{ item.price * item.quantity }}
+      </div>
+    </div>
+  }
+</div>

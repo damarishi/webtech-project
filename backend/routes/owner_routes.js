@@ -52,7 +52,7 @@ router.get('/orders', async (req, res) => {
         let orders = result.rows;
         await Promise.all(
             orders.map(async (order) => {
-                order.items = await itemCtrl.getOrderItems(order.order_id);
+                order.items = await itemCtrl.getOrderItems(order.order_id).rows;
             })
         );
         console.log("Owner: "+email+"\nOrders "+ orders.length);
@@ -68,7 +68,7 @@ router.get('order/:id', async (req, res) => {
     try{
         let result = await orderCtrl.getOrder(id);
         let order = result.rows[0];
-        await itemCtrl.getOrderItems(order.order_id);
+        order.items = await itemCtrl.getOrderItems(order.order_id).rows;
         res.status(200).json({order});
     }catch(error){
         console.error(error);
