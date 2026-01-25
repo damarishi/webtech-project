@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
+import { Navbar } from '../../../../shared/ui/navbar/navbar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-logs-data-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Navbar, RouterModule],
   templateUrl: './logs-data-view.html',
-  styleUrl: './logs-data-view.css',
+  styleUrl: './../base-data-view.css',
 })
 export class LogsDataView {
 

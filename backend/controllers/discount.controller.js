@@ -13,11 +13,12 @@ const logger = require('../events/logger.js');
 exports.getAll = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM discounts');
-        
+        /*
         logger.emit('log', { 
             description: `Discounts have been fetched`, 
-            typeOfLog: 1 
+            typeOfLog: 2 
         });
+        */
 
         res.status(200).json(result.rows);
     } catch (error) {
@@ -35,6 +36,11 @@ exports.createDiscount = async (req, res) => {
         const values = [code, value, activeState];
 
         const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `Discount has been created: ` + code, 
+            typeOfLog: 3 
+        });
         
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -53,6 +59,11 @@ exports.editDiscount = async (req, res) => {
         const values = [code, value, activeState, discount_id];
 
         const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `Discount has been edited: ` + code, 
+            typeOfLog: 3 
+        });
         
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -72,6 +83,11 @@ exports.deleteDiscount = async (req, res) => {
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Discount not found' });
         }
+
+        logger.emit('log', { 
+            description: `Discount has been deleted: ` + discount_id, 
+            typeOfLog: 3 
+        });
         
         res.status(200).json({ message: 'Discount deleted successfully' });
     } catch (error) {

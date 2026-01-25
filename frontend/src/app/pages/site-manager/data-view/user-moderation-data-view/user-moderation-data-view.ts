@@ -1,14 +1,16 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
+import { Navbar } from '../../../../shared/ui/navbar/navbar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-user-moderation-data-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Navbar, RouterModule],
   templateUrl: './user-moderation-data-view.html',
-  styleUrl: './user-moderation-data-view.css',
+  styleUrl: './../base-data-view.css',
 })
 export class UserModerationDataView {
 

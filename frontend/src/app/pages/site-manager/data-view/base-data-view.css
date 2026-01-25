@@ -54,3 +54,52 @@ button {    /* General button styling, TODO Fabian: remove/change later */
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+@media(max-width: 700px) {
+    /* 1. Stack the table elements */
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+    }
+
+    /* 2. Hide the headers - they don't work in a vertical stack */
+    thead {
+        display: none;
+    }
+
+    /* 3. Style each row as a "Card" */
+    tr {
+        margin-bottom: 20px;
+        border: 2px solid #000; /* Matching your button style */
+        padding: 15px;
+        background-color: #fff;
+    }
+
+    /* 4. Style each cell */
+    td {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between; /* Pushes content to the right */
+        font-size: 14px;
+    }
+
+    /* Clear border for the last cell (Actions) */
+    td:last-child {
+        border-bottom: none;
+        justify-content: center;
+        gap: 10px;
+        padding-top: 15px;
+    }
+
+    /* 5. Handle the Filter Bar */
+    .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .btn-filter {
+        flex: 1 1 40%; /* 2 buttons per row on mobile */
+    }
+}

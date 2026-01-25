@@ -1,14 +1,16 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute, RouterOutlet } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
+import { Navbar } from '../../../../shared/ui/navbar/navbar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-discount-data-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterModule, Navbar],
   templateUrl: './discount-data-view.html',
-  styleUrl: './discount-data-view.css',
+  styleUrl: './../base-data-view.css',
 })
 export class DiscountDataView {
 
