@@ -2,6 +2,7 @@ import {OwnerItem} from './owner-item';
 import {OrderStatus} from './order-status';
 
 export interface OwnerOrder {
+  restaurant_id: string;
   order_id: string;
   user_id: string;
   total: number;
