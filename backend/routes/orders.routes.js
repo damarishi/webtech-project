@@ -7,7 +7,8 @@ const isAuth = require("../services/isAuth");
 const orderCtrl = require('../controllers/orders.controller');
 
 
-router.get('/', orderCtrl.getAll);
+router.get('/', isAuth, orderCtrl.getAll);
 router.post('/', isAuth, orderCtrl.createOrder);
+router.get('/me', isAuth, orderCtrl.getMyOrders);
 
 module.exports = router;

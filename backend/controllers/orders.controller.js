@@ -62,3 +62,34 @@ exports.createOrder = async (req, res) => {
         client.release();
     }
 }
+
+exports.getMyOrders = async (req, res) => {
+    try {
+        const id = req.user.user_id;
+
+        const query = {
+            text: `
+                SELECT o.order_id, r.restaurant_name, o.total, o.status, o.date
+                FROM orders o 
+                JOIN restaurant r ON r.restaurant_id = o.restaurant_id
+                WHERE o.user_id = $1
+                ORDER BY o.date DESC;
+            `,
+            values: [id]
+        };
+
+        const result = await db.query(query);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({message: 'No orders fount' + error.message});
+        }
+        console.log(id);
+        for (let order of result.rows) {
+            console.log(order);
+        };
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error while fetching orders: ' + error.message);
+        res.status(500).json({ error: 'Failed to fetch orders: ' + error.message });
+    }
+};

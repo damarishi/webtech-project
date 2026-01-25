@@ -1,0 +1,25 @@
+.order-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.status-1 { color: gray; }
+.status-2 { color: orange; }
+.status-3 { color: blue; }
+.status-4 { color: green; }
+
+.empty {
+  opacity: 0.6;
+}
