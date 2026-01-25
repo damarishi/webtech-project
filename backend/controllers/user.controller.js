@@ -1,4 +1,5 @@
 const db = require('../pool')
+const logger = require('../events/logger.js');
 
 /*
     Returns promise with data depending on query
@@ -25,6 +26,11 @@ exports.create = async (req, res) => {
         const values = [email, username, full_name, hashed_password, is_admin, is_deleted];
 
         const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `User has been created with email: ` + email, 
+            typeOfLog: 2 
+        });
         
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -60,6 +66,12 @@ exports.markAsDeleted = async (req, res) => {
         if(result.rows.length === 0) {
             return res.status(404).json({ error: 'User not found' });
         }
+
+        logger.emit('log', { 
+            description: `User has been marked as Deleted with UserId: ` + userId, 
+            typeOfLog: 2 
+        });
+
         res.status(200).json( { message: 'User marked as deleted', user: result.rows[0].username });
     } catch (error) {   
         res.status(500).json({ error: 'Failed to mark user as deleted' });
@@ -79,6 +91,12 @@ exports.delete = async (req, res) => {
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'User not found' });
         }
+
+        logger.emit('log', { 
+            description: `User has been purged with UserId: ` + userId, 
+            typeOfLog: 3 
+        });
+
         res.status(200).json({
             message: 'User permanently removed from system',
             deletedUser: result.rows[0].username

@@ -3,20 +3,22 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
+import { Navbar } from '../../../../shared/ui/navbar/navbar';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-request-data-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Navbar, RouterModule],
   standalone: true,
   templateUrl: './request-data-view.html',
-  styleUrl: './request-data-view.css',
+  styleUrl: './../base-data-view.css',
 })
 
 export class RequestDataView {
 
   category: any = 'restaurant_requests';
-  CATEGORY_FIELDS: any[] = ['restaurant_name', 'requested_by','requested_at', 'status_id'];
+  CATEGORY_FIELDS: any[] = ['restaurant_name', 'requested_by','requested_at', 'status_id', 'location'];
   // Define filters if needed, e.g. active/markedAsDeleted restaurants
   filters: {label: string, value: any}[] = 
   [ 
@@ -87,6 +89,11 @@ export class RequestDataView {
     //initialize modal form fields here
     this.modalMode = mode;
     this.selectedItem = { ...item };  //shallow copy to avoid direct changes
+
+    if ((mode === 'reject' || mode === 'approve') && this.selectedItem.location && typeof this.selectedItem.location === 'object') {
+        const loc = this.selectedItem.location;
+        this.selectedItem.location = `(${loc.x},${loc.y})`;
+    }
 
     this.isModalOpen = true;
   }
@@ -182,6 +189,10 @@ export class RequestDataView {
   trackById(index: number, item: any): any {
     const idKey = Object.keys(item).find(key => key.toLowerCase().endsWith('id'));
     return idKey ? item[idKey] : index; 
+  }
+
+  isObject(val: any): boolean {
+    return val !== null && typeof val === 'object' && !Array.isArray(val);
   }
 
 }

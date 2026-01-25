@@ -2,6 +2,7 @@ const db = require('../pool')
 const pool = require("../pool");
 const results = require("pg/lib/query");
 const { calculateDistance, estimateTime } = require('../services/distanceService');
+const logger = require('../events/logger.js');
 
 
 /*
@@ -26,6 +27,82 @@ exports.getAll = async (req, res) => {
         res.status(500).json({ error: "Error while fetching restaurants:" + error.message });
     }
 };
+
+exports.createRestaurant = async (req, res) => {
+    try {
+        const { restaurant_name, owner_id, location } = req.body;
+        const queryText = `
+            INSERT INTO restaurant (restaurant_name, owner_id, location)
+            VALUES ($1, $2, $3)
+            RETURNING *;
+        `;
+        const formattedLocation = location.startsWith('(') ? location : `(${location})`;
+        const values = [restaurant_name, owner_id, formattedLocation];
+        
+        const result = await db.query(queryText, values);
+
+        logger.emit('log', { 
+            description: `Restaurant has been created: ` + restaurant_name, 
+            typeOfLog: 3 
+        });
+
+
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error while creating restaurants: ", error.message);
+        res.status(500).json({ error: "Error while creating restaurants:" + error.message });
+    }
+}
+
+exports.editRestaurant = async (req, res) => {
+    try {
+        const restaurant_id = req.params.id;
+        const { restaurant_name, owner_id, location } = req.body;
+        const formattedLocation = location.startsWith('(') ? location : `(${location})`;
+
+        const query = `
+            UPDATE restaurant 
+            SET restaurant_name = $1, 
+                owner_id = $2, 
+                location = $3
+            WHERE restaurant_id = $4
+            RETURNING *;
+        `;
+        
+        const values = [restaurant_name, owner_id, formattedLocation, restaurant_id];
+        
+        const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `Restaurant has been edited: ` + restaurant_id, 
+            typeOfLog: 3 
+        });
+
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error while editing restaurants: ", error.message);
+        res.status(500).json({ error: "Error while editing restaurants:" + error.message });
+    }
+}
+
+exports.deleteRestaurant = async (req, res) => {
+    try{
+        const restaurant_id = req.params.id;
+
+        const query = 'DELETE FROM restaurant WHERE restaurant_id = $1 RETURNING *'
+        const values = [restaurant_id];
+        const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `Restaurant has been deleted: ` + restaurant_id, 
+            typeOfLog: 3 
+        });
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete restaurant' });
+    }
+}
 
 
 exports.getRestaurantsWithDistance = async (req, res) => {

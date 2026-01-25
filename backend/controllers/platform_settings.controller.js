@@ -1,4 +1,5 @@
 const db = require('../pool')
+const logger = require('../events/logger.js');
 
 /*
     Returns promise with data depending on query
@@ -43,6 +44,11 @@ exports.create = async (req, res) => {
             is_active === "true" ? true : false
         ];
         const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `New Platform Setting has been created: ` + setting_name, 
+            typeOfLog: 3 
+        });
         
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -88,6 +94,11 @@ exports.update = async (req, res) => {
 
         const result = await db.query(query, values);
 
+        logger.emit('log', { 
+            description: `Platform Settings have been edited: ` + id, 
+            typeOfLog: 3 
+        });
+
         res.status(200).json(result.rows[0]);
     } catch (error) {   
         res.status(500).json({ error: 'Failed to update settings' });
@@ -103,6 +114,11 @@ exports.delete = async (req, res) => {
         const values = [id];
         
         const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `Platform Settings have been edited: ` + id, 
+            typeOfLog: 3 
+        });
 
         res.status(200).json(result.rows[0]);
     } catch (error) {   

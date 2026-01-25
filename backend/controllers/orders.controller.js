@@ -1,4 +1,5 @@
 const db = require('../pool');
+const logger = require('../events/logger.js');
 
 exports.getAll = async (req, res) => {
     try {
@@ -52,6 +53,11 @@ exports.createOrder = async (req, res) => {
         await client.query('COMMIT');
 
         //Owner benachrichtigen ??
+
+        logger.emit('log', { 
+            description: `Order has been created: ` + code, 
+            typeOfLog: 2 
+        });
 
         res.status(201).json({order_id: orderId, status: 1});
     } catch (error) {

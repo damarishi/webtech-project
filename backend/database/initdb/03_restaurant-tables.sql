@@ -19,12 +19,13 @@ CREATE TABLE restaurant_requests (
     -- Add additional Information from the restaurant as needed, match with restaurant table
     status_id       INT DEFAULT 1,  -- Default to 'Pending'
     FOREIGN KEY (status_id) REFERENCES restaurant_status(status_id),
-    admin_notes    text     -- Explanation from Admin why approved/rejected
+    admin_notes    text,     -- Explanation from Admin why approved/rejected
+    location            POINT NOT NULL
 );
 
-INSERT INTO restaurant_requests (restaurant_name, requested_by, status_id, admin_notes)
+INSERT INTO restaurant_requests (restaurant_name, requested_by, status_id, admin_notes, location)
 VALUES
-    ('The Pizza Palace', 3, 1, '');     -- example request, userId 3 is bob42, no admin notes
+    ('The Pizza Palace', 3, 1, '', '(0,0)');     -- example request, userId 3 is bob42, no admin notes
 
 
 
@@ -44,11 +45,11 @@ CREATE TABLE restaurant
     FOREIGN KEY (banner_id) REFERENCES images(image_id)
 );
 
-INSERT INTO restaurant (restaurant_id, restaurant_name, owner_id, location)--Temp data
+INSERT INTO restaurant (restaurant_name, owner_id, location)--Temp data
 VALUES
-    (1, 'Due Sicilie',1, '(10,10)'),
-    (2, 'Lemon Tree',2, '(20,10)'), -- Correct Owner ID
-    (3, 'Lodenwirt',3,'(20,20)');
+    ('Due Sicilie',1, '(10,10)'),
+    ('Lemon Tree',2, '(20,10)'), -- Correct Owner ID
+    ('Lodenwirt',3,'(20,20)');
 
 CREATE TABLE opening_times
 (

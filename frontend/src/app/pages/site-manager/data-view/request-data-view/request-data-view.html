@@ -1,3 +1,9 @@
+<app-navbar></app-navbar>
+<nav class="menu-grid">
+    <a routerLink="/site-manager" class="menu-item">
+        <div class="label">Dashboard</div>
+    </a>
+</nav>
 <div class="container">
     <h2>Viewing Category: {{ category }}</h2>
     @if(filters.length > 0) {
@@ -32,7 +38,14 @@
                 @for (item of filteredItems; track trackById($index, item)) {
                     <tr>
                         @for (key of Object.keys(item); track key) {
-                            @if (key !== 'is_deleted') { <td>{{ item[key] }}</td> }
+                            <td>
+                                @if (isObject(item[key])) {
+                                    
+                                    ({{ item[key].x }}, {{ item[key].y }})
+                                } @else {
+                                    {{ item[key] }}
+                                }
+                            </td>
                         }
                         <td>
                             <button class="btn-edit" (click)="onApproveItem(item)">Approve</button>
