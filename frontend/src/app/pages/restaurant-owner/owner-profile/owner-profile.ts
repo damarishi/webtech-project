@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { AuthService } from '../../../features/auth/auth-service';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
@@ -6,6 +6,10 @@ import {MatSelect} from '@angular/material/select';
 import {UserRoles} from '../../../types/user-roles';
 import {Router} from '@angular/router';
 import {RedirectService} from '../../../services/redirect-service';
+import {AsyncPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {User} from '../../../types/user';
+import {OwnerService} from '../../../services/owner-service'
 
 @Component({
   selector: 'app-owner-profile',
@@ -13,16 +17,30 @@ import {RedirectService} from '../../../services/redirect-service';
     MatFormField,
     MatLabel,
     MatOption,
-    MatSelect
+    MatSelect,
+    AsyncPipe,
+    FormsModule
   ],
   templateUrl: './owner-profile.html',
   styleUrl: './owner-profile.css',
 })
-export class OwnerProfile {
-  constructor(private auth: AuthService, private router: Router, private redirect: RedirectService) {}
+export class OwnerProfile implements OnInit{
+  constructor(private auth: AuthService, private router: Router, private redirect: RedirectService, private ownerService: OwnerService) {}
 
-  logout() {
-    this.auth.logout();
+  user$!: Promise<User>;
+
+  form: User | undefined;
+
+  ngOnInit() {
+    this.user$ = this.ownerService.getUser();
+    this.user$.then(user => {
+      this.form = JSON.parse(JSON.stringify(user));
+    });
+  }
+
+  save() {
+    console.log(this.form);
+    this.ownerService.putUser(this.form!);
   }
 
   protected readonly UserRoles = UserRoles;

@@ -1,15 +1,18 @@
 <div class="order-card">
-  <h3>Order #{{ order?.order_id }}</h3>
+  <h2 class="font-bold">Order {{ order?.order_id }}</h2>
   <p><strong>Restaurant:</strong> {{ order?.restaurant_id }}</p>
   <p><strong>User ID:</strong> {{ order?.user_id }}</p>
   <p><strong>Date:</strong> {{ formatDate(order!.date) }}</p>
   <p><strong>Total:</strong> € {{ order?.total || totalPrice }}</p>
-  <p><strong>Status:</strong> {{ order?.status }}</p>
-  <h4>Items</h4>
+  <p><strong>Status:</strong> {{ formatStatus(order?.status) }}</p>
+  <button class="bg-blue-500 text-white px-3 py-1 rounded"
+    (click)="updateOrderStatus()">
+    update </button>
+  <h3 class="font-bold">Items:</h3>
   @for (item of order?.items; track item.item_id){
     <div class="order-item">
       <div class="item-header">
-        <strong>{{ item.name }}</strong> - Qty: {{ item.quantity }} - Price: € {{ item.price }} - Subtotal: € {{ item.price * item.quantity }}
+        {{ item.quantity }}x <i>{{ item.name }}</i>
       </div>
     </div>
   }

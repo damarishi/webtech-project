@@ -52,10 +52,12 @@ router.get('/orders', async (req, res) => {
         let orders = result.rows;
         await Promise.all(
             orders.map(async (order) => {
-                order.items = await itemCtrl.getOrderItems(order.order_id).rows;
+                const result = await itemCtrl.getOrderItems(order.order_id);
+                order.items = result.rows;
             })
         );
         console.log("Owner: "+email+"\nOrders "+ orders.length);
+        console.log(orders);
         res.status(200).json({orders});
     }catch(error){
         console.error(error);
@@ -63,12 +65,13 @@ router.get('/orders', async (req, res) => {
     }
 });
 
-router.get('order/:id', async (req, res) => {
+router.get('/order/:id', async (req, res) => {
     const id = req.params.id;
     try{
         let result = await orderCtrl.getOrder(id);
         let order = result.rows[0];
-        order.items = await itemCtrl.getOrderItems(order.order_id).rows;
+        const items = await itemCtrl.getOrderItems(order.order_id);
+        order.items = items.rows;
         res.status(200).json({order});
     }catch(error){
         console.error(error);
@@ -81,7 +84,7 @@ router.get('order/:id', async (req, res) => {
 /**
  * Only thing that can change in order is Status
  */
-router.put('order/:id', async (req, res) => {
+router.put('/order/:id', async (req, res) => {
     const id = req.params.id;
     const order = req.body.order;
     orderCtrl.updateOrder(order, id).then(result => {
@@ -92,7 +95,7 @@ router.put('order/:id', async (req, res) => {
     })
 });
 
-router.delete('order/:id', async (req, res) => {
+router.delete('/order/:id', async (req, res) => {
     const id = req.params.id;
     orderCtrl.deleteOrder(id).then(result => {
         res.status(200).json({message: "success"});
@@ -206,15 +209,21 @@ router.delete('/category/:id', async (req, res) => {
 })
 
 //ITEMS
-router.get('items', async (req, res) => {
+router.get('/items', async (req, res) => {
     const email = req.user.email;
     try{
-        let items = await itemCtrl.getRestaurantItems(email).rows;
+        let result = await itemCtrl.getRestaurantItems(email);
+        let items = result.rows;
         await Promise.all(
             items.map(async (item) => {
-            item.category = await catCtrl.getCategory(item.category_id)[0];
-            item.tags = await tagCtrl.getItemTags(item.item_id);
-            item.images = await imageCtrl.getItemImages(item.image_id);
+                const c_res = await catCtrl.getCategory(item.category_id);
+                item.category = c_res.rows[0];
+
+                const t_res = await tagCtrl.getItemTags(item.item_id);
+                item.tags = t_res.rows;
+
+                const i_res = await imageCtrl.getItemImages(item.image_id);
+                item.images = i_res.rows;
             })
         );
         return res.status(200).json({items});
@@ -227,10 +236,16 @@ router.get('items', async (req, res) => {
 router.get('/item/:id', async (req, res) => {
     const id = req.params.id;
     try{
-        let item = await itemCtrl.getItem(id).rows[0];
-        item.category = await catCtrl.getCategory(item.category_id)[0];
-        item.tags = await tagCtrl.getItemTags(item.tag_id);
-        item.images = await imageCtrl.getItemImages(item.image_id);
+        let result = await itemCtrl.getItem(id);
+        let item = result.rows[0];
+        const c_res = await catCtrl.getCategory(item.category_id);
+        item.category = c_res.rows[0];
+
+        const t_res = await tagCtrl.getItemTags(item.item_id);
+        item.tags = t_res.rows;
+
+        const i_res = await imageCtrl.getItemImages(item.image_id);
+        item.images = i_res.rows;
     }catch(error){
         console.error(error);
         res.status(503).json({message: error});

@@ -19,8 +19,10 @@ import {OrderCardComponent} from '../order-card-component/order-card-component';
 export class OwnerDashboard implements OnInit {
   orders: OwnerOrder[] = [];
   restaurant:OwnerRestaurant | undefined;
+  message:string = '';
 
   constructor(private ownerService: OwnerService, private cdr: ChangeDetectorRef) {}
+
 
   ngOnInit() {
     //this.getRestaurant();
@@ -50,5 +52,9 @@ export class OwnerDashboard implements OnInit {
         console.log("Restaurant Updated")
       }
     ).catch(error => console.log(error));
+  }
+
+  onOrderUpdate(){
+    this.getOrders();
   }
 }

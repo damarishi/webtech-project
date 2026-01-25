@@ -56,11 +56,11 @@ export class OwnerService {
 
   putOrder(order:OwnerOrder):Promise<OwnerApiResponse>{
     if(!order.order_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/order}`,order.order_id, {order});
+    return this.data.put(`${this.url}/order`,order.order_id, {order});
   }
 
   deleteOrder(order_id:string):Promise<OwnerApiResponse>{
-    return this.data.delete(`${this.url}/order}`, order_id);
+    return this.data.delete(`${this.url}/order`, order_id);
   }
   /*ORDERS END*/
 
