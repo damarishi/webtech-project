@@ -8,12 +8,12 @@ exports.getImage = (id) => {
     return pool.query(getImageQuery);
 }
 
-exports.getItemImages = (id) => {
+exports.getItemImages = (item_id) => {
     const getItemImagesQuery = {
         text: `SELECT * FROM images i
         JOIN item_images im ON im.image_id = i.image_id
         WHERE im.item_id = $1`,
-        values: [id]
+        values: [item_id]
     }
     return pool.query(getItemImagesQuery);
 }
@@ -26,6 +26,13 @@ exports.createImage = (image) => {
         values: [image.link, image.name, image.description]
     }
     return pool.query(createImageQuery);
+}
+
+exports.assignItemImage = (item_id, image_id) => {
+    const assignItemImageQuery = {
+        text:`INSERT INTO item_images (item_id, image_id) VALUES ($1, $2)`,
+        values: [item_id, image_id]
+    }
 }
 
 exports.updateImage = (id, image) => {

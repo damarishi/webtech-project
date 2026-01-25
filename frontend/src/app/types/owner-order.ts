@@ -1,4 +1,4 @@
-import {OwnerItem} from './owner-item';
+import {OwnerOrderItem} from './owner-order-item';
 import {OrderStatus} from './order-status';
 
 export interface OwnerOrder {
@@ -8,5 +8,5 @@ export interface OwnerOrder {
   total: number;
   status: OrderStatus;
   date:Date; //Format: jjjj-mm-ddThh:mm:ss.sssZ
-  items:OwnerItem[];
+  items:OwnerOrderItem[];
 }

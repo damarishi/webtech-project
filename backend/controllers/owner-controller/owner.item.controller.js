@@ -14,7 +14,7 @@ exports.getRestaurantItems = (email) => {
 
 exports.getOrderItems = (order_id) =>{
     const getItemsQuery = {
-        text: `SELECT i.item_id,i.restaurant_id, i.name, i.description, i.position, i.price, i.category_id FROM items i
+        text: `SELECT i.item_id, i.name, i.price, oi.quantity FROM items i
         JOIN order_item oi ON oi.item_id = i.item_id
         WHERE oi.order_id = $1`,
         values: [order_id],

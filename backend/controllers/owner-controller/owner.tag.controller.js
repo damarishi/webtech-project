@@ -34,6 +34,22 @@ exports.createTag = (tag) => {
     return pool.query(createTagQuery);
 }
 
+exports.assignItemTag = (item_id, tag_id) => {
+    const assignTagQuery = {
+        text:`INSERT INTO item_tags (item_id, tag_id) VALUES ($1, $2)`,
+        values:[item_id, tag_id]
+    }
+    return pool.query(assignTagQuery);
+}
+
+exports.removeItemTag = (item_id, tag_id) => {
+    const removeItemTagQuery = {
+        text:`DELETE FROM item_tags WHERE item_id = $1 AND tag_id = $2`,
+        values:[item_id, tag_id]
+    }
+    return pool.query(removeItemTagQuery);
+}
+
 exports.updateTag = (tag, id) => {
     const updateTagQuery = {
         text:`UPDATE tags SET name = $1 WHERE tag_id = $2`,
