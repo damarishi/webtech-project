@@ -8,5 +8,6 @@ export interface Restaurant {
     x: number;
     y: number;
   }
+  distance: number;
   estimatedDeliveryTime: number;
 }

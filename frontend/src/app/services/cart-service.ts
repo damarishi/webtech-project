@@ -35,10 +35,19 @@ export class CartService {
     this.cart$.next([...cart]);
   }
 
+  increaseItem(item: CartItem){
+    item.quantity++;
+  }
+
   removeItem(itemId: number) {
-    this.cart$.next(
-      this.cart$.value.filter(i => i.item_id !== itemId)
-    );
+    const cart = this.cart$.value.map(item => {
+      if (item.item_id === itemId) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    }).filter(item => item.quantity > 0);
+
+    this.cart$.next(cart);
   }
 
   clear() {

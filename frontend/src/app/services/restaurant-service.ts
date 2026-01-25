@@ -17,7 +17,7 @@ export class RestaurantService {
     return this.http.get<Restaurant>(`${restaurantsURL}`);
   }
 
-  getDashboardRestaurants(maxMinutes?: number) {
+  getDashboardRestaurants(maxMinutes: number) {
     return this.http.get<Restaurant[]>(`${restaurantsURL}`,
       { params: maxMinutes ? { maxMinutes } : {} }
     );

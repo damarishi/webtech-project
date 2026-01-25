@@ -130,7 +130,6 @@ exports.getRestaurantsWithDistance = async (req, res) => {
             const restaurantPoint = parsePoint(r.location);
             const distance = calculateDistance(userPoint, restaurantPoint);
             const estimatedDeliveryTime = estimateTime(distance, speed, prepTime);
-
             return {
                 ...r,
                 distance,
@@ -140,7 +139,7 @@ exports.getRestaurantsWithDistance = async (req, res) => {
 
         const filtered = enriched.filter(r => r.estimatedDeliveryTime <= maxMinutes);
 
-        console.log('Enriched' + enriched);
+        console.log(filtered);
 
         res.json(filtered);
     } catch (error) {
