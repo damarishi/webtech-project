@@ -1,7 +1,8 @@
 const pool = require("../../pool");
+const position = require('../../interfaces/Positon');
 
 exports.getRestaurant = (email) => {
-    const restaurantIdQuery = {
+    const getRestaurantQuery = {
         text: `SELECT
       r.restaurant_id,
       r.restaurant_name,
@@ -26,7 +27,24 @@ exports.getRestaurant = (email) => {
         SELECT user_id FROM users WHERE email = $1 AND is_admin = FALSE);`
         , values: [email]
     };
+    return pool.query(getRestaurantQuery);
+}
 
-    return pool.query(restaurantIdQuery);
+exports.updateRestaurant = (restaurant, id) => {
+    const pos = position.castPairToString(restaurant.location)
+    const updateRestaurantQuery = {
+        text: `UPDATE restaurant SET 
+            restaurant_name = $1,
+            location = $2
+        WHERE restaurant_id = $3`,
+        values: [restaurant.restaurant_name, pos, id]
+    }
+    return pool.query(updateRestaurantQuery);
+}
 
+exports.deleteRestaurant = (id) => {
+    const deleteRestaurantQuery = {
+        text:`DELETE FROM restaurant WHERE restaurant_id = $1`,
+        values: [id]
+    }
 }

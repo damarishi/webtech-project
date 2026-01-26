@@ -1,5 +1,3 @@
-const position = require('./Positon');
-
 exports.Restaurant = (data) => {
     return {
         restaurant_id: data.restaurant_id,

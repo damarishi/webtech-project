@@ -119,7 +119,7 @@ CREATE TABLE orders
     user_id         INT NOT NULL,
     total           DECIMAL(10,2) NOT NULL,
     discount_id     INT,
-    status          INT NOT NULL,
+    status          INT NOT NULL,-- 0..pending -> 1..preparing->2..ready->3..dispatched->-1..closed
     fee             INT NOT NULL,
     date            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id),
@@ -129,9 +129,9 @@ CREATE TABLE orders
 
 CREATE TABLE order_item
 (
-    order_id        INT NOT NULL,
-    item_id         INT NOT NULL,
-    quantity        SMALLINT DEFAULT 1,
+    order_id    INT NOT NULL,
+    item_id     INT NOT NULL,
+    quantity    SMALLINT DEFAULT 1,
     PRIMARY KEY (order_id,item_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (item_id) REFERENCES items(item_id)

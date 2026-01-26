@@ -1,0 +1,16 @@
+@media (max-width: 1000px) {
+  ::ng-deep .navbar .page-title{
+    color: #e0e0e0;
+    display: none;
+  }
+}
+
+::ng-deep .navbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+
+

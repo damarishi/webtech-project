@@ -2,6 +2,7 @@ const db = require('../pool')
 const pool = require("../pool");
 const results = require("pg/lib/query");
 const { calculateDistance, estimateTime } = require('../services/distanceService');
+const position = require('../interfaces/Positon');
 const logger = require('../events/logger.js');
 
 
@@ -38,12 +39,12 @@ exports.createRestaurant = async (req, res) => {
         `;
         const formattedLocation = location.startsWith('(') ? location : `(${location})`;
         const values = [restaurant_name, owner_id, formattedLocation];
-        
+
         const result = await db.query(queryText, values);
 
-        logger.emit('log', { 
-            description: `Restaurant has been created: ` + restaurant_name, 
-            typeOfLog: 3 
+        logger.emit('log', {
+            description: `Restaurant has been created: ` + restaurant_name,
+            typeOfLog: 3
         });
 
 
@@ -68,14 +69,14 @@ exports.editRestaurant = async (req, res) => {
             WHERE restaurant_id = $4
             RETURNING *;
         `;
-        
+
         const values = [restaurant_name, owner_id, formattedLocation, restaurant_id];
-        
+
         const result = await db.query(query, values);
 
-        logger.emit('log', { 
-            description: `Restaurant has been edited: ` + restaurant_id, 
-            typeOfLog: 3 
+        logger.emit('log', {
+            description: `Restaurant has been edited: ` + restaurant_id,
+            typeOfLog: 3
         });
 
         res.status(200).json(result.rows[0]);
@@ -93,9 +94,9 @@ exports.deleteRestaurant = async (req, res) => {
         const values = [restaurant_id];
         const result = await db.query(query, values);
 
-        logger.emit('log', { 
-            description: `Restaurant has been deleted: ` + restaurant_id, 
-            typeOfLog: 3 
+        logger.emit('log', {
+            description: `Restaurant has been deleted: ` + restaurant_id,
+            typeOfLog: 3
         });
 
         res.status(200).json(result.rows);
@@ -130,6 +131,7 @@ exports.getRestaurantsWithDistance = async (req, res) => {
             const restaurantPoint = parsePoint(r.location);
             const distance = calculateDistance(userPoint, restaurantPoint);
             const estimatedDeliveryTime = estimateTime(distance, speed, prepTime);
+
             return {
                 ...r,
                 distance,

@@ -1,6 +1,11 @@
-<div class="flex flex-col w-full justify-center items-center">
-  <div class="text-2xl font-semibold flex w-auto mb-4">Restaurant</div>
-    <div class="w-[90%]">
-      <pre>{{this.restaurant | json}}</pre>
-    </div>
+<div class="flex flex-col w-full justify-center items-center content pt-4">
+  @if (orders.length === 0) {
+  <div class="text-2xl font-semibold flex w-auto mb-4">No new Orders</div>
+  }
+
+<div class="flex flex-row w-full justify-center items-center flex-wrap gap-4">
+  @for (order of orders; track order.order_id){
+    <order-card-component [order]="order" (updateSuccess)="onOrderUpdate()"></order-card-component>
+  }
+</div>
 </div>
