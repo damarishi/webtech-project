@@ -1,7 +1,8 @@
 export enum OrderStatus {
-  closed = -1,
+  declined = -2,
+  closed,
   pending,
   preparing,
   ready,
-  dispatched,
+  dispatched
 }
