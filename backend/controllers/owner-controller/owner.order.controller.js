@@ -6,7 +6,8 @@ exports.getOrders = (email) => {
         WHERE restaurant_id = (
             SELECT restaurant_id FROM restaurant WHERE  owner_id = (
                 SELECT user_id FROM users WHERE email = $1 AND is_deleted = FALSE
-        )) AND status >= 0;`,
+        )) AND status >= 0
+        ORDER BY order_id`,
         values: [email]
     }
     return pool.query(getOrdersQuery);

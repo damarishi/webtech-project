@@ -6,7 +6,8 @@ exports.getRestaurantItems = (email) => {
         WHERE restaurant_id = (
             SELECT restaurant_id FROM restaurant WHERE  owner_id = (
                SELECT user_id FROM users WHERE email = $1 AND is_deleted = FALSE
-        ))`,
+        ))
+        ORDER BY position`,
         values: [email],
     }
     return pool.query(getItemsQuery);
@@ -16,7 +17,8 @@ exports.getOrderItems = (order_id) =>{
     const getItemsQuery = {
         text: `SELECT i.item_id, i.name, i.price, oi.quantity FROM items i
         JOIN order_item oi ON oi.item_id = i.item_id
-        WHERE oi.order_id = $1`,
+        WHERE oi.order_id = $1
+        ORDER BY position`,
         values: [order_id],
     }
     return pool.query(getItemsQuery);

@@ -12,7 +12,8 @@ exports.getItemImages = (item_id) => {
     const getItemImagesQuery = {
         text: `SELECT * FROM images i
         JOIN item_images im ON im.image_id = i.image_id
-        WHERE im.item_id = $1`,
+        WHERE im.item_id = $1
+        ORDER BY i.image_id`,
         values: [item_id]
     }
     return pool.query(getItemImagesQuery);

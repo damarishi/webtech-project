@@ -12,7 +12,8 @@ exports.getItemTags = (item_id) => {
     const getItemTagsQuery = {
         text:`SELECT t.* FROM tags t
         JOIN item_tags it ON it.tag_id = t.tag_id
-        WHERE it.item_id = $1`,
+        WHERE it.item_id = $1
+        ORDER BY t.tag_id`,
         values:[item_id]
     }
     return pool.query(getItemTagsQuery);
