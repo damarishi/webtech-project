@@ -94,3 +94,33 @@ exports.deleteDiscount = async (req, res) => {
         res.status(500).json({ error: 'Failed to delete discount' });
     }
 };
+
+exports.validate = async (req, res) => {
+    const { code } = req.body;
+
+    if (!code) {
+        return res.status(400).json({ error: 'Discount code required' });
+    }
+
+    try {
+        const query = {
+            text: `
+                SELECT discount_id, code, value
+                FROM discounts
+                WHERE code = $1 AND active = true
+            `,
+            values: [code.toUpperCase()]
+        }
+
+        const result = await db.query(query);
+
+        if (!result.rows.length) {
+            return res.status(404).json({ error: 'Invalid discount code' });
+        }
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.log('Error while validating discount code: ' + error.message);
+        res.status(500).json({ error: 'Failed to validate discount code' });
+    }
+}

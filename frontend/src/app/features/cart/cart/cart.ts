@@ -3,23 +3,48 @@ import {CartService} from '../../../services/cart-service';
 import {Observable} from 'rxjs';
 import {CommonModule, CurrencyPipe} from '@angular/common';
 import {CartItem} from '../../../types/CartItem';
+import {DiscountService} from '../../../services/discount-service';
+import {FormsModule} from '@angular/forms';
+import {LoyaltyService} from '../../../services/loyalty-service';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
-    CommonModule, CurrencyPipe
+    CommonModule, CurrencyPipe, FormsModule
   ],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
 })
 export class Cart implements OnInit {
   items$!: Observable<CartItem[]>;
+  discountCode = '';
+  discountError = '';
+  discount$ ;
 
-  constructor(private cartService: CartService) {}
+
+  constructor(
+    protected cartService: CartService,
+    private discountService: DiscountService,
+    private loyaltySerice: LoyaltyService
+  ) {
+    this.discount$ = this.cartService.discountObs$;
+  }
 
   ngOnInit() {
     this.items$ = this.cartService.items$;
+    this.loadLoyaltyDiscount();
+  }
+
+  loadLoyaltyDiscount() {
+    this.loyaltySerice.getLoyaltyDiscount().subscribe(discount => {
+      if (discount) {
+        this.cartService.applyDiscount({
+          ...discount,
+          code: 'LOYALTY'
+        });
+      }
+    })
   }
 
   increase(item: CartItem) {
@@ -32,6 +57,18 @@ export class Cart implements OnInit {
 
   getTotalPrice() {
     return this.cartService.getTotal();
+  }
+
+  applyDiscount() {
+    this.discountService.validate(this.discountCode).subscribe({
+      next: discount => {
+        this.cartService.applyDiscount(discount);
+        this.discountError = '';
+      },
+      error: () => {
+        this.discountError = 'Invalid discount code';
+      }
+    })
   }
 
   checkout() {
