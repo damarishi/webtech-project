@@ -31,8 +31,11 @@
 
   @if (discount$ | async; as discount) {
     <div class="discount-info">
-      Discount ({{ discount.code }}):
-      −{{ discount.value }}%
+      @if (discount.source === 'LOYALTY') {
+        🎁 Loyalty Reward −{{ discount.value }}%
+      } @else {
+        🏷 Code {{ discount.code }} −{{ discount.value }}%
+      }
     </div>
   }
 

@@ -26,6 +26,7 @@ const ownerRoutes = require("./routes/owner_routes");
 const isAuth = require("./services/isAuth");
 const logsRoutes = require("./routes/logs.routes");
 const orderRoutes = require("./routes/orders.routes");
+const loyaltyRoutes = require("./routes/loyalty.routes");
 
 
 //4. route mounting
@@ -47,6 +48,7 @@ app.use('/api/reviews', reviewRoutes);
 
 app.use('/api/logs',isAuth, logsRoutes);
 app.use('/api/orders',isAuth, orderRoutes);
+app.use('/api/loyalty',isAuth, loyaltyRoutes);
 
 
 //default route

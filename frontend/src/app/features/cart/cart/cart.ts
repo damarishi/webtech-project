@@ -5,6 +5,7 @@ import {CommonModule, CurrencyPipe} from '@angular/common';
 import {CartItem} from '../../../types/CartItem';
 import {DiscountService} from '../../../services/discount-service';
 import {FormsModule} from '@angular/forms';
+import {LoyaltyService} from '../../../services/loyalty-service';
 
 @Component({
   selector: 'app-cart',
@@ -24,15 +25,26 @@ export class Cart implements OnInit {
 
   constructor(
     protected cartService: CartService,
-    private discountService: DiscountService
+    private discountService: DiscountService,
+    private loyaltySerice: LoyaltyService
   ) {
     this.discount$ = this.cartService.discountObs$;
   }
 
-
-
   ngOnInit() {
     this.items$ = this.cartService.items$;
+    this.loadLoyaltyDiscount();
+  }
+
+  loadLoyaltyDiscount() {
+    this.loyaltySerice.getLoyaltyDiscount().subscribe(discount => {
+      if (discount) {
+        this.cartService.applyDiscount({
+          ...discount,
+          code: 'LOYALTY'
+        });
+      }
+    })
   }
 
   increase(item: CartItem) {
