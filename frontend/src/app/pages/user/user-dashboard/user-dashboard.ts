@@ -6,7 +6,7 @@ import {RestaurantStateService} from '../../../services/restaurant-state-service
 import {RestaurantFilter} from '../../../types/RestaurantFilter';
 import {Restaurant} from '../../../types/restaurant';
 import {RestaurantService} from '../../../services/restaurant-service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 
 @Component({
@@ -25,7 +25,7 @@ export class UserDashboard implements OnInit {
     maxMinutes: 999
   };
 
-  restaurants: Restaurant[] = [];
+  restaurants$!: Observable<Restaurant[]>;
   searchText = '';
 
   constructor(
@@ -44,15 +44,7 @@ export class UserDashboard implements OnInit {
 
   loadRestaurants(maxMinutes: number) {
     console.log('Loading restaurants with maxMinutes:', maxMinutes);
-    this.restaurantService.getDashboardRestaurants(maxMinutes).subscribe({
-      next: restaurants => {
-        this.restaurants = restaurants;
-        console.log('Received restaurants:', this.restaurants);
-      },
-      error: err => {
-        console.error('Error loading restaurants:', err);
-      }
-    });
+    this.restaurants$ = this.restaurantService.getDashboardRestaurants(maxMinutes);
   }
 
   onFilterChange(filter: RestaurantFilter) {

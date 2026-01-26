@@ -3,7 +3,7 @@
     (filterChange)="onFilterChange($event)"
   />
   <app-restaurant-component-list
-    [restaurants]="restaurants"
+    [restaurants]="restaurants$ | async"
     [filter]="activeFilter"
     [searchText]="searchText"
   />

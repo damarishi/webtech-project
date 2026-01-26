@@ -1,4 +1,5 @@
 const pool = require("../pool");
+const logger = require('../events/logger.js');
 
 /**
  * Get reviews for a restaurant
@@ -42,6 +43,11 @@ exports.create = async (req, res) => {
         }
 
         const result = await pool.query(query);
+
+        logger.emit('log', { 
+            description: `Review has been created by UserId: ` + code + ` RestaurantId: ` + restaurantId, 
+            typeOfLog: 2 
+        });
 
         res.status(201).json(result.rows[0]);
     } catch (error) {

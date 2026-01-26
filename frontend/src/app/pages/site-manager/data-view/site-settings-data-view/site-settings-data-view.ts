@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
+import { Navbar } from '../../../../shared/ui/navbar/navbar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-site-settings-data-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Navbar, RouterModule],
   templateUrl: './site-settings-data-view.html',
-  styleUrl: './site-settings-data-view.css',
+  styleUrl: './../base-data-view.css',
 })
 export class SiteSettingsDataView {
 

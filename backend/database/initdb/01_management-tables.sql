@@ -7,6 +7,7 @@ CREATE TABLE log_types
 );
 INSERT INTO log_types (name) VALUES
      ('TEST'),   -- for testing purposes
+     ('GENERAL'), -- if no other type fits
      ('ADMIN'),  -- e.g. admin actions like user bans, role changes
      ('SECURITY'), -- e.g. login attempts, password changes
      ('USER_MANAGEMENT'), -- e.g. user creation, deletion, role changes

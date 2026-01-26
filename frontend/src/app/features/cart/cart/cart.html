@@ -6,7 +6,11 @@
         <small>{{ item.quantity }} × {{ item.price | currency:'EUR' }}</small>
       </span>
 
-      <button (click)="remove(item.item_id)">✕</button>
+      <div class="quantity-controls">
+        <button (click)="decrease(item.item_id)">−</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="increase(item)">+</button>
+      </div>
     </div>
   }
 

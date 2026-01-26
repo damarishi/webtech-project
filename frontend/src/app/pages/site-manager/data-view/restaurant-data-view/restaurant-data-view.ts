@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../services/data-service';
+import { Navbar } from '../../../../shared/ui/navbar/navbar';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-restaurant-data-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Navbar, RouterModule],
   standalone: true,
   templateUrl: './restaurant-data-view.html',
-  styleUrl: './restaurant-data-view.css',
+  styleUrl: './../base-data-view.css',
 })
 
 export class RestaurantDataView {
@@ -86,6 +88,12 @@ export class RestaurantDataView {
     this.modalMode = mode;
     this.selectedItem = { ...item };  //shallow copy to avoid direct changes
 
+    //parse object Object (location) to proper location coordinates
+    if (mode === 'edit' && this.selectedItem.location && typeof this.selectedItem.location === 'object') {
+        const loc = this.selectedItem.location;
+        this.selectedItem.location = `(${loc.x},${loc.y})`;
+    }
+
     this.isModalOpen = true;
   }
 
@@ -146,7 +154,7 @@ export class RestaurantDataView {
   async loadData(category: string) {
     this.isLoading = true;
     try {
-      this.loadedItems = await this.dataService.fetchData(category);
+      this.loadedItems = await this.dataService.fetchData(category + "/getAll");
       if(this.loadedItems === null) throw new Error("No data received");
 
       if(true)
@@ -165,6 +173,10 @@ export class RestaurantDataView {
   trackById(index: number, item: any): any {
     const idKey = Object.keys(item).find(key => key.toLowerCase().endsWith('id'));
     return idKey ? item[idKey] : index; 
+  }
+
+  isObject(val: any): boolean {
+    return val !== null && typeof val === 'object' && !Array.isArray(val);
   }
 
 }

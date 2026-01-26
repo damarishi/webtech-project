@@ -6,7 +6,10 @@ const isAuth = require("../services/isAuth");
 const restaurantCtrl = require('../controllers/restaurant.controller');
 
 router.get('/', isAuth, restaurantCtrl.getRestaurantsWithDistance);
-//router.get('/', restaurantCtrl.getAll);
+router.get('/getAll', restaurantCtrl.getAll);
+router.post('/', restaurantCtrl.createRestaurant);
+router.put('/:id', restaurantCtrl.editRestaurant);
+router.delete('/:id', restaurantCtrl.deleteRestaurant);
 router.get('/:id/menu', restaurantCtrl.getMenu);
 router.get('/:id', restaurantCtrl.getItem);
 

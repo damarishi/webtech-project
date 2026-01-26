@@ -22,7 +22,11 @@ export class Cart implements OnInit {
     this.items$ = this.cartService.items$;
   }
 
-  remove(itemId: number) {
+  increase(item: CartItem) {
+    this.cartService.increaseItem(item);
+  }
+
+  decrease(itemId: number) {
     this.cartService.removeItem(itemId);
   }
 

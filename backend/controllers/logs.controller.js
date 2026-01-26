@@ -1,4 +1,5 @@
 const db = require('../pool');
+const logger = require('../events/logger.js');
 
 exports.getAll = async (req, res) => {
     try {
@@ -16,6 +17,14 @@ exports.createLog = async (req, res) => {
         const query = 'INSERT INTO logs (description, typeoflog) VALUES ($1, $2) RETURNING *'
         const values = [description, typeoflog];
         const result = await db.query(query, values);
+
+        /*
+        logger.emit('log', { 
+            description: `Log has been created`, 
+            typeOfLog: 2 
+        });
+        */
+
         res.status(200).json(result.rows);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch logs' });
@@ -29,6 +38,12 @@ exports.updateLog = async (req, res) => {
 
         const query = 'UPDATE logs SET description = $1, typeoflog = $2 WHERE id = $3 RETURNING *'
         const values = [description, typeoflog, logId];
+
+        logger.emit('log', { 
+            description: `Log has been updated: ` + logId, 
+            typeOfLog: 2 
+        });
+
         const result = await db.query(query, values);
         res.status(200).json(result.rows);
     } catch (error) {
@@ -43,6 +58,12 @@ exports.deleteLog = async (req, res) => {
         const query = 'DELETE FROM logs WHERE id = $1 RETURNING *'
         const values = [logId];
         const result = await db.query(query, values);
+
+        logger.emit('log', { 
+            description: `Log has been deleted: ` + logId, 
+            typeOfLog: 2 
+        });
+
         res.status(200).json(result.rows);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch logs' });
