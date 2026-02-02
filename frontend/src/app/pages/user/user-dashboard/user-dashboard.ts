@@ -43,7 +43,11 @@ export class UserDashboard implements OnInit {
   }
 
   loadRestaurants(maxMinutes: number) {
-    this.restaurants$ = this.restaurantService.getDashboardRestaurants(maxMinutes);
+    this.restaurants$ = this.restaurantService.getDashboardRestaurants(
+      maxMinutes,
+      this.activeFilter.sortBy,
+      this.activeFilter.sortDirection
+    );
     this.restaurants$.subscribe(restaurants => {
       console.log('Restaurants:', restaurants);
     })
@@ -52,6 +56,7 @@ export class UserDashboard implements OnInit {
   onFilterChange(filter: RestaurantFilter) {
     console.log('Filter changed:', filter);
     this.activeFilter = { ...filter };
+
     this.loadRestaurants(filter.maxMinutes ?? 999);
   }
 }

@@ -16,6 +16,21 @@
     }
   </div>
 
+  <!-- Rating -->
+  <div class="filter-section">
+    <h5>Rating</h5>
+    @for (option of sortOptions; track option.label) {
+      <label class="filter-option">
+        <input
+          type="radio"
+          name="sort"
+          (change)="setSort(option.value)"
+        />
+        {{ option.label }}
+      </label>
+    }
+  </div>
+
   <!-- Category -->
   <div class="filter-section">
     <h5>Category</h5>

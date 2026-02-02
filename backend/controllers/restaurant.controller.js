@@ -107,6 +107,9 @@ exports.deleteRestaurant = async (req, res) => {
 
 exports.getRestaurantsWithDistance = async (req, res) => {
     try {
+        const sortBy = req.query.sortBy;
+        const sortDirection = req.query.sortDirection === 'asc' ? 'asc' : 'desc';
+
         const maxMinutes = Number(req.query.maxMinutes) || 999;
         const speed = 0.5;
         const prepTime = 10;
@@ -138,7 +141,18 @@ exports.getRestaurantsWithDistance = async (req, res) => {
             };
         });
 
-        const filtered = enriched.filter(r => r.estimatedDeliveryTime <= maxMinutes);
+        const filtered = enriched.filter(
+            r => r.estimatedDeliveryTime <= maxMinutes
+        );
+
+        if (sortBy === 'rating') {
+            filtered.sort((a, b) => {
+                if (sortDirection === 'asc') {
+                    return a.avg_rating - b.avg_rating;
+                }
+                return b.avg_rating - a.avg_rating;
+            });
+        }
 
         console.log(filtered);
 

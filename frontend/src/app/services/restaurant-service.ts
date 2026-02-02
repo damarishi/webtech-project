@@ -17,9 +17,19 @@ export class RestaurantService {
     return this.http.get<Restaurant>(`${restaurantsURL}`);
   }
 
-  getDashboardRestaurants(maxMinutes: number) {
+  getDashboardRestaurants(
+    maxMinutes: number,
+    sortBy?: string,
+    sortDirection?: string
+  ) {
     return this.http.get<Restaurant[]>(`${restaurantsURL}`,
-      { params: maxMinutes ? { maxMinutes } : {} }
+      {
+        params: {
+          maxMinutes,
+          sortBy: sortBy ?? '',
+          sortDirection: sortDirection ?? ''
+        }
+      }
     );
   }
 
