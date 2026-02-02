@@ -48,10 +48,14 @@
         />
       </div>
 
-      <button type="submit" [disabled]="f.invalid">
+      <button class="submit" type="submit" [disabled]="f.invalid">
         Save changes
       </button>
 
     </form>
+
+    <button class="logout" type="button" (click)="logout()">
+      Logout
+    </button>
   </section>
 }

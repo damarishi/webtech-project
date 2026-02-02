@@ -15,4 +15,5 @@ export class UserService {
   updateMe(data: Partial<User>) {
     return this.http.patch<User>(`${this.api}/me`, data);
   }
+
 }
