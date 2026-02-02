@@ -30,7 +30,7 @@ input:disabled {
   color: #888;
 }
 
-button {
+.submit {
   margin-top: 1.5rem;
   width: 100%;
   padding: 0.7rem;
@@ -42,7 +42,19 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
+.submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.logout {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 10px;
+  boerder: none;
+  background: red;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
 }

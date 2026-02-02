@@ -32,7 +32,7 @@ export class RestaurantList implements OnChanges {
     this.filtered = this.restaurants.filter(r =>
       (!this.filter.cuisines.length || this.filter.cuisines.includes(r.cuisine)) &&
       (!this.filter.categories.length || this.filter.categories.includes(r.category)) &&
-      (!this.filter.prices.length || this.filter.prices.includes(r.priceLevel)) &&
+      (!this.filter.prices.length || this.filter.prices.includes(r.price_level)) &&
       r.estimatedDeliveryTime <= max &&
       (!this.searchText || r.restaurant_name.toLowerCase().includes(this.searchText))
     );

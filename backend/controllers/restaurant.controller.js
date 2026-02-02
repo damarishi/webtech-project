@@ -105,9 +105,11 @@ exports.deleteRestaurant = async (req, res) => {
     }
 }
 
-
 exports.getRestaurantsWithDistance = async (req, res) => {
     try {
+        const sortBy = req.query.sortBy;
+        const sortDirection = req.query.sortDirection === 'asc' ? 'asc' : 'desc';
+
         const maxMinutes = Number(req.query.maxMinutes) || 999;
         const speed = 0.5;
         const prepTime = 10;
@@ -117,12 +119,23 @@ exports.getRestaurantsWithDistance = async (req, res) => {
             values: [req.user.user_id]
         };
 
+        await updateRestaurantPrice(2);
+        //TODO: hier noch manuell gemacht, normalerweise, wenn item hinzugefügt werden z.B. in einem item controller
+
         const userResult = await pool.query(queryUser);
         const userPoint = parsePoint(userResult.rows[0]?.location);
         if (!userPoint) return res.status(400).json({ error: "User location missing" });
 
         const queryRestaurant = {
-            text: 'SELECT restaurant_id, restaurant_name, location FROM restaurant'
+            text: `SELECT 
+                        restaurant_id, 
+                        restaurant_name, 
+                        location, 
+                        price_level,
+                        avg_rating, 
+                        review_count  
+                    FROM restaurant
+                    `
         };
 
         const restaurantResult = await pool.query(queryRestaurant);
@@ -139,7 +152,25 @@ exports.getRestaurantsWithDistance = async (req, res) => {
             };
         });
 
-        const filtered = enriched.filter(r => r.estimatedDeliveryTime <= maxMinutes);
+        let filtered = enriched.filter(
+            r => r.estimatedDeliveryTime <= maxMinutes
+        );
+
+        if (req.query.prices?.length) {
+            const allowed = req.query.prices.map(Number);
+            filtered = filtered.filter(r =>
+                allowed.includes(r.price_level)
+            );
+        }
+
+        if (sortBy === 'rating') {
+            filtered.sort((a, b) => {
+                if (sortDirection === 'asc') {
+                    return a.avg_rating - b.avg_rating;
+                }
+                return b.avg_rating - a.avg_rating;
+            });
+        }
 
         console.log(filtered);
 
@@ -211,4 +242,38 @@ function parsePoint(point) {
 
     return { x: point.x, y: point.y };
 }
+
+function getPriceLevel(avgPrice) {
+    if (avgPrice < 10) return 1;
+    if (avgPrice > 20) return 2;
+    return 3;
+}
+
+async function updateRestaurantPrice(restaurantId) {
+    const query ={
+        text: `
+           UPDATE restaurant
+           SET
+               avg_price = COALESCE((
+                   SELECT ROUND(AVG(price), 2)
+                   FROM items
+                   WHERE restaurant_id = $1
+                ), 0)
+           WHERE restaurant_id = $1
+           RETURNING avg_price;
+        `,
+        values: [restaurantId]
+    }
+
+    const { rows } = await pool.query(query);
+    const avgPrice = rows[0].avg_price;
+
+    const priceLevel = getPriceLevel(avgPrice);
+
+    await pool.query(
+        'UPDATE restaurant SET price_level = $1 WHERE restaurant_id = $2',
+        [priceLevel, restaurantId]
+    );
+}
+
 

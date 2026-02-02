@@ -6,6 +6,7 @@ import {Navbar} from '../../../shared/ui/navbar/navbar';
 import {UserService} from '../../../services/user-service';
 import {User} from '../../../types/user'
 import {FormsModule} from '@angular/forms';
+import {AuthService} from '../../../features/auth/auth-service';
 
 @Component({
   selector: 'app-user-profile',
@@ -23,7 +24,10 @@ export class UserProfile implements OnInit {
   //separates Form-Model
   form: Partial<User> = {};
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.user$ = this.userService.getMe();
@@ -49,6 +53,10 @@ export class UserProfile implements OnInit {
       },
       error: error => console.error(error),
     })
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

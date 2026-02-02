@@ -3,4 +3,7 @@ export interface RestaurantFilter {
   categories: string[];
   prices: number[];
   maxMinutes: number;
+
+  sortBy?: 'rating';
+  sortDirection?: 'asc' | 'desc';
 }
