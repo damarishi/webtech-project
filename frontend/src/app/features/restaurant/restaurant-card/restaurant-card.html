@@ -16,6 +16,10 @@
         {{ restaurant.estimatedDeliveryTime | number:'1.0-0' }} min
       </p>
 
+      <p class="price">
+        {{ '€'.repeat(restaurant.price_level) }}
+      </p>
+
       <p class="rating">
         {{ restaurant.avg_rating | number:'1.1-1'}}
         <span class="reviews">({{ restaurant.review_count }})</span>
