@@ -10,4 +10,6 @@ export interface Restaurant {
   }
   distance: number;
   estimatedDeliveryTime: number;
+  review_count: number;
+  avg_rating: number;
 }

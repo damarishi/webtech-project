@@ -105,7 +105,6 @@ exports.deleteRestaurant = async (req, res) => {
     }
 }
 
-
 exports.getRestaurantsWithDistance = async (req, res) => {
     try {
         const maxMinutes = Number(req.query.maxMinutes) || 999;
@@ -122,7 +121,7 @@ exports.getRestaurantsWithDistance = async (req, res) => {
         if (!userPoint) return res.status(400).json({ error: "User location missing" });
 
         const queryRestaurant = {
-            text: 'SELECT restaurant_id, restaurant_name, location FROM restaurant'
+            text: 'SELECT restaurant_id, restaurant_name, location, avg_rating, review_count  FROM restaurant'
         };
 
         const restaurantResult = await pool.query(queryRestaurant);
@@ -211,4 +210,5 @@ function parsePoint(point) {
 
     return { x: point.x, y: point.y };
 }
+
 

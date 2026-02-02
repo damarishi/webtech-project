@@ -40,6 +40,8 @@ CREATE TABLE restaurant
     location            POINT NOT NULL,
     logo_id             INT,
     banner_id           INT,
+    avg_rating          NUMERIC(3,2) DEFAULT 0,
+    review_count        INT DEFAULT 0,
     FOREIGN KEY (owner_id) REFERENCES users(user_id),
     FOREIGN KEY (logo_id) REFERENCES images(image_id),
     FOREIGN KEY (banner_id) REFERENCES images(image_id)
