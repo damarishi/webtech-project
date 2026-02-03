@@ -18,12 +18,12 @@ router.get('',async (req, res) =>{
 
     restaurantCtrl.getRestaurant(email).then(
         result => {
-            let data = {};
+            let restaurant = {};
             if (result.rowCount > 0) {
-                data = cast.Restaurant(result.rows[0]);
+                restaurant = cast.Restaurant(result.rows[0]);
             }
-            console.log("Restaurant Query: ", data);
-            res.status(200).json(data);
+            console.log("Restaurant Query: ", restaurant);
+            res.status(200).json(restaurant);
         }
     ).catch(error => {
         console.error(error)
@@ -250,6 +250,38 @@ router.get('/item/:id', async (req, res) => {
         console.error(error);
         res.status(503).json({message: error});
     }
+})
+
+router.post('/item', async (req, res) => {
+    const item = req.body.item;
+    const images = item.images;
+    const tags = item.tags;
+    try{
+        await pool.query('BEGIN');
+        await itemCtrl.createItem(item);
+        await Promise.all(
+            item.tags.map(tag => {
+                tagCtrl.assignItemTag(item.item_id, tag.tag_id);
+                })
+        );
+        //Images sent separately
+        await pool.query('COMMIT');
+    } catch (err) {
+        await pool.query('ROLLBACK');
+        console.error(error);
+        res.status(503).json({message: error});
+    }
+})
+
+router.put('/item/:id', async (req, res) => {
+    const id = req.params.id;
+    const item = req.body.item;
+    //TODO: remove old tags
+    //TODO: remove old images
+    //TODO: update item
+    //TODO: set new tags
+    //TODO: set new images
+    res.status(501).json({message: "Implementation underway"});
 })
 //TODO: update order_items, item_images, item_tags on necessary routes
 //TODO: load item images only if wanted

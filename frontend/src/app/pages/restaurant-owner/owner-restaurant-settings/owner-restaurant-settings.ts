@@ -30,4 +30,5 @@ export class OwnerRestaurantSettings implements OnInit{
 
   }
 
+  protected readonly Weekday = Weekday;
 }
