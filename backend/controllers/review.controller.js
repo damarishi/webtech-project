@@ -43,6 +43,7 @@ exports.create = async (req, res) => {
         }
 
         const result = await pool.query(query);
+        await updateRestaurantRating(restaurantId);
 
         logger.emit('log', { 
             description: `Review has been created by UserId: ` + code + ` RestaurantId: ` + restaurantId, 
@@ -54,4 +55,27 @@ exports.create = async (req, res) => {
         console.error('Error while creating reviews: ' + error.message);
         res.status(500).json({error: 'Error while creating review' + error.message});
     }
+}
+
+async function updateRestaurantRating(restaurantId) {
+    const query = {
+        text: `
+            UPDATE restaurant
+            SET
+                avg_rating = COALESCE((
+                    SELECT ROUND(AVG(rating)::numeric, 2)
+                    FROM reviews
+                    WHERE restaurant_id = $1
+                    ), 0),
+                review_count = (
+                    SELECT COUNT(*)
+                    FROM reviews
+                    WHERE restaurant_id = $1
+                )
+            WHERE restaurant_id = $1
+        `,
+        values: [restaurantId]
+    };
+
+    await pool.query(query);
 }

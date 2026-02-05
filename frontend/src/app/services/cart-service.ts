@@ -2,12 +2,15 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { CartItem } from '../types/CartItem';
 import {HttpClient} from '@angular/common/http';
+import {Discount} from '../types/discount';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private cart$ = new BehaviorSubject<CartItem[]>([]);
   readonly items$ = this.cart$.asObservable();
   private restaurantId: number | null = null;
+  private discount$ = new BehaviorSubject<Discount | null>(null)
+  readonly discountObs$ = this.discount$.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -35,10 +38,27 @@ export class CartService {
     this.cart$.next([...cart]);
   }
 
+  increaseItem(item: CartItem){
+    item.quantity++;
+  }
+
   removeItem(itemId: number) {
-    this.cart$.next(
-      this.cart$.value.filter(i => i.item_id !== itemId)
-    );
+    const cart = this.cart$.value.map(item => {
+      if (item.item_id === itemId) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    }).filter(item => item.quantity > 0);
+
+    this.cart$.next(cart);
+  }
+
+  applyDiscount(discount: Discount) {
+    this.discount$.next(discount);
+  }
+
+  clearDiscount() {
+    this.discount$.next(null);
   }
 
   clear() {
@@ -53,6 +73,16 @@ export class CartService {
     );
   }
 
+  getTotalWithDiscount() {
+    const total = this.getTotal();
+    const discount = this.discount$.value;
+
+    if (!discount) return total;
+
+    const reduction = total * (discount.value / 100);
+    return Math.max(total - reduction, 0);
+  }
+
   checkout() {
     if (!this.restaurantId) {
       throw new Error('No restaurant selected');
@@ -64,8 +94,8 @@ export class CartService {
         item_id: i.item_id,
         quantity: i.quantity
       })),
-      total: this.getTotal(),
-      discountId: null,
+      total: this.getTotalWithDiscount(),
+      discountId: this.discount$.value?.discount_id ?? null,
       fee: 3
     });
   }

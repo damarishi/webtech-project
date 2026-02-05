@@ -27,12 +27,12 @@ export class OwnerService {
   }
 
   postRestaurant(restaurant:OwnerRestaurant):Promise<OwnerApiResponse>{
-    return this.data.post(this.url, restaurant);
+    return this.data.post(this.url, {restaurant});
   }
 
   putRestaurant(restaurant:OwnerRestaurant):Promise<OwnerApiResponse>{
     if(!restaurant.restaurant_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(this.url,restaurant.restaurant_id, restaurant);
+    return this.data.put(this.url,restaurant.restaurant_id, {restaurant});
   }
 
   deleteRestaurant(restaurant_id:string):Promise<OwnerApiResponse>{
@@ -42,7 +42,7 @@ export class OwnerService {
 
 
   /*ORDERS START*/
-  getAllOrders():Promise<OwnerOrder[]>{
+  getAllOrders():Promise<{orders: OwnerOrder[]}>{
     return this.data.get(`${this.url}/orders`);
   }
 
@@ -51,22 +51,22 @@ export class OwnerService {
   }
 
   postOrder(order:OwnerOrder):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/order`, order);
+    return this.data.post(`${this.url}/order`, {order});
   }
 
   putOrder(order:OwnerOrder):Promise<OwnerApiResponse>{
     if(!order.order_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/order}`,order.order_id, order);
+    return this.data.put(`${this.url}/order`,order.order_id, {order});
   }
 
   deleteOrder(order_id:string):Promise<OwnerApiResponse>{
-    return this.data.delete(`${this.url}/order}`, order_id);
+    return this.data.delete(`${this.url}/order`, order_id);
   }
   /*ORDERS END*/
 
 
   /*TAGS START*/
-  getAllTags():Promise<OwnerTag[]>{
+  getAllTags():Promise<{ tags: OwnerTag[] }>{
     return this.data.get(`${this.url}/tags`);
   }
 
@@ -75,12 +75,12 @@ export class OwnerService {
   }
 
   postTag(tag:OwnerTag):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/tag`, tag);
+    return this.data.post(`${this.url}/tag`, {tag});
   }
 
   putTag(tag:OwnerTag):Promise<OwnerApiResponse>{
     if(!tag.tag_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/tag`,tag.tag_id,tag);
+    return this.data.put(`${this.url}/tag`,tag.tag_id, {tag});
   }
 
   deleteTag(tag_id:string):Promise<OwnerApiResponse>{
@@ -90,7 +90,7 @@ export class OwnerService {
 
 
   /*CATEGORIES START*/
-  getAllCategories():Promise<OwnerCategory[]>{
+  getAllCategories():Promise<{ categories: OwnerCategory[] }>{
     return this.data.get(`${this.url}/categories`);
   }
 
@@ -99,12 +99,12 @@ export class OwnerService {
   }
 
   postCategory(category:OwnerCategory):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/category`, category);
+    return this.data.post(`${this.url}/category`, {category});
   }
 
   putCategory(category:OwnerCategory):Promise<OwnerApiResponse>{
     if(!category.category_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/category`, category.category_id, category);
+    return this.data.put(`${this.url}/category`, category.category_id, {category});
   }
 
   deleteCategory(category_id:string):Promise<OwnerApiResponse>{
@@ -114,7 +114,7 @@ export class OwnerService {
 
 
   /*ITEMS START*/
-  getAllItems():Promise<OwnerItem[]>{
+  getAllItems():Promise<{ items: OwnerItem[] }>{
     return this.data.get(`${this.url}/items`);
   }
 
@@ -123,12 +123,12 @@ export class OwnerService {
   }
 
   postItem(item:OwnerItem):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/item`, item);
+    return this.data.post(`${this.url}/item`, {item});
   }
 
   putItem(item:OwnerItem):Promise<OwnerApiResponse>{
     if(!item.item_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/item`, item.item_id, item);
+    return this.data.put(`${this.url}/item`, item.item_id, {item});
   }
 
   deleteItem(item_id:string):Promise<OwnerApiResponse>{
@@ -138,7 +138,7 @@ export class OwnerService {
 
 
   /*OPENING-TIMES START*/
-  getAllTimes():Promise<OwnerOpeningTime[]>{
+  getAllTimes():Promise<{ times: OwnerOpeningTime[] }>{
     return this.data.get(`${this.url}/times`);
   }
 
@@ -147,7 +147,7 @@ export class OwnerService {
   }
 
   postTime(time:OwnerOpeningTime):Promise<OwnerApiResponse>{
-    return this.data.post(`${this.url}/time`, time);
+    return this.data.post(`${this.url}/time`, {time});
   }
 
   putTime(time:OwnerOpeningTime):Promise<OwnerApiResponse>{

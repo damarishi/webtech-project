@@ -40,6 +40,11 @@ CREATE TABLE restaurant
     location            POINT NOT NULL,
     logo_id             INT,
     banner_id           INT,
+    avg_price           NUMERIC(10,2) DEFAULT 0,
+    price_level         INT DEFAULT 1,
+    avg_rating          NUMERIC(3,2) DEFAULT 0,
+    review_count        INT DEFAULT 0,
+
     FOREIGN KEY (owner_id) REFERENCES users(user_id),
     FOREIGN KEY (logo_id) REFERENCES images(image_id),
     FOREIGN KEY (banner_id) REFERENCES images(image_id)
@@ -119,7 +124,7 @@ CREATE TABLE orders
     user_id         INT NOT NULL,
     total           DECIMAL(10,2) NOT NULL,
     discount_id     INT,
-    status          INT NOT NULL,
+    status          INT NOT NULL,-- 0..pending -> 1..preparing->2..ready->3..dispatched->-1..closed
     fee             INT NOT NULL,
     date            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id),
@@ -129,9 +134,9 @@ CREATE TABLE orders
 
 CREATE TABLE order_item
 (
-    order_id        INT NOT NULL,
-    item_id         INT NOT NULL,
-    quantity        SMALLINT DEFAULT 1,
+    order_id    INT NOT NULL,
+    item_id     INT NOT NULL,
+    quantity    SMALLINT DEFAULT 1,
     PRIMARY KEY (order_id,item_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (item_id) REFERENCES items(item_id)

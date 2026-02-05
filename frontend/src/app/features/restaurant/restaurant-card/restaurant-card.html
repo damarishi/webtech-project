@@ -6,14 +6,26 @@
   <div class="content">
     <h3>{{ restaurant.restaurant_name }}</h3>
 
-    <p class="meta">
-      {{ restaurant.cuisine }}
-    </p>
+    <div class="subcontent">
+      <p class="meta">
+        cuisine
+        {{ restaurant.cuisine }}
+      </p>
 
-    <p class="info">
-      <!--restaurant.delivery_time-->
-      delivery_time
-    </p>
+      <p class="info">
+        {{ restaurant.estimatedDeliveryTime | number:'1.0-0' }} min
+      </p>
+
+      <p class="price">
+        {{ '€'.repeat(restaurant.price_level) }}
+      </p>
+
+      <p class="rating">
+        {{ restaurant.avg_rating | number:'1.1-1'}}
+        <span class="reviews">({{ restaurant.review_count }})</span>
+      </p>
+    </div>
+
   </div>
 
 </div>

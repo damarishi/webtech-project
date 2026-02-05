@@ -6,7 +6,36 @@
         <small>{{ item.quantity }} × {{ item.price | currency:'EUR' }}</small>
       </span>
 
-      <button (click)="remove(item.item_id)">✕</button>
+      <div class="quantity-controls">
+        <button (click)="decrease(item.item_id)">−</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="increase(item)">+</button>
+      </div>
+    </div>
+  }
+
+  <hr />
+
+  <div class="discount-box">
+    <input
+      type="text"
+      placeholder="Discount code"
+      [(ngModel)]="discountCode"
+    />
+    <button (click)="applyDiscount()">Apply</button>
+
+    @if (discountError) {
+      <small class="error">{{ discountError }}</small>
+    }
+  </div>
+
+  @if (discount$ | async; as discount) {
+    <div class="discount-info">
+      @if (discount.source === 'LOYALTY') {
+        🎁 Loyalty Reward −{{ discount.value }}%
+      } @else {
+        🏷 Code {{ discount.code }} −{{ discount.value }}%
+      }
     </div>
   }
 
@@ -14,7 +43,7 @@
 
   <strong>
     <span>Total</span>
-    <span>{{ getTotalPrice() | currency:'EUR' }}</span>
+    <span>{{ cartService.getTotalWithDiscount() | currency:'EUR' }}</span>
   </strong>
 
   <button (click)="checkout()">Checkout</button>

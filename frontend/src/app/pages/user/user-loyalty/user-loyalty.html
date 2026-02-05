@@ -1,1 +1,34 @@
+@if (levels$ | async; as data) {
 
+  @for (level of data.levels; track level.period) {
+    <div class="card" [class.locked]="!level.unlocked">
+
+      <div class="header">
+        <strong>
+          {{ level.period | titlecase }}
+        </strong>
+        <span>{{ level.discount }}%</span>
+      </div>
+
+      <div class="progress-bar">
+        <div
+          class="progress"
+          [style.width.%]="level.progress"
+        ></div>
+      </div>
+
+      <small>
+        {{ level.stats.orders }}/{{ level.required.orders }} Orders ·
+        {{ level.stats.amount | currency:'EUR' }} /
+        {{ level.required.amount | currency:'EUR' }}
+      </small>
+
+      @if (level.unlocked) {
+        <span class="badge">Unlocked</span>
+      } @else {
+        <span class="badge locked">Locked</span>
+      }
+
+    </div>
+  }
+}
