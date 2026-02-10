@@ -68,14 +68,22 @@
                     @for (field of CATEGORY_FIELDS; track field) {
                         <!-- Filters Ids and Timestamps -->
                         @if (!field.toLowerCase().endsWith('id') && !field.toLowerCase().endsWith('at')) {  
-                            <div class="form-group">
-                                <label>{{ field }}</label>
-                                <input 
-                                    type="text" 
-                                    [(ngModel)]="selectedItem[field]" 
-                                    class="form-control" 
-                                    [placeholder]="'Enter ' + field">
-                            </div>
+                            
+                            @if (modalMode === "create") {
+                                <div class="form-group">
+                                    <label>{{ field }}</label>
+                                    <input 
+                                        type="text" 
+                                        [(ngModel)]="selectedItem[field]" 
+                                        class="form-control" 
+                                        [placeholder]="'Enter ' + field">
+                                </div>
+                            } @else {
+                                <div class="item-info-display">
+                                    <label>{{ field }}:</label>
+                                    <div class="right-aligned">{{selectedItem[field]}}</div>
+                                </div>
+                            }
                         }
                     }
                 </div>
