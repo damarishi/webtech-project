@@ -28,8 +28,10 @@ export class FinancialOverviewDataView {
   summaryTotalOrders: number = 0;
   summaryRevenue: number = 0;
   summaryAverageOrderPrice: number = 0;
-  //summaryThisMonthOrderCount: number = 0;
 
+  summaryLast30DaysOrderCount: number = 0;
+  summaryLast30DaysRevenue: number = 0;
+  summaryLast30DaysAverageOrderPrice: number = 0;
 
   Object = Object; //to use Object.keys in html for dynamic display
   isModalOpen: boolean = false;
@@ -72,11 +74,24 @@ export class FinancialOverviewDataView {
     this.summaryTotalOrders = this.loadedItems.length;
     this.summaryRevenue = 0;
     this.summaryAverageOrderPrice = 0;
-    //this.summaryThisMonthOrderCount = 0;
-    this.loadedItems.array.forEach((order: DbOrder) => {
-      this.summaryRevenue += order[6];    //.fee
-      this.summaryAverageOrderPrice += order[4] + order[6]; //total + fee?
-      //this.summaryThisMonthOrderCount = 0;
+    this.summaryLast30DaysOrderCount = 0;
+    
+
+    let currentDate = new Date();
+    let thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+
+    console.log(currentDate, thirtyDaysAgo);
+    
+    this.loadedItems.forEach((order: any) => {
+      console.log(order.date);
+      this.summaryRevenue += order.fee;    //.fee
+      this.summaryAverageOrderPrice += order.fee + Number(order.total); //total + fee?
+      if (new Date(order.date) > thirtyDaysAgo && new Date(order.date) <= currentDate) {
+        this.summaryLast30DaysOrderCount++;
+        this.summaryLast30DaysRevenue += order.fee;
+        this.summaryLast30DaysAverageOrderPrice += order.fee + Number(order.total);
+      }
     });
     this.summaryAverageOrderPrice /= this.summaryTotalOrders;
 
