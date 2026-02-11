@@ -11,7 +11,9 @@ const logger = require('../events/logger.js');
 */
 exports.getAll = async (req, res) => {
     try {
-        const result = await db.query('SELECT * FROM users');
+        const result = await db.query(
+            'SELECT user_id, email, username, full_name, location, times_warned, banned_until, is_admin, is_deleted FROM users'
+        );
         res.status(200).json(result.rows);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch users' });

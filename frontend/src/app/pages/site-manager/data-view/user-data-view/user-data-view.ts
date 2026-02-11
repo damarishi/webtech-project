@@ -90,6 +90,12 @@ export class UserDataView {
     this.modalMode = mode;
     this.selectedItem = { ...item };  //shallow copy to avoid direct changes
 
+    //parse object Object (location) to proper location coordinates
+    if (mode === 'edit' && this.selectedItem.location && typeof this.selectedItem.location === 'object') {
+        const loc = this.selectedItem.location;
+        this.selectedItem.location = `(${loc.x},${loc.y})`;
+    }
+
     this.isModalOpen = true;
   }
 
@@ -193,6 +199,10 @@ export class UserDataView {
   trackById(index: number, item: any): any {
     const idKey = Object.keys(item).find(key => key.toLowerCase().endsWith('id'));
     return idKey ? item[idKey] : index; 
+  }
+
+    isObject(val: any): boolean {
+    return val !== null && typeof val === 'object' && !Array.isArray(val);
   }
 
 }

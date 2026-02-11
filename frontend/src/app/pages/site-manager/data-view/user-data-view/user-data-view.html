@@ -38,7 +38,14 @@
                 @for (item of filteredItems; track trackById($index, item)) {
                     <tr>
                         @for (key of Object.keys(item); track key) {
-                            @if (key !== 'is_deleted') { <td>{{ item[key] }}</td> }
+                            @if (key !== 'is_deleted') { 
+                                <td>
+                                    @if (isObject(item[key])) {
+                                        ({{ item[key].x }}, {{ item[key].y }})
+                                    } @else {
+                                        {{ item[key] }}
+                                    }
+                                </td> }
                         }
                         <td>
                             <button class="btn-edit" (click)="onEditItem(item)">Edit</button>
@@ -63,14 +70,27 @@
                     @for (field of CATEGORY_FIELDS; track field) {
                         <!-- Filters Ids and Timestamps -->
                         @if (!field.toLowerCase().endsWith('id') && !field.toLowerCase().endsWith('at')) {  
-                            <div class="form-group">
-                                <label>{{ field }}</label>
-                                <input 
-                                    type="text" 
-                                    [(ngModel)]="selectedItem[field]" 
-                                    class="form-control" 
-                                    [placeholder]="'Enter ' + field">
-                            </div>
+                            @if (modalMode === "create" || modalMode === "edit") {
+                                <div class="form-group">
+                                    <label>{{ field }}</label>
+                                    <input 
+                                        type="text" 
+                                        [(ngModel)]="selectedItem[field]" 
+                                        class="form-control" 
+                                        [placeholder]="'Enter ' + field">
+                                </div>
+                            } @else {
+                                <div class="item-info-display">
+                                    <label>{{ field }}:</label>
+                                    <div class="right-aligned">
+                                        @if (isObject(selectedItem[field])) {
+                                            ({{ selectedItem[field].x }}, {{ selectedItem[field].y }})
+                                        } @else {
+                                            {{selectedItem[field]}}
+                                        }
+                                    </div>
+                                </div>
+                            }
                         }
                     }
                 </div>
