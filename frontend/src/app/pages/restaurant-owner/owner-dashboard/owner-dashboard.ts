@@ -29,15 +29,6 @@ export class OwnerDashboard implements OnInit {
     this.getOrders();
   }
 
-  getRestaurant(){
-    this.ownerService.getRestaurant().then(
-      res => {
-        this.restaurant = res;
-        console.log(this.restaurant);
-        this.cdr.detectChanges()
-      }).catch(error => console.log(error));
-  }
-
   getOrders() {
     this.ownerService.getAllOrders().then(data => {
       this.orders = data.orders;

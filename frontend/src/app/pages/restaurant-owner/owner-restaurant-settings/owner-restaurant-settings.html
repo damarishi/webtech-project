@@ -1,22 +1,44 @@
 <div class="flex flex-col w-full justify-center items-center p-2">
-  <div class="Restaurant_Editing">
-    <h1 class="text-2xl font-semibold">Edit Restaurant</h1>
-    content
-  </div>
+  <select class=" justify-center items-center p-2" (change)="loadSettings()" [(ngModel)]="mode">
+    @for(s of Object.values(settings); track s){
+      <option [value]="s">{{s}}</option>
+    }
+  </select>
 
-  <div class="Times Editing">
-    <h1 class="text-2xl font-semibold">Edit Opening Hours</h1>
-    <select>
-      @for(w of dayList; track weekdays[w]){
-        <option>{{Weekday[w]}}</option>
-      }
-    </select>
-    content
-  </div>
-  <div class="Items Editing">
-    <h1 class="text-2xl font-semibold">Edit Items</h1>
-    content
-  </div>
+  @switch (mode){
+    @case(settings.RESTAURANT){
+      <div class="Restaurant_Editing">
+        <h1 class="text-2xl font-semibold">Edit Restaurant</h1>
+          <owner-restaurant-component [restaurant]="restaurant" (updateSuccess)="loadSettings()"></owner-restaurant-component>
+
+      </div>
+    }
+    @case(settings.TIME){
+      <div class="Times Editing">
+        <h1 class="text-2xl font-semibold">Edit Opening Hours</h1>
+        <select>
+          @for(w of dayList; track weekdays[w]){
+            <option>{{Weekday[w]}}</option>
+          }
+        </select>
+        content
+      </div>
+    }
+    @case(settings.ITEMS){
+      <div class="Items Editing">
+        <h1 class="text-2xl font-semibold">Edit Items</h1>
+        content
+      </div>
+    }
+    @default {
+      <div class ="Empty-Settings">
+        <h1 class="text-2xl font-semibold">No Settings</h1>
+      </div>
+    }
+  }
 </div>
+
+
+
 
 
