@@ -7,9 +7,18 @@
 <div class="container">
     <h2>Viewing Category: {{ category }}</h2>
     <div class="summary">
-        <div>Total Order Count:  {{summaryTotalOrders}}</div>
-        <div>Total Revenue:  {{summaryRevenue}}</div>
-        <div>Average Order Price:  {{summaryAverageOrderPrice}}</div>
+        <div class="totalStatistics">
+            <div>Total Order Count:  {{summaryTotalOrders}}</div>
+            <div>Total Revenue:  {{summaryRevenue}}</div>
+            <div>Average Order Price:  {{summaryAverageOrderPrice}}</div>
+        </div>
+        <div class="last30DaysStatistics">
+            <div>Orders in Last 30 Days: {{summaryLast30DaysOrderCount}}</div>
+            <div>Revenue in Last 30 Days: {{summaryLast30DaysRevenue}}</div>
+            <div>Average Order Price in Last 30 Days: {{summaryLast30DaysAverageOrderPrice}}</div>
+        </div>
+       
+       
     </div>
     @if (isLoading) {
         <div class="Temporary">Loading data...</div>
