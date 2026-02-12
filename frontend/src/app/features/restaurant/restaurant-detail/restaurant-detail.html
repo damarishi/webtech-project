@@ -2,8 +2,11 @@
   <div class="restaurant-detail">
     <h1>{{ restaurant.restaurant_name }}</h1>
     <p>opening hours</p>
-    <p>
-      delivery time
+    <p class="cuisine">
+      {{ restaurant.cuisine }}
+    </p>
+    <p class="avg-rating">
+      {{ restaurant.avg_rating | number: '1.1-1' }}⭐ ({{ restaurant.review_count }})
     </p>
   </div>
 
