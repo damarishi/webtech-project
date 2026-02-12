@@ -11,7 +11,7 @@ import {CartService} from '../../../services/cart-service';
 import {Review} from '../../../types/review';
 import {ReviewService} from '../../../services/review-service';
 import {FormsModule} from '@angular/forms';
-import { ChangeDetectorRef} from '@angular/core';
+import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-restaurant-detail',
