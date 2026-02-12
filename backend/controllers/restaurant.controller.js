@@ -131,6 +131,7 @@ exports.getRestaurantsWithDistance = async (req, res) => {
                         restaurant_id, 
                         restaurant_name, 
                         location, 
+                        cuisine,
                         price_level,
                         avg_rating, 
                         review_count  
@@ -160,6 +161,16 @@ exports.getRestaurantsWithDistance = async (req, res) => {
             const allowed = req.query.prices.map(Number);
             filtered = filtered.filter(r =>
                 allowed.includes(r.price_level)
+            );
+        }
+
+        if (req.query.cuisines?.length) {
+            const allowed = Array.isArray(req.query.cuisines)
+                ? req.query.cuisines
+                : [req.query.cuisines];
+
+            filtered = filtered.filter(r =>
+                allowed.includes(r.cuisine)
             );
         }
 
