@@ -55,7 +55,7 @@ exports.createOrder = async (req, res) => {
         //Owner benachrichtigen ??
 
         logger.emit('log', { 
-            description: `Order has been created: ` + code, 
+            description: `Order has been created: ` + orderId,
             typeOfLog: 2 
         });
 
