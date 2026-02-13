@@ -8,31 +8,26 @@
   @switch (mode){
     @case(settings.RESTAURANT){
       <div class="Restaurant_Editing">
-        <h1 class="text-2xl font-semibold">Edit Restaurant</h1>
+        <h1 class="text-2xl font-semibold text-center">Edit Restaurant</h1>
           <owner-restaurant-component [restaurant]="restaurant" (updateSuccess)="loadSettings()"></owner-restaurant-component>
 
       </div>
     }
     @case(settings.TIME){
       <div class="Times Editing">
-        <h1 class="text-2xl font-semibold">Edit Opening Hours</h1>
-        <select>
-          @for(w of dayList; track weekdays[w]){
-            <option>{{Weekday[w]}}</option>
-          }
-        </select>
-        content
+        <h1 class="text-2xl font-semibold text-center">Edit Opening Times</h1>
+        <opening-time-card-component [times]="openingTimes" (updateSuccess)="loadSettings()"></opening-time-card-component>
       </div>
     }
     @case(settings.ITEMS){
       <div class="Items Editing">
-        <h1 class="text-2xl font-semibold">Edit Items</h1>
+        <h1 class="text-2xl font-semibold text-center">Edit Items</h1>
         content
       </div>
     }
     @default {
       <div class ="Empty-Settings">
-        <h1 class="text-2xl font-semibold">No Settings</h1>
+        <h1 class="text-2xl font-semibold text-center">No Settings Available</h1>
       </div>
     }
   }

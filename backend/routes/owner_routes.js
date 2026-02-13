@@ -7,6 +7,7 @@ const itemCtrl = require("../controllers/owner-controller/owner.item.controller"
 const tagCtrl = require("../controllers/owner-controller/owner.tag.controller");
 const catCtrl = require("../controllers/owner-controller/owner.category.controller");
 const imageCtrl = require("../controllers/owner-controller/owner.image.controller");
+const timeCtrl = require("../controllers/owner-controller/owner.openingTime.controller");
 
 //api/owner/restaurant
 
@@ -177,7 +178,6 @@ router.get('/category/:id', async (req, res) => {
 })
 
 router.post('/category', async (req, res) => {
-    const id = req.params.id;
     const category = req.body.category;
     catCtrl.createCategory(category).then(result => {
         res.status(200).json({message: "success"});
@@ -252,6 +252,7 @@ router.get('/item/:id', async (req, res) => {
     }
 })
 
+//TODO: Finish item routes
 router.post('/item', async (req, res) => {
     const item = req.body.item;
     const images = item.images;
@@ -285,4 +286,65 @@ router.put('/item/:id', async (req, res) => {
 })
 //TODO: update order_items, item_images, item_tags on necessary routes
 //TODO: load item images only if wanted
+
+
+//OPENING-TIMES
+
+router.get('/times', async (req, res) => {
+    const email = req.user.email;
+    timeCtrl.getRestaurantTimes(email).then(result => {
+        const times = result.rows;
+        res.status(200).json({times});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+router.get('/times/:id', async (req, res) => {
+    const id = req.params.id;
+    timeCtrl.getTime(id).then(result => {
+        const time = result.rows[0];
+        res.status(200).json({time});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+
+router.post('/time', async (req, res) => {
+    const time = req.body.time;
+    const email = req.user.email;
+    restaurantCtrl.getRestaurant(email).then(restaurant_result => {
+        const restaurant_id = restaurant_result.rows[0].restaurant_id;
+        return timeCtrl.createTime(time, restaurant_id)
+    }).then(result => {
+        res.status(200).json({message: "success"});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+router.put('/time/:id', async (req, res) => {
+    const id = req.params.id;
+    const time = req.body.time;
+    timeCtrl.updateTime(time,id).then(result => {
+        res.status(200).json({message: "success"});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+router.delete('/time/:id', async (req, res) => {
+    const id = req.params.id;
+    timeCtrl.deleteTime(id).then(result => {
+        res.status(200).json({message: "success"});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
 module.exports = router;

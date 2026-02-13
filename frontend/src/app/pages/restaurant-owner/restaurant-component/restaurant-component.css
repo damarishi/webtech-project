@@ -1,35 +1,32 @@
-.profile-card {
+.restaurant-card {
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
 
-  background: #f3f4f6;          /* light gray */
+  background: whitesmoke;
   border-radius: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid lightgray;
 
   box-sizing: border-box;
 }
 
-/* Layout helpers */
 .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
 }
 
-/* Labels */
 label {
   font-size: 0.9rem;
   margin-bottom: 0.35rem;
-  color: #4b5563;
+  color: gray;
   font-weight: 500;
 }
 
-/* Inputs */
 input {
   padding: 0.6rem 0.8rem;
   border-radius: 10px;
-  border: 1px solid #d1d5db;
+  border: 1px solid lightgray;
   font-size: 0.95rem;
 
   background: white;
@@ -38,19 +35,9 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #1D902E;
-  box-shadow: 0 0 0 3px rgba(29, 144, 46, 0.15);
+  border-color: green;
 }
 
-/* Disabled inputs */
-input:disabled {
-  background: #f9fafb;
-  color: #9ca3af;
-  border-color: #e5e7eb;
-  cursor: not-allowed;
-}
-
-/* Button */
 button {
   margin-top: 1.5rem;
   width: 100%;
@@ -59,7 +46,7 @@ button {
   border-radius: 12px;
   border: none;
 
-  background: #1D902E;
+  background: green;
   color: white;
   font-weight: 600;
   font-size: 0.95rem;

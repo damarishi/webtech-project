@@ -4,8 +4,8 @@ exports.getRestaurantTimes = (email) =>{
     const getRestaurantTimesQuery = {
         text: `SELECT * FROM opening_times
                 WHERE restaurant_id = (SELECT restaurant_id FROM restaurant WHERE  owner_id = (
-                   SELECT user_id FROM users WHERE email = $1 AND is_deleted = FALSE
-                   ))`,
+                   SELECT user_id FROM users WHERE email = $1 AND is_deleted = FALSE))
+                   ORDER BY weekday, open_time`,
         values: [email]
     }
     return pool.query(getRestaurantTimesQuery);
@@ -17,13 +17,14 @@ exports.getTime= (opening_time_id) =>{
                 WHERE opening_time_id = $1`,
         values: [opening_time_id]
     }
+    return pool.query(getTimeQuery);
 }
 
-exports.createTime = (opening_time) =>{
+exports.createTime = (opening_time, restaurant_id) =>{
     const createTimeQuery = {
         text: `INSERT INTO opening_times (restaurant_id, weekday, open_time, close_time)
                 VALUES ($1, $2, $3,$4)`,
-        values: [opening_time.restaurant_id, opening_time.weekday, opening_time.open_time, opening_time.close_time]
+        values: [restaurant_id, opening_time.weekday, opening_time.open_time, opening_time.close_time]
     }
     return pool.query(createTimeQuery);
 }

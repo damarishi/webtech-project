@@ -152,7 +152,7 @@ export class OwnerService {
 
   putTime(time:OwnerOpeningTime):Promise<OwnerApiResponse>{
     if(!time.opening_time_id) return Promise.reject(new Error("No ID Found"));
-    return this.data.put(`${this.url}/time`, time.opening_time_id, time);
+    return this.data.put(`${this.url}/time`, time.opening_time_id, {time});
   }
   deleteTime(opening_time_id:string):Promise<OwnerApiResponse>{
     return this.data.delete(`${this.url}/time`, opening_time_id);
