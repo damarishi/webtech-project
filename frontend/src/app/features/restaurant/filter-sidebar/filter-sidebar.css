@@ -1,20 +1,34 @@
 .filter-container {
   width: 260px;
-  padding: 16px;
+  padding: 20px;
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #1D902080
 }
 
-.filter-title {
-  margin-bottom: 16px;
+@media (max-width: 900px) {
+  .filter-container {
+    width: 100%;
+  }
+}
+
+.filter-title h4 {
   font-size: 18px;
+  color: #052A02;
+  margin-bottom: 20px;
+}
+
+.filter-section {
+  margin-bottom: 20px;
 }
 
 .filter-section h5 {
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #052A02;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #1D902E;
+  margin-bottom: 10px;
 }
 
 .filter-option {
@@ -23,5 +37,16 @@
   gap: 8px;
   font-size: 14px;
   cursor: pointer;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  transition: color 0.2s ease;
+}
+
+.filter-option:hover {
+  color: #1D902E;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: #1D902E;
+  cursor: pointer;
 }

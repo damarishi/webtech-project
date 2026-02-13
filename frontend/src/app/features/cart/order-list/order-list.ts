@@ -19,7 +19,6 @@ export class OrderList {
 
   constructor(
     private orderService: OrderService,
-    private cdr: ChangeDetectorRef
   ) {
     this.orders$ = this.orderService.getMyOrders();
   }

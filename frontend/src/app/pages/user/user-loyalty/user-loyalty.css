@@ -1,41 +1,86 @@
+.loyalties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
 .card {
+  position: relative;
   background: #fff;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.08);
-  margin-bottom: .75rem;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  border: 1px solid #1D902080;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(0,0,0,.1);
 }
 
 .card.locked {
-  opacity: .6;
+  background: #f9f9f9;
+  border: 1px dashed #ccc;
+}
+
+.card.locked .progress {
+  background: #ccc;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.header strong {
+  font-size: 16px;
+  color: #052A02;
+}
+
+.header span {
+  font-weight: 600;
+  color: #1D902E;
+  font-size: 15px;
 }
 
 .progress-bar {
-  height: 8px;
+  height: 10px;
   background: #eee;
-  border-radius: 6px;
+  border-radius: 10px;
   overflow: hidden;
-  margin: .5rem 0;
+  margin: 10px 0;
 }
 
 .progress {
   height: 100%;
-  background: linear-gradient(90deg, #4caf50, #81c784);
+  background: linear-gradient(90deg, #1D902E, #1D902080);
+  transition: width 0.4s ease;
+  box-shadow: 0 0 8px #1D902080;
 }
 
 .badge {
-  font-size: .75rem;
-  padding: .2rem .5rem;
-  border-radius: 6px;
-  background: #4caf50;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  background: #1D902E;
   color: white;
 }
 
 .badge.locked {
-  background: #999;
+  background: #bbb;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #666;
+  margin-top: 6px;
 }
