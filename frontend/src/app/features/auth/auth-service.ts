@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {UserRoles} from '../../types/user-roles';
+import {RestaurantRequest} from '../../types/restaurant-request';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,8 +15,8 @@ export class AuthService {
     return this.http.post<{ token: string, username:string, email:string, roles:string[]}>(`${this.apiUrl}/login`, { email, password });
   }
 
-  register(email: string, password:string, username:string, fullName:string,location:string, roles:UserRoles[]){
-    return this.http.post<void>(`${this.apiUrl}/register`, { email, password, username, fullName, location, roles});
+  register(email: string, password:string, username:string, fullName:string,location:string, roles:UserRoles[], resRequest?:RestaurantRequest) {
+    return this.http.post<void>(`${this.apiUrl}/register`, { email, password, username, fullName, location, roles, resRequest});
   }
 
   initializeRoles(){

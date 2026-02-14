@@ -8,6 +8,8 @@ const pool = require('../pool.js');
 const cfg = require('../config');
 const userRole = require("../interfaces/userrole_enum");
 
+const position = require("../interfaces/Positon");
+
 const isAuth = require('../services/isAuth');
 
 async function checkDB(){
@@ -35,8 +37,8 @@ router.post('/register', async (req, res) => {
     const full_name = req.body.fullName;
     const location = req.body.location;
     const roles = req.body.roles;
+    const request = req.body.resRequest;
 
-    //console.log(location);
 
     if(!await checkDB()){
         const err = "DB unreachable"
@@ -64,7 +66,13 @@ router.post('/register', async (req, res) => {
     ON CONFLICT DO NOTHING;
     `;
 
+    const addRestaurantRequestQuery = `
+    INSERT INTO restaurant_requests (restaurant_name, requested_by, status_id, admin_notes, location)
+    VALUES ($1, $2, $3, $4, $5)
+    `
+
     try{
+        await pool.query('BEGIN');
 
         const userCheckResult = await pool.query(getUserQuery,[email]);
 
@@ -86,12 +94,35 @@ router.post('/register', async (req, res) => {
         //Create new user from scratch
         const newUserRoles = roles.map(name => userRole[name].id);
         const createNewUserResult = await pool.query(addUserQuery,[email, username, full_name, password, location]);
-        const addUserRolesResult = await pool.query(addUserRolesQuery, [createNewUserResult.rows[0].user_id,newUserRoles]);
+        const user_id =createNewUserResult.rows[0].user_id;
+        const addUserRolesResult = await pool.query(addUserRolesQuery, [user_id,newUserRoles]);
 
-        res.status(200).json({message: 'new user created successfully', email});
+        if(request){
+            if(!request.restaurant_name || !request.location || ! request.requested_at){
+                throw new Error('Incomplete Data for Registration');
+            }
+            const locationPair = position.castPairToString(request.location);
+            request.requested_by = user_id;
+            request.admin_notes = '';
+            const resultRestaurantRequestQuery = await pool.query(addRestaurantRequestQuery,
+                [request.restaurant_name, request.requested_by, '1', request.admin_notes, locationPair]);
+        }
+        await pool.query('COMMIT');
+        res.status(201).json({message: 'new user created successfully', email});
 
+        logger.emit('log', {
+            description: `User ${user_id} Registered`,
+            typeOfLog: 4
+        });
 
+        if(request){
+            logger.emit('log', {
+                description: `Restaurant Request has been created from User ID: ${user_id}`,
+                typeOfLog: 2
+            });
+        }
     }catch(error){
+        await pool.query('ROLLBACK');
         console.error("S: Internal error \n", error.message);
         res.status(500).json({message: error.message});
     }
@@ -138,6 +169,11 @@ router.post('/login', async (req, res) => { //o or router.get?
             location: user_data.location,
             token: token
         });
+
+        logger.emit('log', {
+            description: `User ${user_data.user_id} logged in`,
+            typeOfLog: 3
+        });
     }catch(error){
         console.error("S: Internal error \n", error.message);
         res.status(500).json({message: error.message});
@@ -158,6 +194,7 @@ module.exports = router;
 //just for testing purposes, delete later
 //get logEmitter used for sending log events
 const logEmitter = require("../events/logger.js");
+const logger = require("../events/logger");
 
 
 router.get("/test", (req, res) => {
