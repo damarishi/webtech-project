@@ -4,6 +4,8 @@ import {Navbar} from './shared/ui/navbar/navbar';
 import {Loading} from './shared/ui/loading/loading';
 import {Error} from './shared/ui/error/error';
 
+import { ConnectivityService } from './services/connection-service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -14,4 +16,8 @@ import {Error} from './shared/ui/error/error';
 export class App {
   protected readonly title = signal('frontend');
   name = 'EatNow';
+
+  constructor(private connectivityService: ConnectivityService) {
+    console.log('App started: Connectivity Watchdog is now running');
+  }
 }
