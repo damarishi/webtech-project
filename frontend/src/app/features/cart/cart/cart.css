@@ -1,83 +1,112 @@
 /* Cart Container */
 :host {
   display: block;
-  max-width: 360px;
-  margin: 3rem auto;   /* 👈 DAS zentriert horizontal */
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-  font-family: Arial, sans-serif;
+  max-width: 420px;
+  margin: 3rem auto;
 }
 
-
-/* Cart Title */
-p {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #2c3e50;
+.cart-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  border: 1px solid #1D902080;
 }
 
-/* Item Row */
-div {
+.cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid #f0f0f0;
-  gap: 0.5rem;
+  padding: 12px 0;
 }
 
-/* Item Text */
-div span,
-div {
-  font-size: 0.95rem;
-  color: #333;
+.item-name {
+  font-weight: 600;
+  color: #052A02;
 }
 
-/* Remove Button */
-button {
-  background: transparent;
-  border: none;
-  color: #e74c3c;
-  font-size: 1.1rem;
+.item-meta {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-controls button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid #1D902E;
+  background: white;
+  color: #1D902E;
+  font-weight: bold;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-button:hover {
-  color: #c0392b;
+.quantity-controls button:hover {
+  background: #1D902E;
+  color: white;
 }
 
-/* Divider */
-hr {
-  margin: 1rem 0;
+.discount-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.discount-box input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.discount-box button {
+  padding: 8px 14px;
+  border-radius: 10px;
   border: none;
-  border-top: 1px solid #e0e0e0;
+  background: #1D902E;
+  color: white;
+  cursor: pointer;
 }
 
-/* Total */
-strong {
+.total-row {
   display: flex;
   justify-content: space-between;
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #2c3e50;
+  margin: 12px 0;
 }
 
-/* Empty State (falls später benötigt) */
-.empty {
-  text-align: center;
-  color: #999;
-  font-size: 0.9rem;
-  padding: 1rem 0;
+.checkout-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: #1D902E;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* Responsive */
+.checkout-btn:hover {
+  background: #157524;
+  transform: translateY(-2px);
+}
+
 @media (max-width: 600px) {
   :host {
     max-width: 100%;
-    border-radius: 0;
+    margin: 1rem;
+  }
+
+  .cart-card {
+    border-radius: 14px;
+    padding: 18px;
   }
 }
