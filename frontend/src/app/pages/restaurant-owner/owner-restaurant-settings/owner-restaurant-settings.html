@@ -4,31 +4,40 @@
       <option [value]="s">{{s}}</option>
     }
   </select>
+  @if(loading){
+    <div class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+  }
+  @if(!loading && unavailable){
+    <h1 class="text-1xl font-semibold text-center">Restaurant Request may Still be pending</h1>
+  }
+  @if(!loading && !unavailable){
+    @switch (mode){
+      @case(settings.RESTAURANT){
+        <div class="Restaurant_Editing">
+          <h1 class="text-2xl font-semibold text-center">Edit Restaurant</h1>
+          <owner-restaurant-component [restaurant]="restaurant!" (updateSuccess)="loadSettings()"></owner-restaurant-component>
 
-  @switch (mode){
-    @case(settings.RESTAURANT){
-      <div class="Restaurant_Editing">
-        <h1 class="text-2xl font-semibold text-center">Edit Restaurant</h1>
-          <owner-restaurant-component [restaurant]="restaurant" (updateSuccess)="loadSettings()"></owner-restaurant-component>
-
-      </div>
-    }
-    @case(settings.TIME){
-      <div class="Times Editing">
-        <h1 class="text-2xl font-semibold text-center">Edit Opening Times</h1>
-        <opening-time-card-component [times]="openingTimes" (updateSuccess)="loadSettings()"></opening-time-card-component>
-      </div>
-    }
-    @case(settings.ITEMS){
-      <div class="Items Editing">
-        <h1 class="text-2xl font-semibold text-center">Edit Items</h1>
-        content
-      </div>
-    }
-    @default {
-      <div class ="Empty-Settings">
-        <h1 class="text-2xl font-semibold text-center">No Settings Available</h1>
-      </div>
+        </div>
+      }
+      @case(settings.TIME){
+        <div class="Times Editing">
+          <h1 class="text-2xl font-semibold text-center">Edit Opening Times</h1>
+          <opening-time-card-component [times]="openingTimes!" (updateSuccess)="loadSettings()"></opening-time-card-component>
+        </div>
+      }
+      @case(settings.ITEMS){
+        <div class="Items Editing">
+          <h1 class="text-2xl font-semibold text-center">Edit Items</h1>
+          content
+        </div>
+      }
+      @default {
+        <div class ="Empty-Settings">
+          <h1 class="text-2xl font-semibold text-center">No Settings Available</h1>
+        </div>
+      }
     }
   }
 </div>

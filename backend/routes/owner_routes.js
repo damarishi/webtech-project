@@ -229,7 +229,7 @@ router.get('/items', async (req, res) => {
         return res.status(200).json({items});
     }catch(error){
         console.error(error);
-        res.status(500).json({message: error});
+        res.status(503).json({message: error});
     }
 });
 

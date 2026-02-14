@@ -10,22 +10,28 @@ import {OrderCardComponent} from '../order-card-component/order-card-component';
   standalone: true,
   imports: [
     OrderCardComponent,
-    JsonPipe
-
   ],
   templateUrl: './owner-dashboard.html',
   styleUrl: './owner-dashboard.css',
 })
 export class OwnerDashboard implements OnInit {
   orders: OwnerOrder[] = [];
-  restaurant:OwnerRestaurant | undefined;
   message:string = '';
+
+  restaurantUnavailable: boolean = false;
 
   constructor(private ownerService: OwnerService, private cdr: ChangeDetectorRef) {}
 
 
   ngOnInit() {
-    this.getOrders();
+    this.getRestaurant().then(restaurant => {
+      if(!restaurant.restaurant_id){//DB Object is guaranteed to have id
+        this.restaurantUnavailable = true;
+        this.cdr.detectChanges();
+        return;
+      }
+      this.getOrders();
+    })
   }
 
   getOrders() {
@@ -38,5 +44,9 @@ export class OwnerDashboard implements OnInit {
 
   onOrderUpdate(){
     this.getOrders();
+  }
+
+  getRestaurant(){
+    return this.ownerService.getRestaurant();
   }
 }

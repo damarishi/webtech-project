@@ -5,6 +5,8 @@ import {RestaurantComponent} from '../restaurant-component/restaurant-component'
 import {OwnerRestaurant} from '../../../types/owner-restaurant';
 import {OpeningTimeCardComponent} from '../opening-time-card-component/opening-time-card-component';
 import {FormsModule} from '@angular/forms';
+import {OwnerCategory} from '../../../types/owner-category';
+import {OwnerItem} from '../../../types/owner-item';
 
 enum Settings {
   RESTAURANT='Restaurant',
@@ -27,45 +29,46 @@ export class OwnerRestaurantSettings implements OnInit{
 
   constructor( private cdr: ChangeDetectorRef, private ownerService: OwnerService) {}
 
+  protected readonly Object = Object;
   protected readonly settings = Settings;
 
   mode:Settings = Settings.RESTAURANT;
+  loading = true;
+  unavailable = false;
 
-  restaurant: Promise<OwnerRestaurant> | undefined;
-  openingTimes?: Promise<{ times: OwnerOpeningTime[] }>;
+  restaurant?: OwnerRestaurant;
+  openingTimes?: OwnerOpeningTime[];
+  categories?: OwnerCategory[];
+  items?: OwnerItem[];
 
-  loadSettings(){
-    switch (this.mode){
-      case Settings.RESTAURANT:
-        this.getRestaurant();
-        console.log("Loading Restaurant Settings");
-        break;
-      case Settings.TIME:
-        this.getTimes();
-        console.log("Loading Opening Times");
-        break;
-      case Settings.ITEMS:
-        console.log("Loading Items and Dishes");
-        break;
+  async loadSettings(){
+    //Always Load Restaurant
+    this.loading = true;
+    try{
+      this.restaurant = await this.ownerService.getRestaurant();
+      if(this.restaurant && !this.restaurant.restaurant_id) throw new Error('Restaurant not found');
+      switch (this.mode){
+        case Settings.RESTAURANT:
+          //Nothing else to do
+          break;
+        case Settings.TIME:
+          const {times} = await this.ownerService.getAllTimes();
+          this.openingTimes = times;
+          break;
+        case Settings.ITEMS://Actually Category and Items
+          //TODO Fetch Categories
+          //TODO Fetch Items and separate in categories
+          break;
+      }
+    }catch(error){
+      console.log(error);
+      this.unavailable = true;
+    }finally {
+      this.loading = false;
+      this.cdr.detectChanges();
     }
   }
-
-
   ngOnInit() {
-    this.loadSettings();
+    this.loadSettings().then( _=> this.cdr.detectChanges())
   }
-
-  getRestaurant(){
-    this.restaurant = this.ownerService.getRestaurant();
-  }
-
-  getTimes(){
-    this.openingTimes = this.ownerService.getAllTimes();
-  }
-
-  getItems(){
-
-  }
-
-  protected readonly Object = Object;
 }
