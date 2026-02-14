@@ -40,6 +40,7 @@ CREATE TABLE restaurant
     location            POINT NOT NULL,
     logo_id             INT,
     banner_id           INT,
+    cuisine             VARCHAR(50),
     avg_price           NUMERIC(10,2) DEFAULT 0,
     price_level         INT DEFAULT 1,
     avg_rating          NUMERIC(3,2) DEFAULT 0,
@@ -50,11 +51,11 @@ CREATE TABLE restaurant
     FOREIGN KEY (banner_id) REFERENCES images(image_id)
 );
 
-INSERT INTO restaurant (restaurant_name, owner_id, location)--Temp data
+INSERT INTO restaurant (restaurant_name, owner_id, location, cuisine)--Temp data
 VALUES
-    ('Due Sicilie',1, '(10,10)'),
-    ('Lemon Tree',2, '(20,10)'), -- Correct Owner ID
-    ('Lodenwirt',3,'(20,20)');
+    ('Due Sicilie',1, '(10,10)', 'Italian'),
+    ('Lemon Tree',2, '(20,10)', 'Austrian'), -- Correct Owner ID
+    ('Lodenwirt',3,'(20,20)', 'Italian');
 
 CREATE TABLE opening_times
 (

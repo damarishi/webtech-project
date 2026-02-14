@@ -1,7 +1,7 @@
 export interface Restaurant {
   restaurant_id: number;
   restaurant_name: string;
-  cuisine: 'Italian' | 'Asian' | 'Austrian' | 'Mexican';
+  cuisine: string;    // dynamisch
   category: 'Restaurant' | 'Cafe' |'FastFood' | 'Bistro';
   price_level: 1 | 2 | 3;
   location: {

@@ -11,7 +11,7 @@ router.post('/', restaurantCtrl.createRestaurant);
 router.put('/:id', restaurantCtrl.editRestaurant);
 router.delete('/:id', restaurantCtrl.deleteRestaurant);
 router.get('/:id/menu', restaurantCtrl.getMenu);
-router.get('/:id', restaurantCtrl.getItem);
+router.get('/:id', restaurantCtrl.getRestaurant);
 
 
 module.exports = router;

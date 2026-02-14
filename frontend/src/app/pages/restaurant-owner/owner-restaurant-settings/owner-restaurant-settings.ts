@@ -47,7 +47,6 @@ export class OwnerRestaurantSettings implements OnInit{
       case Settings.ITEMS:
         console.log("Loading Items and Dishes");
         break;
-
     }
   }
 

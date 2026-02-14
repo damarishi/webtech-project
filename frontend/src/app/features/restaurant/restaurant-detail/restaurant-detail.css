@@ -103,10 +103,15 @@ h2 {
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-left: 1rem; /* Abstand vom Preis */
+  transition: all 0.2s ease;
 }
 
 .menu-item button:hover {
   background-color: #052A02;
+}
+
+.menu-item button.added {
+  transform: scale(1.05);
 }
 
 /* --- Reviews Section --- */
