@@ -1,29 +1,12 @@
 <div class="category-container">
-  <button (click)="openModal()">PopUp Test</button>
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    @for (item of items; track item.position) {
-      <div class="example-box" cdkDrag>{{ item }}</div>
+  <div class="category-header">
+    <h2 class="m-4">{{categoryForm.name}}</h2>
+    <button (click)="savePositions()">Save Positions</button>
+  </div>
+  <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
+    @for (item of itemsForm; track item.item_id) {
+      <div class="card-item" cdkDrag>{{ item.name }}</div>
     }
   </div>
 </div>
 
-
-@if (modalPopUp) {
-  <div class="overlay" (click)="closeModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Title</h2>
-        <button (click)="closeModal()">✕</button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Your content here -->
-        <p>Anything you want</p>
-      </div>
-
-      <div class="modal-footer">
-        <button (click)="closeModal()">Close</button>
-      </div>
-    </div>
-  </div>
-}

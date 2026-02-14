@@ -1,1 +1,19 @@
-<p>item-card-component works!</p>
+@if (modalPopUp) {
+  <div class="overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Title</h2>
+        <button (click)="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p>Anything you want</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="save-btn" (click)="saveChanges()">Save</button>
+        <button class="delete-btn" (click)="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}

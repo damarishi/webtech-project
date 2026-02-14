@@ -4,9 +4,10 @@ import {OwnerItem} from '../../../types/owner-item';
 import {OwnerService} from '../../../services/owner-service';
 import {OwnerCategory} from '../../../types/owner-category';
 import {FormsModule} from '@angular/forms';
+import {OwnerTag} from '../../../types/owner-tag';
 
 @Component({
-  selector: 'app-category-card-component',
+  selector: 'category-card-component',
   standalone: true,
   imports: [
     CdkDropList,
@@ -20,30 +21,40 @@ export class CategoryCardComponent implements OnInit{
 
   @Input() category!:OwnerCategory;
   @Input() items!:OwnerItem[];
+  @Input() tags!:OwnerTag[];
   @Output() updateSuccess = new EventEmitter<string>();
 
   constructor(private ownerService: OwnerService, private cdr: ChangeDetectorRef) {}
 
-  categoryForm!:Partial<OwnerCategory>;
+  categoryForm!:OwnerCategory;
+  itemsForm!:OwnerItem[];
+  tagsForm!:OwnerTag[];
 
-  modalPopUp = false
+  positions!:number[];
+
+  loadData(){
+    this.categoryForm = JSON.parse(JSON.stringify(this.category));
+    this.itemsForm = JSON.parse(JSON.stringify(this.items));
+    this.tagsForm = JSON.parse(JSON.stringify(this.tags));
+    this.positions = this.items.map(item => item.position);
+  }
+
 
   ngOnInit(){
-    this.categoryForm = JSON.parse(JSON.stringify(this.category));
+    this.loadData();
   }
 
   drop(event: CdkDragDrop<OwnerItem[]>){
-    moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+
+    moveItemInArray(this.itemsForm, event.previousIndex, event.currentIndex);
+
+    this.itemsForm.every((item,index) => item.position = this.positions[index]);
+    console.log(this.itemsForm);
   }
 
-  openModal(){
-    this.modalPopUp = true;
-    this.cdr.detectChanges();
+  savePositions(){
+    //TODO: DB call save positions of Items, mabye call
   }
 
-  closeModal(){
-    this.modalPopUp = false;
-    this.cdr.detectChanges();
-  }
 
 }

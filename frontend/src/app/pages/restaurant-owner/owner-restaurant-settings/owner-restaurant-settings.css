@@ -13,3 +13,40 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.category-positon-btn{
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+
+.card-item {
+  margin:0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.card-item:active {
+  cursor: grabbing;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.cdk-drag-placeholder {
+  background: rgba(255,255,255,0.8);
+  border-radius: 12px;
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
