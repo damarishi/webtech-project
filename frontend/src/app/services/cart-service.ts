@@ -3,6 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { CartItem } from '../types/CartItem';
 import {HttpClient} from '@angular/common/http';
 import {Discount} from '../types/discount';
+import { LocalStorageService } from "./local-storage-service";
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -12,7 +13,25 @@ export class CartService {
   private discount$ = new BehaviorSubject<Discount | null>(null)
   readonly discountObs$ = this.discount$.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {
+    //initialize cart from localstorage if exists
+    const savedCart = localStorageService.getCart();
+    if (savedCart.length > 0) {
+      this.cart$.next(savedCart);
+    }
+  }
+
+  //update localstorage whenever cart changes
+  private updateLocalStorageCart() {
+    const cart = this.cart$.value;
+    this.localStorageService.saveCart(cart);
+  }
+
+  public loadCartFromLocalStorage() {
+    const savedCart = this.localStorageService.getCart();
+    this.cart$.next(savedCart);
+  }
+
 
   addItem(
     item: Omit<CartItem, 'quantity'>,
@@ -36,6 +55,7 @@ export class CartService {
     }
 
     this.cart$.next([...cart]);
+    this.updateLocalStorageCart();
   }
 
   increaseItem(item: CartItem){
@@ -51,6 +71,7 @@ export class CartService {
     }).filter(item => item.quantity > 0);
 
     this.cart$.next(cart);
+    this.updateLocalStorageCart();
   }
 
   applyDiscount(discount: Discount) {
@@ -64,6 +85,7 @@ export class CartService {
   clear() {
     this.cart$.next([]);
     this.restaurantId = null;
+    this.updateLocalStorageCart();
   }
 
   getTotal() {
