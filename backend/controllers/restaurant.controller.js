@@ -131,6 +131,7 @@ exports.getRestaurantsWithDistance = async (req, res) => {
                         restaurant_id, 
                         restaurant_name, 
                         location, 
+                        cuisine,
                         price_level,
                         avg_rating, 
                         review_count  
@@ -163,6 +164,16 @@ exports.getRestaurantsWithDistance = async (req, res) => {
             );
         }
 
+        if (req.query.cuisines?.length) {
+            const allowed = Array.isArray(req.query.cuisines)
+                ? req.query.cuisines
+                : [req.query.cuisines];
+
+            filtered = filtered.filter(r =>
+                allowed.includes(r.cuisine)
+            );
+        }
+
         if (sortBy === 'rating') {
             filtered.sort((a, b) => {
                 if (sortDirection === 'asc') {
@@ -181,12 +192,12 @@ exports.getRestaurantsWithDistance = async (req, res) => {
     }
 };
 
-exports.getItem = async (req, res) => {
+exports.getRestaurant = async (req, res) => {
     const id = req.params.id;
 
     try {
         const query = {
-            text: 'SELECT restaurant_id, restaurant_name, location, owner_id FROM restaurant WHERE restaurant_id = $1',
+            text: 'SELECT restaurant_id, restaurant_name, location, cuisine, avg_rating, review_count, owner_id FROM restaurant WHERE restaurant_id = $1',
             values: [id]
         };
         

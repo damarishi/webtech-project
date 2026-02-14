@@ -32,17 +32,35 @@ export class OrderCardComponent {
     return this.order!.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   }
 
+  acceptOrder(){
+    if(this.order){
+      this.order.status = 1;
+      this.save();
+    }
+  }
+
+  rejectOrder(){
+    if(this.order){
+      this.order.status = -2;
+      this.save();
+    }
+  }
+
   updateOrderStatus() {
     if(this.order){
       if(this.order.status >= 3) this.order.status = -1;
       else this.order.status++;
-      this.ownerService.putOrder(this.order).then( () =>{
-        this.updateSuccess.emit(this.order!.order_id);
-      }).catch(_=> {
-        if(this.order) {
-          this.order.status--;
-        }
-      });
+      this.save();
     }
+  }
+
+  save(){
+    this.ownerService.putOrder(this.order!).then( _ =>{
+      this.updateSuccess.emit(this.order!.order_id);
+    }).catch(_=> {
+      if(this.order) {
+        this.order.status--;
+      }
+    });
   }
 }

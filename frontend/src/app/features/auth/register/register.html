@@ -114,12 +114,60 @@
       </div>
     </div>
 
+    @if(roles.includes(UserRoles.OWNER)){
+      <div class ="restaurant-request">
+        <h2>Restaurant Request</h2>
+        <div class="form-group">
+          <label for="restaurant-name">Restaurant Name</label>
+          <input
+            type="text"
+            id="restaurant-name"
+            [(ngModel)]="restaurantRequest.restaurant_name"
+            placeholder="Enter Restaurant Name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Set Restaurant Location</label>
+          <div class="location-setting">
+            <input
+              type="number"
+              id="location-x"
+              min="{{min}}"
+              max="{{max}}"
+              [(ngModel)]="restaurantRequest.location!.x"
+              placeholder="X (0-100)"
+              required
+            />
+
+            <input
+              type="number"
+              id="location-y"
+              min="{{min}}"
+              max="{{max}}"
+              [(ngModel)]="restaurantRequest.location!.y"
+              placeholder="Y (0-100)"
+              required
+            />
+          </div>
+        </div>
+
+      </div>
+    }
+
     <button type="button"
             (click)="onRegister()"
             [disabled]="!email || !username || !password || !repeatPassword ||
              password !== repeatPassword ||
-             Number(location_y) < min ||Number(location_y) > max ||
-             Number(location_x) < min ||Number(location_x) > max
+             Number(location_y) < min || Number(location_y) > max ||
+             Number(location_x) < min || Number(location_x) > max ||
+             (roles.includes(UserRoles.OWNER)) && (
+             !restaurantRequest.restaurant_name || !restaurantRequest.location ||
+             restaurantRequest.location && ( !restaurantRequest.location.x || !restaurantRequest.location.y ||
+             Number(restaurantRequest.location.y) < min || Number(restaurantRequest.location.y) > max ||
+             Number(restaurantRequest.location.x) < min || Number(restaurantRequest.location.x) > max)
+             || Number(restaurantRequest.location.x) + Number(restaurantRequest.location.y) <= 0)
     ">
       Register
     </button>

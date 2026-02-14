@@ -6,6 +6,7 @@ import {CartItem} from '../../../types/CartItem';
 import {DiscountService} from '../../../services/discount-service';
 import {FormsModule} from '@angular/forms';
 import {LoyaltyService} from '../../../services/loyalty-service';
+import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-cart',
@@ -26,7 +27,8 @@ export class Cart implements OnInit {
   constructor(
     protected cartService: CartService,
     private discountService: DiscountService,
-    private loyaltySerice: LoyaltyService
+    private loyaltySerice: LoyaltyService,
+    private cdr : ChangeDetectorRef
   ) {
     this.discount$ = this.cartService.discountObs$;
   }
@@ -76,6 +78,7 @@ export class Cart implements OnInit {
       next: order => {
         console.log('Order created', order);
         this.cartService.clear();
+        this.cdr.markForCheck();
       },
       error: err => console.error(err),
     })

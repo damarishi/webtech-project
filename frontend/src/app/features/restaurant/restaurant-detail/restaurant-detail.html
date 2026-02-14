@@ -2,8 +2,11 @@
   <div class="restaurant-detail">
     <h1>{{ restaurant.restaurant_name }}</h1>
     <p>opening hours</p>
-    <p>
-      delivery time
+    <p class="cuisine">
+      {{ restaurant.cuisine }}
+    </p>
+    <p class="avg-rating">
+      {{ restaurant.avg_rating | number: '1.1-1' }}⭐ ({{ restaurant.review_count }})
     </p>
   </div>
 
@@ -20,7 +23,16 @@
               }
             </div>
             <span class="item-price">{{ item.price | number:'1.2-2' }} €</span>
-            <button (click)="addToCart(item)">Add</button>
+            <button
+              (click)="addToCart(item)"
+              [class.added]="addedItems.has(item.item_id)"
+            >
+              @if (addedItems.has(item.item_id)) {
+                Added ✓
+              } @else {
+                Add
+              }
+            </button>
           </div>
         }
       </div>
@@ -28,6 +40,7 @@
     }
   }
   <br/>
+
   <h3>Reviews</h3>
 
   <div class="review-form">

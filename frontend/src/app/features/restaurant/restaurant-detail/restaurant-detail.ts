@@ -11,6 +11,7 @@ import {CartService} from '../../../services/cart-service';
 import {Review} from '../../../types/review';
 import {ReviewService} from '../../../services/review-service';
 import {FormsModule} from '@angular/forms';
+import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -26,12 +27,14 @@ export class RestaurantDetail implements OnInit {
   reviews$!: Observable<Review[]>;
   rating = 5;
   comment = '';
+  addedItems = new Set<number>();
 
   constructor(
     private route: ActivatedRoute,
     private restaurantService: RestaurantService,
     private cartService: CartService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -57,6 +60,13 @@ export class RestaurantDetail implements OnInit {
       },
       this.restaurantId   //kommt aus Route / restaurant$
     );
+
+    this.addedItems.add(item.item_id);
+
+    setTimeout(() => {
+      this.addedItems.delete(item.item_id);
+      this.cdr.markForCheck();
+    }, 1000);
   }
 
   submitReview() {

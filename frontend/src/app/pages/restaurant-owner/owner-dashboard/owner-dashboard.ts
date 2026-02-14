@@ -25,17 +25,7 @@ export class OwnerDashboard implements OnInit {
 
 
   ngOnInit() {
-    //this.getRestaurant();
     this.getOrders();
-  }
-
-  getRestaurant(){
-    this.ownerService.getRestaurant().then(
-      res => {
-        this.restaurant = res;
-        console.log(this.restaurant);
-        this.cdr.detectChanges()
-      }).catch(error => console.log(error));
   }
 
   getOrders() {
@@ -44,14 +34,6 @@ export class OwnerDashboard implements OnInit {
       console.log(this.orders);
       this.cdr.detectChanges();
       })
-  }
-
-  putRestaurant(){
-    this.ownerService.putRestaurant(this.restaurant!).then(
-      res => {
-        console.log("Restaurant Updated")
-      }
-    ).catch(error => console.log(error));
   }
 
   onOrderUpdate(){

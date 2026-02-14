@@ -1,0 +1,40 @@
+<div class="flex flex-col w-full justify-center items-center p-2">
+  @if(unavailable){
+    <h1 class="text-1xl font-semibold text-center">Restaurant Request may Still be pending</h1>
+  }
+  @else{
+    @if(timesForm && timesForm.length === 0){
+      <h1 class="text-1xl font-semibold text-center">No Opening Times Set</h1>
+    }
+    @else{
+      @for (time of timesForm; track time.opening_time_id;) {
+        <div class="row">
+          <select [(ngModel)]="time.weekday" name="weekday">
+            @for(w of dayList; track weekdays[w]){
+              <option [ngValue]="w">{{weekdays[w]}}</option>
+            }
+          </select>
+          <input [(ngModel)]="time.open_time" type="time" />
+          <input [(ngModel)]="time.close_time" type="time" />
+
+          <button class="delete-btn" (click)="delete($index)">✕</button>
+          <button class="save-btn" (click)="save($index)">Save</button>
+        </div>
+      }
+    }
+    <div class="row new">
+      <select [(ngModel)]="newForm.weekday" name="weekday">
+        @for(w of dayList; track weekdays[w]){
+          <option [ngValue]="w">{{weekdays[w]}}</option>
+        }
+      </select>
+      <input [(ngModel)]="newForm.open_time" type="time" />
+      <input [(ngModel)]="newForm.close_time" type="time" />
+
+      <button class="add-btn" (click)="addNew()"
+      [disabled]="!newForm.weekday || newForm.weekday < 1 || newForm.weekday > 7 ||
+      newForm.open_time >= newForm.close_time">Add</button>
+    </div>
+  }
+</div>
+
