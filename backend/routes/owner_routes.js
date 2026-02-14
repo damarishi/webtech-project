@@ -7,6 +7,7 @@ const itemCtrl = require("../controllers/owner-controller/owner.item.controller"
 const tagCtrl = require("../controllers/owner-controller/owner.tag.controller");
 const catCtrl = require("../controllers/owner-controller/owner.category.controller");
 const imageCtrl = require("../controllers/owner-controller/owner.image.controller");
+const timeCtrl = require("../controllers/owner-controller/owner.openingTime.controller");
 
 //api/owner/restaurant
 
@@ -18,12 +19,12 @@ router.get('',async (req, res) =>{
 
     restaurantCtrl.getRestaurant(email).then(
         result => {
-            let data = {};
+            let restaurant = {};
             if (result.rowCount > 0) {
-                data = cast.Restaurant(result.rows[0]);
+                restaurant = cast.Restaurant(result.rows[0]);
             }
-            console.log("Restaurant Query: ", data);
-            res.status(200).json(data);
+            console.log("Restaurant Query: ", restaurant);
+            res.status(200).json(restaurant);
         }
     ).catch(error => {
         console.error(error)
@@ -177,7 +178,6 @@ router.get('/category/:id', async (req, res) => {
 })
 
 router.post('/category', async (req, res) => {
-    const id = req.params.id;
     const category = req.body.category;
     catCtrl.createCategory(category).then(result => {
         res.status(200).json({message: "success"});
@@ -251,6 +251,100 @@ router.get('/item/:id', async (req, res) => {
         res.status(503).json({message: error});
     }
 })
+
+//TODO: Finish item routes
+router.post('/item', async (req, res) => {
+    const item = req.body.item;
+    const images = item.images;
+    const tags = item.tags;
+    try{
+        await pool.query('BEGIN');
+        await itemCtrl.createItem(item);
+        await Promise.all(
+            item.tags.map(tag => {
+                tagCtrl.assignItemTag(item.item_id, tag.tag_id);
+                })
+        );
+        //Images sent separately
+        await pool.query('COMMIT');
+    } catch (err) {
+        await pool.query('ROLLBACK');
+        console.error(error);
+        res.status(503).json({message: error});
+    }
+})
+
+router.put('/item/:id', async (req, res) => {
+    const id = req.params.id;
+    const item = req.body.item;
+    //TODO: remove old tags
+    //TODO: remove old images
+    //TODO: update item
+    //TODO: set new tags
+    //TODO: set new images
+    res.status(501).json({message: "Implementation underway"});
+})
 //TODO: update order_items, item_images, item_tags on necessary routes
 //TODO: load item images only if wanted
+
+
+//OPENING-TIMES
+
+router.get('/times', async (req, res) => {
+    const email = req.user.email;
+    timeCtrl.getRestaurantTimes(email).then(result => {
+        const times = result.rows;
+        res.status(200).json({times});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+router.get('/times/:id', async (req, res) => {
+    const id = req.params.id;
+    timeCtrl.getTime(id).then(result => {
+        const time = result.rows[0];
+        res.status(200).json({time});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+
+router.post('/time', async (req, res) => {
+    const time = req.body.time;
+    const email = req.user.email;
+    restaurantCtrl.getRestaurant(email).then(restaurant_result => {
+        const restaurant_id = restaurant_result.rows[0].restaurant_id;
+        return timeCtrl.createTime(time, restaurant_id)
+    }).then(result => {
+        res.status(200).json({message: "success"});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+router.put('/time/:id', async (req, res) => {
+    const id = req.params.id;
+    const time = req.body.time;
+    timeCtrl.updateTime(time,id).then(result => {
+        res.status(200).json({message: "success"});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
+
+router.delete('/time/:id', async (req, res) => {
+    const id = req.params.id;
+    timeCtrl.deleteTime(id).then(result => {
+        res.status(200).json({message: "success"});
+    }).catch(error => {
+        console.error(error);
+        res.status(503).json({message: error});
+    })
+})
 module.exports = router;
