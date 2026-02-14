@@ -4,7 +4,7 @@
   }
   @else{
     <section class="restaurant-card">
-      @if(form){
+      @if(form && form.restaurant_id){
         <form #f="ngForm" (ngSubmit)="save()">
 
           <div class="form-group">
@@ -22,7 +22,7 @@
               <input
                 type="number"
                 name="locationX"
-                [(ngModel)]="form!.location!.x"/>
+                [(ngModel)]="form.location.x"/>
             </div>
 
             <div class="form-group">
@@ -30,11 +30,11 @@
               <input
                 type="number"
                 name="locationY"
-                [(ngModel)]="form!.location!.y"/>
+                [(ngModel)]="form.location.y"/>
             </div>
           </div>
 
-          <button type="submit" [disabled]="f.invalid ||!form!.location.x || !form!.location.y ||
+          <button type="submit" [disabled]="f.invalid ||!form.location.x || !form.location.y ||
        !form!.restaurant_name">Save changes</button>
         </form>
       }

@@ -83,7 +83,7 @@ router.post('/register', async (req, res) => {
                 return;
             }
             //User is deleted -> Reactivate Account, keep roles, add roles if requested
-            const updatedUserResult = await pool.query(editExistingUserQuery,[email, username, full_name, location, password]);
+            await pool.query(editExistingUserQuery,[email, username, full_name, location, password]);
             if(user.roles.length !== 3){
                 const newUserRoles = roles.filter(item => !user.roles.includes(item)).map(name => userRole[name].id);
                 await pool.query(addUserRolesQuery,[user.user_id,newUserRoles]);
@@ -95,7 +95,7 @@ router.post('/register', async (req, res) => {
         const newUserRoles = roles.map(name => userRole[name].id);
         const createNewUserResult = await pool.query(addUserQuery,[email, username, full_name, password, location]);
         const user_id =createNewUserResult.rows[0].user_id;
-        const addUserRolesResult = await pool.query(addUserRolesQuery, [user_id,newUserRoles]);
+        await pool.query(addUserRolesQuery, [user_id,newUserRoles]);
 
         if(request){
             if(!request.restaurant_name || !request.location || ! request.requested_at){
@@ -103,8 +103,7 @@ router.post('/register', async (req, res) => {
             }
             const locationPair = position.castPairToString(request.location);
             request.requested_by = user_id;
-            request.admin_notes = '';
-            const resultRestaurantRequestQuery = await pool.query(addRestaurantRequestQuery,
+            await pool.query(addRestaurantRequestQuery,
                 [request.restaurant_name, request.requested_by, '1', request.admin_notes, locationPair]);
         }
         await pool.query('COMMIT');

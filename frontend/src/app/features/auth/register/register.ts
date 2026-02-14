@@ -5,7 +5,6 @@ import { AuthService } from '../auth-service';
 import { UserRoles } from '../../../types/user-roles';
 import {Position} from '../../../types/position';
 import {RestaurantRequest} from '../../../types/restaurant-request';
-import {OwnerService} from '../../../services/owner-service';
 
 @Component({
   selector: 'app-register',
@@ -36,7 +35,7 @@ export class RegisterComponent {
   bannerType: 'success' | 'error' = 'success';
 
   restaurantRequest:  Partial<RestaurantRequest> = {location: new Position(-1, -1)};
-  constructor(private auth: AuthService, private router: Router,private cdr: ChangeDetectorRef, private ownerService:OwnerService) {}
+  constructor(private auth: AuthService, private router: Router,private cdr: ChangeDetectorRef) {}
 
   showBanner() {
     setTimeout(() => {
@@ -62,28 +61,27 @@ export class RegisterComponent {
       this.cdr.detectChanges();
       return;
     }
+    let request = undefined;
+
+    if(this.roles.includes(UserRoles.OWNER)){
+      this.setRestaurantRequest();
+      request = this.restaurantRequest;
+    }
     this.auth.register(
       this.email,
       this.password,
       this.username,
       this.fullName,
       new Position(Number(this.location_x), Number(this.location_y)).getPair(),
-      this.roles
+      this.roles,
+      request as RestaurantRequest
     ).subscribe({
       next: () => {
-        this.postRestaurantRequest().then(()=>{
-            this.bannerMessage = 'Registration successful';
-            this.bannerType = 'success';
-            this.showBanner();
-            this.router.navigate(['/login'],{state: {message: "Registration Successful"}});
-            this.cdr.detectChanges();
-        }).catch(err=>{
-          console.error(err.error);
-          this.bannerMessage = err.error?.message || 'Restaurant Request failed';
-          this.bannerType = 'error';
+          this.bannerMessage = 'Registration successful';
+          this.bannerType = 'success';
           this.showBanner();
+          this.router.navigate(['/login'],{state: {message: "Registration Successful"}});
           this.cdr.detectChanges();
-        })
       },
       error: err => {
         console.error(err.error);
@@ -95,13 +93,13 @@ export class RegisterComponent {
     });
   }
 
-  postRestaurantRequest(){
-    this.restaurantRequest.requested_at = new Date();
-    this.restaurantRequest.request_id = '';
-    this.restaurantRequest.requested_by ='';
-    this.restaurantRequest.admin_notes = '';
-    console.log(JSON.stringify(this.restaurantRequest));
-    return this.ownerService.postRestaurantRequest(this.restaurantRequest as RestaurantRequest);
+  setRestaurantRequest(){
+    if(this.restaurantRequest){
+      this.restaurantRequest.requested_at = new Date();
+      this.restaurantRequest.request_id = '';
+      this.restaurantRequest.requested_by ='';
+      this.restaurantRequest.admin_notes = '';
+    }
   }
 
   protected readonly Number = Number;

@@ -11,7 +11,6 @@ import {User} from '../types/user';
 import {UserService} from './user-service';
 import {firstValueFrom} from 'rxjs';
 import {OwnerImage} from '../types/owner-image';
-import {RestaurantRequest} from '../types/restaurant-request';
 
 @Injectable({
   providedIn: 'root',
@@ -40,13 +39,6 @@ export class OwnerService {
     return this.data.delete(this.url, restaurant_id);
   }
   /*RESTAURANT END*/
-
-  /* RESTAURANT-REQUEST START*/
-  //serve to /restaurant_requests
-  postRestaurantRequest(request:RestaurantRequest):Promise<OwnerApiResponse>{
-    return this.data.post('restaurant_requests',{request});
-  }
-  /*RESTAURANT-REQUEST END*/
 
 
   /*ORDERS START*/

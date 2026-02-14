@@ -33,6 +33,10 @@
 
 /*Animation*/
 .banner {
+  position: fixed;
+  transform: translateX(-50%);
+  top: 20px;
+  left: 50%;
   color: white;
   padding: 10px;
   border-radius: 5px;

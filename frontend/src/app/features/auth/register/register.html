@@ -157,7 +157,7 @@
     }
 
     <button type="button"
-            (click)="postRestaurantRequest()"
+            (click)="onRegister()"
             [disabled]="!email || !username || !password || !repeatPassword ||
              password !== repeatPassword ||
              Number(location_y) < min || Number(location_y) > max ||

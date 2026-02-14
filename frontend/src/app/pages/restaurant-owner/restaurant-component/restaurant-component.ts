@@ -33,14 +33,20 @@ export class RestaurantComponent implements OnInit, OnChanges{
   requestPending = false;
 
   loadForm(res:OwnerRestaurant) {
+    if(!res.restaurant_id){
+      console.log("No Restaurant to load");
+      this.requestPending = true;
+      this.cdr.detectChanges();
+      return;
+    }
     this.form = JSON.parse(JSON.stringify(res));
+    this.cdr.detectChanges();
+    console.log("Restaurant loaded");
   }
 
   ngOnInit() {
     this.restaurant!.then( res => {
       this.loadForm(res);
-      this.cdr.detectChanges();
-      console.log("Restaurant loaded");
     }).catch(_ => this.requestPending = true)
   }
 
@@ -48,9 +54,7 @@ export class RestaurantComponent implements OnInit, OnChanges{
     if('restaurant' in changes && this.restaurant) {
       this.restaurant.then( res => {
         this.loadForm(res);
-        this.cdr.detectChanges();
-        console.log("Restaurant loaded");
-      })
+      }).catch(_ => this.requestPending = true)
     }
   }
 

@@ -31,7 +31,7 @@ export class OpeningTimeCardComponent implements OnInit, OnChanges {
 
 
   timesForm: OwnerOpeningTime[] | undefined;
-  requestPending = false;
+  unavailable = false;
 
   protected readonly weekdays =  Weekday;
   dayList:Weekday[] = [1,2,3,4,5,6,7]
@@ -42,12 +42,17 @@ export class OpeningTimeCardComponent implements OnInit, OnChanges {
     this.timesForm = JSON.parse(JSON.stringify(res));
   }
 
+  setUnavailable(){
+    this.unavailable = true;
+    this.cdr.detectChanges();
+  }
+
   ngOnInit() {
     this.times!.then(result => {
       this.loadForm(result.times);
       this.cdr.detectChanges();
       console.log("Opening Times loaded");
-    }).catch(_=> this.requestPending = true);
+    }).catch(_=> this.unavailable = true);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -56,7 +61,7 @@ export class OpeningTimeCardComponent implements OnInit, OnChanges {
         this.loadForm(result.times);
         this.cdr.detectChanges();
         console.log("Opening Times loaded");
-      })
+      }).catch(_=> this.setUnavailable());
     }
 }
 
@@ -86,6 +91,6 @@ export class OpeningTimeCardComponent implements OnInit, OnChanges {
         this.updateSuccess.emit("New Opening Time added");
         this.newForm = this.empty();
         this.updateSuccess.emit(`Opening Time Added`)
-      })
+      }).catch(_=> this.setUnavailable());
   }
 }
