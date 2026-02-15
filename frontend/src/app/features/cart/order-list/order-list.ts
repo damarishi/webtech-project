@@ -17,10 +17,12 @@ export class OrderList {
   orders$: Observable<Order[]>;
   statusMap = USER_ORDER_STATE;
 
-  constructor(
-    private orderService: OrderService,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.orders$ = this.orderService.getMyOrders();
+  constructor(private orderService: OrderService,) {
+    this.orders$ = this.orderService.orders$;
+    this.orderService.loadOrders();
+  }
+
+  removeOrder(orderId: number) {
+    this.orderService.removerOrderLocally(orderId);
   }
 }

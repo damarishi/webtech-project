@@ -1,9 +1,23 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .profile-card {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 2.5rem;
   background: #fff;
-  border-radius: 16px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid #1D902080;
 }
 
 .form-group {
@@ -13,16 +27,24 @@
 }
 
 label {
-  font-size: 0.9rem;
-  margin-bottom: 0.3rem;
-  color: #555;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: #052A02;
+  font-weight: 500;
 }
 
 input {
-  padding: 0.6rem 0.8rem;
-  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
   border: 1px solid #ddd;
   font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1D902E;
+  box-shadow: 0 0 0 3px #1D902080;
 }
 
 input:disabled {
@@ -33,28 +55,41 @@ input:disabled {
 .submit {
   margin-top: 1.5rem;
   width: 100%;
-  padding: 0.7rem;
-  border-radius: 10px;
-  boerder: none;
+  padding: 0.9rem;
+  border-radius: 12px;
+  border: none;
   background: #1D902E;
   color: white;
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: #157524;
+  transform: translateY(-2px);
 }
 
 .submit:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .logout {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   width: 100%;
-  padding: 0.7rem;
-  border-radius: 10px;
-  boerder: none;
-  background: red;
-  color: white;
-  font-weight: 600;
+  padding: 0.9rem;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #052A02;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout:hover {
+  border-color: #157524;
+  color: #1D902E;
 }

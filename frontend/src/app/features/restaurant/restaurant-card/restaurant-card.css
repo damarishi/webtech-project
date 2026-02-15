@@ -2,25 +2,60 @@
   cursor: pointer;
   border-radius: 12px;
   overflow: hidden;
-  bakcground: white;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  border-color: #1D902080
 }
 
 .image img {
   width: 100%;
-  height: 140px;
+  height: 160px;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .image img {
+  transform: scale(1.05);
 }
 
 .content {
-  padding: 12px;
+  padding: 16px;
 }
+
+.content h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #052A02;
+}
+
+.subcontent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 13px;
+  color: #555;
+}
+
+.rating {
+  font-weight: 600;
+  color: #1D902E;
+}
+
+.reviews {
+  color: #888;
+  font-weight: 400;
+}
+
 
 .meta {
   color: #666;

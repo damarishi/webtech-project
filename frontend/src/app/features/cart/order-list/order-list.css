@@ -1,25 +1,116 @@
-.order-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 12px;
+.orders-wrapper {
+  padding: 2rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.header {
+.title {
+  margin-bottom: 1.5rem;
+  color: #052A02;
+}
+
+.orders-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.order-card {
+  padding: 18px;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  border: 1px solid #1D902080;
+  transition: all .2s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(29,144,46,.15);
+}
+
+.order-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #052A02;
 }
 
+.restaurant {
+  font-weight: 600;
+  color: #052A02;
+}
+
+.total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1D902E;
+}
+
+small {
+  color: #666;
+}
+
+/* STATUS BASE */
 .status {
-  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.status-1 { color: gray; }
-.status-2 { color: orange; }
-.status-3 { color: blue; }
-.status-4 { color: green; }
-
-.empty {
-  opacity: 0.6;
+/* declined */
+.status--2 {
+  background: #fdecea;
+  color: #c0392b;
 }
+
+/* closed */
+.status--1 {
+  background: #f0f0f0;
+  color: #777;
+}
+
+/* pending */
+.status-0 {
+  background: #fff4e5;
+  color: #e67e22;
+}
+
+/* preparing */
+.status-1 {
+  background: #e8f5e9;
+  color: #1D902E;
+}
+
+/* ready */
+.status-2 {
+  background: #e3f2fd;
+  color: #2980b9;
+}
+
+/* dispatched */
+.status-3 {
+  background: #e8f5e9;
+  color: #1D902E;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #777;
+  transition: color .2s ease;
+}
+
+.delete-btn:hover {
+  color: #c0392b;
+}
+

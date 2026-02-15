@@ -22,7 +22,7 @@ exports.createOrder = async (req, res) => {
         //order anlegen
         const orderQuery = `
             INSERT INTO orders (restaurant_id, user_id, total, discount_id, status, fee)
-            VALUES ($1, $2, $3, $4, 1, $5)
+            VALUES ($1, $2, $3, $4, 0, $5)
             RETURNING order_id
         `;
 
