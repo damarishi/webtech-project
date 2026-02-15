@@ -66,3 +66,13 @@
   font-size: 0.85rem;
   color: #888;
 }
+
+.open {
+  color: #1D902E;
+  font-weight: 600;
+}
+
+.closed {
+  color: #c62828;
+  font-weight: 600;
+}

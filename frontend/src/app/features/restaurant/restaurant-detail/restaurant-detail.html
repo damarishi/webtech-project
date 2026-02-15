@@ -1,7 +1,11 @@
 @if (restaurant$ | async; as restaurant) {
   <div class="restaurant-detail">
     <h1>{{ restaurant.restaurant_name }}</h1>
-    <p>opening hours</p>
+    <p class="opening-hours"
+       [ngClass]="restaurant.isOpen ? 'open' : 'closed'"
+    >
+      {{ restaurant.isOpen ? 'Open now' : 'Closed'}}
+    </p>
     <p class="cuisine">
       {{ restaurant.cuisine }}
     </p>

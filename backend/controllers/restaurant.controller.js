@@ -197,7 +197,7 @@ exports.getRestaurant = async (req, res) => {
 
     try {
         const query = {
-            text: 'SELECT restaurant_id, restaurant_name, location, cuisine, avg_rating, review_count, owner_id FROM restaurant WHERE restaurant_id = $1',
+            text: 'SELECT * FROM restaurant WHERE restaurant_id = $1',
             values: [id]
         };
         
@@ -206,8 +206,24 @@ exports.getRestaurant = async (req, res) => {
         if (result.rows.length <= 0) {
             return res.status(404).json({ error: "No restaurant found." });
         }
+
+        const restaurant = result.rows[0];
+
+        const queryOpening = `
+            SELECT 1
+            FROM opening_times
+            WHERE restaurant_id = $1
+                AND weekday = EXTRACT(ISODOW FROM NOW())
+                AND open_time <= CURRENT_TIME
+                AND close_time >= CURRENT_TIME
+            LIMIT 1
+        `
+
+        const openResult = await db.query(queryOpening, [id]);
+
+        restaurant.isOpen = openResult.rowCount > 0;
         
-        res.status(200).json(result.rows[0]);
+        res.status(200).json(restaurant);
     } catch (error) {
         console.error("Error while fetching restaurant:" + error.message);
         res.status(500).json({ error: "Error while fetching restaurant:" + error.message });

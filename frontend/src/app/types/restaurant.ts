@@ -12,4 +12,5 @@ export interface Restaurant {
   estimatedDeliveryTime: number;
   review_count: number;
   avg_rating: number;
+  isOpen?: boolean;
 }

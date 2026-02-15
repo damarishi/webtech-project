@@ -17,9 +17,6 @@ export class RestaurantService {
     private http: HttpClient,
     private localStorageService: LocalStorageService) {}
 
-  getRestaurants(): Observable<any> {
-    return this.http.get<Restaurant>(`${restaurantsURL}`);
-  }
 
   getDashboardRestaurants(
     maxMinutes: number,

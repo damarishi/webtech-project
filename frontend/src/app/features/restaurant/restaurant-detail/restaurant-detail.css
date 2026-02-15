@@ -21,7 +21,6 @@
 /* Info Zeilen (Öffnungszeiten, Delivery) */
 .restaurant-detail p {
   font-size: 0.95rem;
-  color: #666;
   margin: 0.25rem 0;
 }
 
@@ -192,6 +191,24 @@ h3 {
 
 .review-form button:hover {
   background: #052A02;
+}
+
+.cuisine {
+  color: #666;
+}
+
+.avg-rating {
+  color: #666;
+}
+
+.open {
+  color: #1D902E;
+  font-weight: 600;
+}
+
+.closed {
+  color: #c62828;
+  font-weight: 600;
 }
 
 /* Responsive Anpassung */
