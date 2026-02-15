@@ -1,50 +1,61 @@
 @if (items$ | async; as items) {
-  @for (item of items; track item.item_id) {
-    <div>
-      <span>
-        {{ item.item_name }}<br />
-        <small>{{ item.quantity }} × {{ item.price | currency:'EUR' }}</small>
-      </span>
 
-      <div class="quantity-controls">
-        <button (click)="decrease(item.item_id)">−</button>
-        <span>{{ item.quantity }}</span>
-        <button (click)="increase(item)">+</button>
+  <div class="cart-card">
+
+    @for (item of items; track item.item_id) {
+      <div class="cart-item">
+
+        <div class="item-info">
+          <div class="item-name">{{ item.item_name }}</div>
+          <div class="item-meta">
+            {{ item.quantity }} × {{ item.price | currency:'EUR' }}
+          </div>
+        </div>
+
+        <div class="quantity-controls">
+          <button (click)="decrease(item.item_id)">−</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="increase(item)">+</button>
+        </div>
+
       </div>
-    </div>
-  }
-
-  <hr />
-
-  <div class="discount-box">
-    <input
-      type="text"
-      placeholder="Discount code"
-      [(ngModel)]="discountCode"
-    />
-    <button (click)="applyDiscount()">Apply</button>
-
-    @if (discountError) {
-      <small class="error">{{ discountError }}</small>
     }
-  </div>
 
-  @if (discount$ | async; as discount) {
-    <div class="discount-info">
-      @if (discount.source === 'LOYALTY') {
-        🎁 Loyalty Reward −{{ discount.value }}%
-      } @else {
-        🏷 Code {{ discount.code }} −{{ discount.value }}%
+    <div class="divider"></div>
+
+    <div class="discount-box">
+      <input
+        type="text"
+        placeholder="Discount code"
+        [(ngModel)]="discountCode"
+      />
+      <button (click)="applyDiscount()">Apply</button>
+
+      @if (discountError) {
+        <small class="error">{{ discountError }}</small>
       }
     </div>
-  }
 
-  <hr />
+    @if (discount$ | async; as discount) {
+      <div class="discount-info">
+        @if (discount.source === 'LOYALTY') {
+          🎁 Loyalty Reward -{{ discount.value }}%
+        } @else {
+          🏷 Code {{ discount.code }} −{{ discount.value }}%
+        }
+      </div>
+    }
 
-  <strong>
-    <span>Total</span>
-    <span>{{ cartService.getTotalWithDiscount() | currency:'EUR' }}</span>
-  </strong>
+    <div class="divider"></div>
 
-  <button (click)="checkout()">Checkout</button>
+    <div class="total-row">
+      <span>Total</span>
+      <strong>{{ cartService.getTotalWithDiscount() | currency:'EUR' }}</strong>
+    </div>
+
+    <button class="checkout-btn" (click)="checkout()">
+      Checkout
+    </button>
+
+  </div>
 }

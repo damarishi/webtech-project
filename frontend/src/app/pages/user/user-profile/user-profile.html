@@ -2,50 +2,54 @@
   <section class="profile-card">
     <form #f="ngForm" (ngSubmit)="save()">
 
-      <div class="form-group">
-        <label>Username</label>
-        <input
-          type="text"
-          name="username"
-          [(ngModel)]="form.username"
-          required
-        />
-      </div>
+      <div class="form-grid">
 
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          type="email"
-          [value]="user.email"
-          disabled
-        />
-      </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            [(ngModel)]="form.username"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label>Full name</label>
-        <input
-          type="text"
-          name="full_name"
-          [(ngModel)]="form.full_name"
-        />
-      </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            [value]="user.email"
+            disabled
+          />
+        </div>
 
-      <div class="form-group">
-        <label>Location X</label>
-        <input
-          type="number"
-          name="locationX"
-          [(ngModel)]="form.location!.x"
-        />
-      </div>
+        <div class="form-group">
+          <label>Full name</label>
+          <input
+            type="text"
+            name="full_name"
+            [(ngModel)]="form.full_name"
+          />
+        </div>
 
-      <div class="form-group">
-        <label>Location Y</label>
-        <input
-          type="number"
-          name="locationY"
-          [(ngModel)]="form.location!.y"
-        />
+        <div class="form-group">
+          <label>Location X</label>
+          <input
+            type="number"
+            name="locationX"
+            [(ngModel)]="form.location!.x"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Location Y</label>
+          <input
+            type="number"
+            name="locationY"
+            [(ngModel)]="form.location!.y"
+          />
+        </div>
+
       </div>
 
       <button class="submit" type="submit" [disabled]="f.invalid">
