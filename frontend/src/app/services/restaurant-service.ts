@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {map, Observable, tap, catchError, of} from 'rxjs';
 import {Restaurant} from '../types/restaurant';
 import {MenuCategory} from '../types/MenuCategory';
+import { LocalStorageService } from './local-storage-service';
+
 
 const restaurantsURL = 'http://localhost:3000/api/restaurants';
 
@@ -11,7 +13,9 @@ const restaurantsURL = 'http://localhost:3000/api/restaurants';
 })
 export class RestaurantService {
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService) {}
 
   getRestaurants(): Observable<any> {
     return this.http.get<Restaurant>(`${restaurantsURL}`);
@@ -34,13 +38,33 @@ export class RestaurantService {
   }
 
   getRestaurantById(id: number) {
-    return this.http.get<Restaurant>(`${restaurantsURL}/${id}`);
+    return this.http.get<Restaurant>(`${restaurantsURL}/${id}`)
+    .pipe(
+      catchError( () => {
+        console.log("RestaurantId could not get fetched, checking local Storage for Id");
+        return of(this.localStorageService.getRestaurantIdBackup());
+      })
+    );
   }
 
   getMenu(restaurantId: number): Observable<MenuCategory[]> {
+    //console.log("Hello GetMenu Service!");
     return this.http
       .get<any[]>(`${restaurantsURL}/${restaurantId}/menu`)
-      .pipe(map(data => this.groupMenu(data)));
+      .pipe(
+        tap( () => console.log("Got Data")),
+        map(data => this.groupMenu(data)),
+        tap(groupedMenu => {      //saved grouped Menu to localstorage
+          console.log("Saving Menu to Local Storage");
+          this.localStorageService.saveMenuBackup(restaurantId, groupedMenu);
+        }),
+        catchError(error => {     //if the backend is not reachable, check for local storage Menus
+          console.log('API connection failed, checking local Storage...');
+          const backup = this.localStorageService.getMenuBackup(restaurantId);
+
+          return backup ? of(backup) : of([]);  //Maybe change else return value
+        })
+      );
   }
 
   private groupMenu(data: any[]): MenuCategory[] {

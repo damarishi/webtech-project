@@ -19,6 +19,7 @@ const userRoutes = require("./routes/user.routes.js");
 const userModerationRoutes = require("./routes/user_moderation.routes");
 const discountRoutes = require("./routes/discount.routes");
 const settingsRoutes = require("./routes/platform_settings.routes");
+const pingRoutes = require("./routes/ping.routes");
 
 const reviewRoutes = require("./routes/review.routes");
 
@@ -42,7 +43,9 @@ app.use('/api/users',isAuth, userRoutes);
 app.use('/api/restaurant_requests',isAuth, restaurantRequestRoutes);
 app.use('/api/user_moderation',isAuth, userModerationRoutes);
 app.use('/api/discounts',isAuth, discountRoutes);
-app.use('/api/platform_settings',isAuth, settingsRoutes)
+app.use('/api/platform_settings',isAuth, settingsRoutes);
+
+app.use('/api/ping', pingRoutes);    // used for checking Connectivity for Local Storage
 
 app.use('/api/reviews', reviewRoutes);
 

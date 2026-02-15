@@ -4,7 +4,6 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-    //TODO Fabian: Change URL to backend server?
   private apiUrl = 'http://localhost:3000/api'; // Your Node.js server URL
 
   constructor(private http: HttpClient) {}

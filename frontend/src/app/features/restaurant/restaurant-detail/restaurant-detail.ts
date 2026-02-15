@@ -44,7 +44,10 @@ export class RestaurantDetail implements OnInit {
     this.restaurantId = id;
 
     this.restaurant$ = this.restaurantService.getRestaurantById(id);
+    console.log("Before Fetch Menu");
     this.menu$ = this.restaurantService.getMenu(id);
+    this.menu$.subscribe();
+    console.log("After Fetch Menu: ", this.menu$);
     this.reviews$ = this.reviewService.getByRestaurant(id);
     console.log(this.menu$);
   }
