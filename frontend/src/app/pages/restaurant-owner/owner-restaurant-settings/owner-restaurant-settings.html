@@ -1,5 +1,5 @@
 <div class="flex flex-col w-full justify-center items-center p-2">
-  <select class=" justify-center items-center p-2" (change)="loadSettings()" [(ngModel)]="mode">
+  <select class=" justify-center items-center p-2" (ngModelChange)="loadSettings()" [(ngModel)]="mode">
     @for(s of Object.values(settings); track s){
       <option [value]="s">{{s}}</option>
     }
@@ -28,15 +28,21 @@
         </div>
       }
       @case(settings.ITEMS){
-        <div class="Items Editing">
-          <h1 class="text-2xl font-semibold text-center">Edit Items</h1>
-          <button class="category-positon-btn text-2xl font-semibold text-center" (click)="saveCategoryPositions()">Save Positions</button>
-          <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
+        <div class="Items-Editing">
+          <div class="items-header">
+            <div></div>
+            <h1 class="text-2xl font-semibold text-center">Edit Items</h1>
+            <div class="flex justify-end">
+              <button class="category-positon-btn" (click)="saveCategoryPositions()">Save Category Positions</button>
+            </div>
+          </div>
+          <div cdkDropList [cdkDropListOrientation]="dropOrientation" class="card-list" (cdkDropListDropped)="drop($event)">
             @for(c of categories; track c.category_id){
-              <category-card-component [category]="c" [items]="getItemByCategory(c)" [tags]="tags!" (updateSuccess)="loadSettings()" cdkDrag></category-card-component>
+              <div class="card-item" cdkDrag>
+                <category-card-component [category]="c" [items]="getItemByCategory(c)" [tags]="tags!" (updateSuccess)="loadSettings()"></category-card-component>
+              </div>
             }
           </div>
-
         </div>
       }
       @default {

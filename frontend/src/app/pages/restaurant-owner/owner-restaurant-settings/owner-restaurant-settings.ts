@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
 import {OwnerService} from '../../../services/owner-service';
 import {OwnerOpeningTime} from '../../../types/owner-opening-time';
 import {RestaurantComponent} from '../restaurant-component/restaurant-component';
@@ -37,6 +37,7 @@ export class OwnerRestaurantSettings implements OnInit{
 
   protected readonly Object = Object;
   protected readonly settings = Settings;
+  dropOrientation: 'horizontal' | 'vertical' = 'horizontal';
 
   mode:Settings = Settings.RESTAURANT;
   loading = true;
@@ -47,6 +48,12 @@ export class OwnerRestaurantSettings implements OnInit{
   categories?: OwnerCategory[];
   items?: OwnerItem[];
   tags?: OwnerTag[];
+
+  @HostListener('window:resize')
+  onResize() {
+    const mq = window.matchMedia('(max-width: 1000px)');
+    this.dropOrientation = mq.matches ? 'vertical' : 'horizontal';
+  }
 
   async loadSettings(){
     //Always Load Restaurant
@@ -63,12 +70,14 @@ export class OwnerRestaurantSettings implements OnInit{
           this.openingTimes = times;
           break;
         case Settings.ITEMS://Category and Items
-          const {categories} = await this.ownerService.getAllCategories();
-          this.categories = categories;
-          const {items} = await this.ownerService.getAllItems();
-          this.items = items;
-          const {tags} = await this.ownerService.getAllTags();
-          this.tags =tags;
+          const [categoryRes, itemRes, tagsRes] = await Promise.all([
+            this.ownerService.getAllCategories(),
+            this.ownerService.getAllItems(),
+            this.ownerService.getAllTags()
+          ])
+          this.categories = categoryRes.categories;
+          this.items = itemRes.items;
+          this.tags = tagsRes.tags;
           break;
       }
     }catch(error){
@@ -84,16 +93,15 @@ export class OwnerRestaurantSettings implements OnInit{
   }
 
   getItemByCategory(category: OwnerCategory){
-    return this.items!.filter(item => item.category.category_id === category.category_id) || [];
+    return this.items?.filter(item => item.category.category_id === category.category_id) ?? [];
   }
 
   drop(event: CdkDragDrop<OwnerCategory[]>){
 
     moveItemInArray(this.categories!, event.previousIndex, event.currentIndex);
 
-    this.categories!.every((category,index) => category.position = index+1);
+    this.categories!.forEach((category,index) => category.position = index+1);
     console.log(this.categories!);
-    this.cdr.detectChanges();
   }
 
   saveCategoryPositions(){

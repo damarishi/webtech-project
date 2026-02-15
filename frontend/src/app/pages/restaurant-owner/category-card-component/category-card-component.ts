@@ -53,7 +53,7 @@ export class CategoryCardComponent implements OnInit{
   }
 
   savePositions(){
-    //TODO: DB call save positions of Items, mabye call
+    //TODO: DB call save positions of Items, maybe call
   }
 
 
