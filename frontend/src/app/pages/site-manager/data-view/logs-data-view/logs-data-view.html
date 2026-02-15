@@ -1,12 +1,12 @@
 <app-navbar></app-navbar>
-<nav class="menu-grid">
-    <a routerLink="/site-manager" class="menu-item">
-        <div class="label">Dashboard</div>
-    </a>
-</nav>
-<div class="container">
+<div class="display-container">
+    <nav class="dashboard-button">
+        <a routerLink="/site-manager">
+            <div class="label">Dashboard</div>
+        </a>
+    </nav>
     <h2>Viewing Category: {{ category }}</h2>
-    <div>
+    <div class="bottom-margin">
         <!-- Button     -->
         <button class="btn-create" (click)="onCreateItem()">Create New Item</button>
     </div>
