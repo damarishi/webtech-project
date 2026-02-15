@@ -12,6 +12,15 @@ const pool = require("../pool");
 
 //api/owner/restaurant
 
+function transmitError(error,res){
+    console.log(error);
+    const code = Number(error.code);
+    if (code >= 22000 && code < 24000 || [2000].includes(error.code)) {
+        return res.status(422).json({error: error});
+    }
+    return res.status(503).json({error: error});
+}
+
 /**
  * Get Full Restaurant Data
  */
@@ -28,8 +37,7 @@ router.get('',async (req, res) =>{
             res.status(200).json(restaurant);
         }
     ).catch(error => {
-        console.error(error)
-        res.status(503).json({error: error});
+        transmitError(error, res);
     });
 });
 //TODO: Add Restaurant on POST, or use general controller
@@ -41,8 +49,7 @@ router.put('/:id', async (req, res) => {
         console.log(result);
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({error: error});
+        transmitError(error,res);
     })
 });
 
@@ -62,8 +69,7 @@ router.get('/orders', async (req, res) => {
         console.log(orders);
         res.status(200).json({orders});
     }catch(error){
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     }
 });
 
@@ -76,8 +82,7 @@ router.get('/order/:id', async (req, res) => {
         order.items = items.rows;
         res.status(200).json({order});
     }catch(error){
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     }
 });
 
@@ -92,8 +97,7 @@ router.put('/order/:id', async (req, res) => {
     orderCtrl.updateOrder(order, id).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 });
 
@@ -102,8 +106,7 @@ router.delete('/order/:id', async (req, res) => {
     orderCtrl.deleteOrder(id).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -112,8 +115,7 @@ router.get('/tags', async (req, res) => {
     tagCtrl.getTags().then(result => {
         res.status(200).json({tags: result.rows});
     }).catch(error => {
-       console.error(error);
-       res.status(503).json({message: error});
+        transmitError(error,res);
     });
 });
 
@@ -122,8 +124,7 @@ router.get('/tag/:id', async (req, res) => {
     tagCtrl.getTag(id).then(result => {
         res.status(200).json({tag: result.rows[0]});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     });
 });
 
@@ -132,8 +133,7 @@ router.post('/tag', async (req, res) => {
     tagCtrl.updateTag(tag).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     });
 });
 
@@ -143,8 +143,7 @@ router.put('/tag/:id', async (req, res) => {
     tagCtrl.updateTag(tag, id).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     });
 });
 
@@ -153,8 +152,7 @@ router.delete('/tag/:id', async (req, res) => {
     tagCtrl.deleteTag(id).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     });
 });
 
@@ -163,8 +161,7 @@ router.get('/categories', async (req, res) => {
     catCtrl.getCategories().then(result => {
         res.status(200).json({categories: result.rows});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -173,8 +170,7 @@ router.get('/category/:id', async (req, res) => {
     catCtrl.getCategory(id).then(result => {
         res.status(200).json({category: result.rows[0]});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -183,8 +179,7 @@ router.post('/category', async (req, res) => {
     catCtrl.createCategory(category).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -194,8 +189,7 @@ router.put('/category/:id', async (req, res) => {
     catCtrl.updateCategory(id, category).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -204,8 +198,7 @@ router.delete('/category/:id', async (req, res) => {
     catCtrl.deleteCategory(id).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -229,8 +222,7 @@ router.get('/items', async (req, res) => {
         );
         return res.status(200).json({items});
     }catch(error){
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     }
 });
 
@@ -248,8 +240,7 @@ router.get('/item/:id', async (req, res) => {
         const i_res = await imageCtrl.getItemImages(item.image_id);
         item.images = i_res.rows;
     }catch(error){
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     }
 })
 
@@ -267,8 +258,7 @@ router.post('/item', async (req, res) => {
         );
         //Images sent separately
     } catch (error) {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     }
 })
 
@@ -285,8 +275,7 @@ router.put('/item/:id', async (req, res) => {
         //TODO: set new images
         res.status(200).json({message: "success"});
     }catch(error){
-        console.log(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     }
 })
 
@@ -297,8 +286,7 @@ router.delete('/item/:id', async (req, res) => {
         await itemCtrl.deleteItem(id);
         //TODO: Images
     }catch(error){
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     }
 })
 //TODO: update order_items, item_images, item_tags on necessary routes
@@ -313,8 +301,7 @@ router.get('/times', async (req, res) => {
         const times = result.rows;
         res.status(200).json({times});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -324,8 +311,7 @@ router.get('/times/:id', async (req, res) => {
         const time = result.rows[0];
         res.status(200).json({time});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -339,8 +325,7 @@ router.post('/time', async (req, res) => {
     }).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -350,8 +335,7 @@ router.put('/time/:id', async (req, res) => {
     timeCtrl.updateTime(time,id).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 
@@ -360,8 +344,7 @@ router.delete('/time/:id', async (req, res) => {
     timeCtrl.deleteTime(id).then(result => {
         res.status(200).json({message: "success"});
     }).catch(error => {
-        console.error(error);
-        res.status(503).json({message: error});
+        transmitError(error,res);
     })
 })
 module.exports = router;
