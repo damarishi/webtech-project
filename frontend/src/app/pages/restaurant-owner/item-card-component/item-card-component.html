@@ -1,1 +1,7 @@
-<p>item-card-component works!</p>
+<div class="flex flex-row items-center justify-between w-full">
+  <p class="text-neutral-700">{{item.name}}</p>
+
+  <button mat-icon-button color="primary" aria-label="Edit Item" (click)=" propagateEditScreen()">
+    <mat-icon class="text-[20px]!">edit</mat-icon>
+  </button>
+</div>

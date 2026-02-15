@@ -1,37 +1,197 @@
 <div class="flex flex-col w-full justify-center items-center p-2">
-  <select class=" justify-center items-center p-2" (change)="loadSettings()" [(ngModel)]="mode">
+  <select class=" justify-center items-center p-2" (ngModelChange)="loadSettings()" [(ngModel)]="mode">
     @for(s of Object.values(settings); track s){
       <option [value]="s">{{s}}</option>
     }
   </select>
+  @if(loading){
+    <div class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+  }
+  @if(!loading && unavailable){
+    <h1 class="text-1xl font-semibold text-center">Restaurant Request may Still be pending</h1>
+  }
+  @if(!loading && !unavailable){
+    @switch (mode){
+      @case(settings.RESTAURANT){
+        <div class="Restaurant_Editing">
+          <h1 class="text-2xl font-semibold text-center">Edit Restaurant</h1>
+          <owner-restaurant-component [restaurant]="restaurant!" (updateSuccess)="loadSettings()"></owner-restaurant-component>
 
-  @switch (mode){
-    @case(settings.RESTAURANT){
-      <div class="Restaurant_Editing">
-        <h1 class="text-2xl font-semibold text-center">Edit Restaurant</h1>
-          <owner-restaurant-component [restaurant]="restaurant" (updateSuccess)="loadSettings()"></owner-restaurant-component>
-
-      </div>
-    }
-    @case(settings.TIME){
-      <div class="Times Editing">
-        <h1 class="text-2xl font-semibold text-center">Edit Opening Times</h1>
-        <opening-time-card-component [times]="openingTimes" (updateSuccess)="loadSettings()"></opening-time-card-component>
-      </div>
-    }
-    @case(settings.ITEMS){
-      <div class="Items Editing">
-        <h1 class="text-2xl font-semibold text-center">Edit Items</h1>
-        content
-      </div>
-    }
-    @default {
-      <div class ="Empty-Settings">
-        <h1 class="text-2xl font-semibold text-center">No Settings Available</h1>
-      </div>
+        </div>
+      }
+      @case(settings.TIME){
+        <div class="Times Editing">
+          <h1 class="text-2xl font-semibold text-center">Edit Opening Times</h1>
+          <opening-time-card-component [times]="openingTimes!" (updateSuccess)="loadSettings()"></opening-time-card-component>
+        </div>
+      }
+      @case(settings.ITEMS){
+        <div class="Items-Editing">
+          <div class="items-header flex items-center justify-between rounded-lg">
+            <button class="category-positon-btn" (click)="loadSettings()">Refresh</button>
+            <h1 class="text-2xl font-semibold text-center flex-1 mx-4">Edit Items</h1>
+            <button class="category-positon-btn" (click)="saveCategoryPositions()">Save Positions</button>
+          </div>
+          <div cdkDropList [cdkDropListOrientation]="dropOrientation" class="card-list" (cdkDropListDropped)="drop($event) ">
+            @for(c of categories; track c.category_id){
+              <div class="card-item" cdkDrag>
+                <category-card-component [category]="c" [items]="getItemByCategory(c)" [tags]="tags!" (EditItemEvent)="editItemModal($event)" (AddItemEvent)="addItemModal($event)"></category-card-component>
+              </div>
+            }
+          </div>
+        </div>
+      }
+      @default {
+        <div class ="Empty-Settings">
+          <h1 class="text-2xl font-semibold text-center">No Settings Available</h1>
+        </div>
+      }
     }
   }
 </div>
+
+@if (modalPopUp) {
+  <div class="overlay">
+    <div class="modal" (click)="$event.stopPropagation()">
+      @if(modalMode === 'edit'){
+        <div class="modal-header">
+          <h2 class="text-1xl font-semibold mb-0">Edit Item</h2>
+        </div>
+        <div class="modal-body">
+          <div class="static-data border-b border-gray-300 pb-2 flex gap-x-6 items-center">
+            <p class="text-gray-700 mt-0">Category: {{modalEditItem!.category.name}}</p>
+            <p class="text-gray-700 mt-0">List Position: {{modalEditItem!.position}}</p>
+          </div>
+          <div class="form-data">
+            <form #f="ngForm" (ngSubmit)="saveItem()">
+              <div class="form-group">
+                <label>Item Name</label>
+                <input
+                  type="text"
+                  name="item-name"
+                  [(ngModel)]="modalEditItem!.name"
+                  required/>
+              </div>
+
+
+              <div class="form-group">
+                <label>Item Price</label>
+                <input
+                  type="number"
+                  name="item-price"
+                  min="0.1"
+                  max="10000"
+                  [(ngModel)]="modalEditItem!.price"
+                  required/>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  name="item-description"
+                  [(ngModel)]="modalEditItem!.description"
+                  rows="4"
+                  class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:border-transparent"
+                ></textarea>
+              </div>
+
+              <div class="tag-editor-container mt-4 mb-4">
+                <label class="text-xs font-bold uppercase text-gray-500">Item Tags</label>
+                <div class="flex flex-wrap gap-2 mt-2">
+                  @for (tag of tags; track tag.tag_id) {
+                    <button
+                      type="button"
+                      (click)="toggleTag(modalEditItem!,tag)"
+                      [class]="isTagSelected(modalEditItem!,tag) ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                      class="px-3 py-1 rounded-full text-xs transition-colors">
+                      {{ tag.name }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button class="delete-btn" (click)="closeModal()">Cancel</button>
+            <div>
+              <button class="delete-btn" (click)="deleteItem()">Delete</button>
+              <button class="save-btn ml-1" (click)="saveItem()" [disabled]="f.invalid">Save</button>
+            </div>
+
+          </div>
+        </div>
+      }
+      @if(modalMode === 'add'){
+        <div class="modal-header">
+          <h2 class="text-1xl font-semibold mb-0">Add Item</h2>
+        </div>
+        <div class="modal-body">
+          <div class="static-data border-b border-gray-300 pb-2 flex gap-x-6 items-center">
+            <p class="text-gray-700 mt-0">Category: {{modalAddItem!.category.name}}</p>
+          </div>
+          <div class="form-data">
+            <form #f="ngForm" (ngSubmit)="postItem()">
+              <div class="form-group">
+                <label>Item Name</label>
+                <input
+                  type="text"
+                  name="item-name"
+                  [(ngModel)]="modalAddItem!.name"
+                  required/>
+              </div>
+
+              <div class="form-group">
+                <label>Item Price</label>
+                <input
+                  type="number"
+                  name="item-price"
+                  min="0.1"
+                  max="10000"
+                  [(ngModel)]="modalAddItem!.price"
+                  required/>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  name="item-description"
+                  [(ngModel)]="modalAddItem!.description"
+                  rows="4"
+                  class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:border-transparent"
+                ></textarea>
+              </div>
+
+              <div class="tag-editor-container mt-4 mb-4">
+                <label class="text-xs font-bold uppercase text-gray-500">Item Tags</label>
+                <div class="flex flex-wrap gap-2 mt-2">
+                  @for (tag of tags; track tag.tag_id) {
+                    <button
+                      type="button"
+                      (click)="toggleTag(modalAddItem!,tag)"
+                      [class]="isTagSelected(modalAddItem!, tag) ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                      class="px-3 py-1 rounded-full text-xs transition-colors">
+                      {{ tag.name }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button class="delete-btn" (click)="closeModal()">Cancel</button>
+            <div>
+              <button class="save-btn ml-1" (click)="postItem()" [disabled]="f.invalid">Create</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
 
 
 

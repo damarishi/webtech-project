@@ -1,0 +1,13 @@
+<div class="category-container">
+  <div class="category-header">
+    <h2 class="m-4">{{categoryForm.name}}</h2>
+    <button (click)="saveItemPositions()">Save Positions</button>
+  </div>
+  <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
+    @for (item of itemsForm; track item.item_id) {
+      <item-card-component [item]="item" cdkDrag (itemChange)="propagateEditItemModal($event)"></item-card-component>
+    }
+    <button class="add-btn" (click)="addItemModal()">Add Item</button>
+  </div>
+</div>
+

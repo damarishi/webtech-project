@@ -23,38 +23,27 @@ import {OwnerService} from '../../../services/owner-service';
 })
 export class RestaurantComponent implements OnInit, OnChanges{
 
-  @Input() restaurant: Promise<OwnerRestaurant> | undefined;
+  @Input() restaurant!: OwnerRestaurant;
   @Output() updateSuccess = new EventEmitter<string>();
 
   constructor(private ownerService: OwnerService, private cdr: ChangeDetectorRef) {}
 
 
-  form: OwnerRestaurant | undefined;
-  requestPending = false;
+  form?: OwnerRestaurant;
 
-  loadForm(res:OwnerRestaurant) {
-    if(!res.restaurant_id){
-      console.log("No Restaurant to load");
-      this.requestPending = true;
-      this.cdr.detectChanges();
-      return;
-    }
-    this.form = JSON.parse(JSON.stringify(res));
+  loadForm() {
+    this.form = JSON.parse(JSON.stringify(this.restaurant));
     this.cdr.detectChanges();
-    console.log("Restaurant loaded");
+    console.log("Restaurant Form loaded");
   }
 
   ngOnInit() {
-    this.restaurant!.then( res => {
-      this.loadForm(res);
-    }).catch(_ => this.requestPending = true)
+    this.loadForm();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if('restaurant' in changes && this.restaurant) {
-      this.restaurant.then( res => {
-        this.loadForm(res);
-      }).catch(_ => this.requestPending = true)
+    if ('restaurant' in changes && this.restaurant) {
+      this.loadForm();
     }
   }
 

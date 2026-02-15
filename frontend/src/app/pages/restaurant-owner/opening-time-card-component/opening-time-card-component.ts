@@ -24,46 +24,33 @@ import {FormsModule} from '@angular/forms';
 })
 export class OpeningTimeCardComponent implements OnInit, OnChanges {
 
-  @Input() times: Promise<{times: OwnerOpeningTime[]}> | undefined;
+  @Input() times!:OwnerOpeningTime[];
   @Output() updateSuccess = new EventEmitter<string>();
 
   constructor(private ownerService: OwnerService, private cdr: ChangeDetectorRef) {}
 
 
-  timesForm: OwnerOpeningTime[] | undefined;
-  unavailable = false;
+  timesForm: OwnerOpeningTime[] = [];
 
   protected readonly weekdays =  Weekday;
   dayList:Weekday[] = [1,2,3,4,5,6,7]
 
-  newForm:OwnerOpeningTime = this.empty();
+  newTimeForm:OwnerOpeningTime = this.empty();
 
-  loadForm(res:OwnerOpeningTime[]) {
-    this.timesForm = JSON.parse(JSON.stringify(res));
-  }
-
-  setUnavailable(){
-    this.unavailable = true;
+  loadForm() {
+    this.timesForm = JSON.parse(JSON.stringify(this.times));
     this.cdr.detectChanges();
   }
 
   ngOnInit() {
-    this.times!.then(result => {
-      this.loadForm(result.times);
-      this.cdr.detectChanges();
-      console.log("Opening Times loaded");
-    }).catch(_=> this.unavailable = true);
+    this.loadForm();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if('times' in changes && this.times) {
-      this.times.then(result => {
-        this.loadForm(result.times);
-        this.cdr.detectChanges();
-        console.log("Opening Times loaded");
-      }).catch(_=> this.setUnavailable());
+      this.loadForm();
     }
-}
+  }
 
   empty() {
     return {
@@ -83,14 +70,16 @@ export class OpeningTimeCardComponent implements OnInit, OnChanges {
   delete(index: number) {
     this.ownerService.deleteTime(this.timesForm![index].opening_time_id)
       .then(_ => this.updateSuccess.emit(`Opening Time ${index} Deleted`))
+      .catch(this.loadForm)
   }
 
   addNew() {
-    this.ownerService.postTime(this.newForm)
+    this.ownerService.postTime(this.newTimeForm)
       .then(_ => {
         this.updateSuccess.emit("New Opening Time added");
-        this.newForm = this.empty();
+        this.newTimeForm = this.empty();
         this.updateSuccess.emit(`Opening Time Added`)
-      }).catch(_=> this.setUnavailable());
+      })
+      .catch(this.loadForm);
   }
 }

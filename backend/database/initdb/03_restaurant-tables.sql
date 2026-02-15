@@ -73,7 +73,7 @@ CREATE TABLE categories --Equal for all Restaurants
 (
     category_id     SERIAL PRIMARY KEY,
     name            VARCHAR(50) NOT NULL,
-    position        INT NOT NULL UNIQUE,
+    position        INT NOT NULL,
     description     text
 );
 
@@ -90,7 +90,7 @@ CREATE TABLE items
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
-CREATE UNIQUE INDEX dishes_restaurant_position
+CREATE INDEX dishes_restaurant_position
 ON items(restaurant_id,position); --Assert unique positions for a restaurant
 
 CREATE TABLE item_images
