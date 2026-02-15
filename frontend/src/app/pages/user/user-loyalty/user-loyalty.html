@@ -1,34 +1,37 @@
 @if (levels$ | async; as data) {
+  <div class="loyalty-grid">
+    @for (level of data.levels; track level.period) {
+      <div class="card" [class.locked]="!level.unlocked">
 
-  @for (level of data.levels; track level.period) {
-    <div class="card" [class.locked]="!level.unlocked">
+        <div class="header">
+          <strong>
+            {{ level.period | titlecase }}
+          </strong>
+          <span>{{ level.discount }}%</span>
+        </div>
 
-      <div class="header">
-        <strong>
-          {{ level.period | titlecase }}
-        </strong>
-        <span>{{ level.discount }}%</span>
+        <div class="progress-bar">
+          <div
+            class="progress"
+            [style.width.%]="level.progress"
+          ></div>
+        </div>
+
+        <div class="stats">
+          <span>{{ level.stats.orders }}/{{ level.required.orders }} Orders</span>
+          <span>
+            {{ level.stats.amount | currency:'EUR' }} /
+            {{ level.required.amount | currency:'EUR' }}
+          </span>
+        </div>
+
+        @if (level.unlocked) {
+          <span class="badge">Unlocked</span>
+        } @else {
+          <span class="badge locked">Locked</span>
+        }
+
       </div>
-
-      <div class="progress-bar">
-        <div
-          class="progress"
-          [style.width.%]="level.progress"
-        ></div>
-      </div>
-
-      <small>
-        {{ level.stats.orders }}/{{ level.required.orders }} Orders ·
-        {{ level.stats.amount | currency:'EUR' }} /
-        {{ level.required.amount | currency:'EUR' }}
-      </small>
-
-      @if (level.unlocked) {
-        <span class="badge">Unlocked</span>
-      } @else {
-        <span class="badge locked">Locked</span>
-      }
-
-    </div>
-  }
+    }
+  </div>
 }

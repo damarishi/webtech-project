@@ -1,26 +1,44 @@
-<h3>My Orders</h3>
+<div class="orders-wrapper">
+  <h3 class="title">My Orders</h3>
 
-@if (orders$ | async; as orders) {
-  @if (!orders.length){
-    <div class="empty">
-      No orders yet.
-    </div>
-  } @else {
-    <div class="order-card">
-      @for (order of orders; track order.order_id) {
-        <div class="header">
-          <strong>#{{ order.order_id }}</strong>
-          <span class="status status-{{order.status}}">
-          {{ statusMap[order.status] }}
-        </span>
-        </div>
+  @if (orders$ | async; as orders) {
+    @if (!orders.length){
+      <div class="empty">
+        No orders yet.
+      </div>
+    } @else {
+      <div class="orders-grid">
+        @for (order of orders; track order.order_id) {
 
-        <div class="body">
-          <div>{{ order.restaurant_name }}</div>
-          <div>{{ order.total | currency:'EUR'}}</div>
-          <small>{{ order.date | date:'short' }}</small>
-        </div>
-      }
-    </div>
+          <div class="order-card">
+
+            <div class="order-header">
+              <div class="header-right">
+                <span class="status status-{{ order.status }}">
+                  {{ statusMap[order.status] }}
+                </span>
+
+                @if (order.status === -1) {
+                  <button
+                    class="delete-btn"
+                    (click)="removeOrder(order.order_id)">
+                    ✕
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="order-body">
+              <div class="restaurant">{{ order.restaurant_name }}</div>
+              <div class="total">{{ order.total | currency:'EUR'}}</div>
+              <small>{{ order.date | date:'short' }}</small>
+            </div>
+
+          </div>
+
+        }
+      </div>
+
+    }
   }
-}
+</div>
