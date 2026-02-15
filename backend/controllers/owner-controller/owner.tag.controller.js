@@ -37,7 +37,7 @@ exports.createTag = (tag) => {
 
 exports.assignItemTag = (item_id, tag_id) => {
     const assignTagQuery = {
-        text:`INSERT INTO item_tags (item_id, tag_id) VALUES ($1, $2)`,
+        text:`INSERT INTO item_tags (item_id, tag_id) VALUES ($1, $2) ON CONFLICT DO NOTHING;`,
         values:[item_id, tag_id]
     }
     return pool.query(assignTagQuery);
@@ -49,6 +49,14 @@ exports.removeItemTag = (item_id, tag_id) => {
         values:[item_id, tag_id]
     }
     return pool.query(removeItemTagQuery);
+}
+
+exports.removeAllItemTags = (item_id) => {
+    const removeAllItemTagsQuery = {
+        text:`DELETE FROM item_tags WHERE item_id = $1`,
+        values:[item_id]
+    }
+    return pool.query(removeAllItemTagsQuery);
 }
 
 exports.updateTag = (tag, id) => {

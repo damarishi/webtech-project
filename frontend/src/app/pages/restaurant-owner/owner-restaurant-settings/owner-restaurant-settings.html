@@ -29,17 +29,15 @@
       }
       @case(settings.ITEMS){
         <div class="Items-Editing">
-          <div class="items-header">
-            <div></div>
-            <h1 class="text-2xl font-semibold text-center">Edit Items</h1>
-            <div class="flex justify-end">
-              <button class="category-positon-btn" (click)="saveCategoryPositions()">Save Category Positions</button>
-            </div>
+          <div class="items-header flex items-center justify-between rounded-lg">
+            <button class="category-positon-btn" (click)="loadSettings()">Refresh</button>
+            <h1 class="text-2xl font-semibold text-center flex-1 mx-4">Edit Items</h1>
+            <button class="category-positon-btn" (click)="saveCategoryPositions()">Save Positions</button>
           </div>
           <div cdkDropList [cdkDropListOrientation]="dropOrientation" class="card-list" (cdkDropListDropped)="drop($event)">
             @for(c of categories; track c.category_id){
               <div class="card-item" cdkDrag>
-                <category-card-component [category]="c" [items]="getItemByCategory(c)" [tags]="tags!" (updateSuccess)="loadSettings()"></category-card-component>
+                <category-card-component [category]="c" [items]="getItemByCategory(c)" [tags]="tags!"></category-card-component>
               </div>
             }
           </div>

@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {OwnerItem} from '../../../types/owner-item';
 import {OwnerService} from '../../../services/owner-service';
@@ -17,7 +26,7 @@ import {OwnerTag} from '../../../types/owner-tag';
   templateUrl: './category-card-component.html',
   styleUrl: './category-card-component.css',
 })
-export class CategoryCardComponent implements OnInit{
+export class CategoryCardComponent implements OnInit, OnChanges {
 
   @Input() category!:OwnerCategory;
   @Input() items!:OwnerItem[];
@@ -44,6 +53,16 @@ export class CategoryCardComponent implements OnInit{
     this.loadData();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    /*
+    if('items' in changes && this.items) {
+      this.loadData();
+      console.log("hello");
+    }
+
+     */
+  }
+
   drop(event: CdkDragDrop<OwnerItem[]>){
 
     moveItemInArray(this.itemsForm, event.previousIndex, event.currentIndex);
@@ -53,7 +72,12 @@ export class CategoryCardComponent implements OnInit{
   }
 
   savePositions(){
-    //TODO: DB call save positions of Items, maybe call
+    console.log(this.itemsForm);
+    Promise.all(this.itemsForm.map(item => this.ownerService.putItem(item)))
+      .then( _ =>{
+          console.log("Done");
+          //this.updateSuccess.emit(`Item Positions Saved`);
+      })
   }
 
 

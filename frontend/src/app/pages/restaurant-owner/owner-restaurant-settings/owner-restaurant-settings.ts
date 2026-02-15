@@ -101,7 +101,6 @@ export class OwnerRestaurantSettings implements OnInit{
     moveItemInArray(this.categories!, event.previousIndex, event.currentIndex);
 
     this.categories!.forEach((category,index) => category.position = index+1);
-    console.log(this.categories!);
   }
 
   saveCategoryPositions(){
