@@ -40,7 +40,7 @@ export class OwnerRestaurantSettings implements OnInit{
   dropOrientation: 'horizontal' | 'vertical' = 'horizontal';
 
   mode:Settings = Settings.RESTAURANT;
-  loading = true;
+  loading = false;
   unavailable = false;
 
   restaurant?: OwnerRestaurant;
@@ -89,7 +89,7 @@ export class OwnerRestaurantSettings implements OnInit{
     }
   }
   ngOnInit() {
-    this.loadSettings().then( _=> this.cdr.detectChanges())
+    this.loadSettings().then( _=> {this.cdr.detectChanges()})
   }
 
   getItemByCategory(category: OwnerCategory){
