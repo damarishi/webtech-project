@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CartService} from '../../../services/cart-service';
 import {Observable} from 'rxjs';
 import {CommonModule, CurrencyPipe} from '@angular/common';
-import {CartItem} from '../../../types/CartItem';
+import {CartItem} from '../../../types/cart-item';
 import {DiscountService} from '../../../services/discount-service';
 import {FormsModule} from '@angular/forms';
 import {LoyaltyService} from '../../../services/loyalty-service';

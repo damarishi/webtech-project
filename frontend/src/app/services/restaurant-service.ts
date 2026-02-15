@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable, tap, catchError, of} from 'rxjs';
 import {Restaurant} from '../types/restaurant';
-import {MenuCategory} from '../types/MenuCategory';
+import {MenuCategory} from '../types/menu-category';
 import { LocalStorageService } from './local-storage-service';
 
 

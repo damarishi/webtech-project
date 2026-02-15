@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { CartItem } from '../types/CartItem';
+import { CartItem } from '../types/cart-item';
 import {HttpClient} from '@angular/common/http';
 import {Discount} from '../types/discount';
 import { LocalStorageService } from "./local-storage-service";

@@ -31,19 +31,6 @@
     }
   </div>
 
-  <!-- Category -->
-  <div class="filter-section">
-    <h5>Category</h5>
-    @for (category of categories; track category) {
-      <label class="filter-option">
-        <input
-          type="checkbox"
-          (change)="toggle(filter.categories, category)" />
-        {{ category }}
-      </label>
-    }
-  </div>
-
   <!-- Price -->
   <div class="filter-section">
     <h5>Price</h5>

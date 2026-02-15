@@ -3,10 +3,8 @@ import {RestaurantService} from '../../../services/restaurant-service';
 import {CommonModule} from '@angular/common';
 import {Restaurant} from '../../../types/restaurant';
 import {ActivatedRoute} from '@angular/router';
-import {Loading} from '../../../shared/ui/loading/loading';
-import {Error} from '../../../shared/ui/error/error';
 import {Observable} from 'rxjs';
-import {MenuCategory} from '../../../types/MenuCategory';
+import {MenuCategory} from '../../../types/menu-category';
 import {CartService} from '../../../services/cart-service';
 import {Review} from '../../../types/review';
 import {ReviewService} from '../../../services/review-service';
@@ -16,7 +14,7 @@ import {ChangeDetectorRef} from '@angular/core';
 @Component({
   selector: 'app-restaurant-detail',
   standalone: true,
-  imports: [CommonModule, Loading, Error, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './restaurant-detail.html',
   styleUrl: './restaurant-detail.css',
 })

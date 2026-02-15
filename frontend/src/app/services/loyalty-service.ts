@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Discount} from '../types/discount';
-import {LoyaltyLevel, LoyaltyResponse} from '../types/loyaltyLevel';
+import {LoyaltyLevel, LoyaltyResponse} from '../types/loyalty-level';
 
 @Injectable({providedIn: 'root'})
 export class LoyaltyService {

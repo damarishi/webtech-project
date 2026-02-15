@@ -4,7 +4,6 @@ import {Order} from '../../../types/user-order';
 import {USER_ORDER_STATE} from '../../../types/user-order-state';
 import {OrderService} from '../../../services/order-service';
 import {Observable} from 'rxjs';
-import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-order-list',
