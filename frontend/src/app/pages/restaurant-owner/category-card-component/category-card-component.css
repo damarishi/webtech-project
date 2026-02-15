@@ -21,7 +21,7 @@
   font-weight: 600;
 }
 
-.category-header button {
+button {
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
   border: none;
@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 
-.category-header button:hover {
+button:hover {
   background: #15691f;
 }
 

@@ -5,8 +5,9 @@
   </div>
   <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
     @for (item of itemsForm; track item.item_id) {
-      <item-card-component [item]="item" cdkDrag (itemChange)="propagateOpenModal($event)"></item-card-component>
+      <item-card-component [item]="item" cdkDrag (itemChange)="propagateEditItemModal($event)"></item-card-component>
     }
+    <button class="add-btn" (click)="addItemModal()">Add Item</button>
   </div>
 </div>
 

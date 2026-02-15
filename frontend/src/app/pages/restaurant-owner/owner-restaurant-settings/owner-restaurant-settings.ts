@@ -50,7 +50,11 @@ export class OwnerRestaurantSettings implements OnInit{
   tags?: OwnerTag[];
 
   modalPopUp = false;
-  modalItem?:OwnerItem;
+  modalMode: 'edit'|'add' = 'edit';
+
+  modalEditItem?:OwnerItem;
+
+  modalAddItem?:OwnerItem;
 
   @HostListener('window:resize')
   onResize() {
@@ -90,6 +94,7 @@ export class OwnerRestaurantSettings implements OnInit{
       this.cdr.detectChanges();
     }
   }
+
   ngOnInit() {
     this.loadSettings().then( _=> {this.cdr.detectChanges()})
   }
@@ -99,9 +104,7 @@ export class OwnerRestaurantSettings implements OnInit{
   }
 
   drop(event: CdkDragDrop<OwnerCategory[]>){
-
     moveItemInArray(this.categories!, event.previousIndex, event.currentIndex);
-
     this.categories!.forEach((category,index) => category.position = index+1);
     this.sortItems();
   }
@@ -110,37 +113,93 @@ export class OwnerRestaurantSettings implements OnInit{
     this.items = this.categories!.flatMap((category) => this.getItemByCategory(category));
     this.items.forEach((item, index) => item.position = index+1);
   }
+  saveAllIems(){
+    return Promise.allSettled(this.items!.map(item => this.ownerService.putItem(item)));
+  }
 
   saveCategoryPositions(){
     Promise.allSettled(this.categories!.map(category => this.ownerService.putCategory(category)))
       .then(()=>{
-          return Promise.allSettled(this.items!.map(item => this.ownerService.putItem(item)));
+          return this.saveItem();
       }).then(_=> {this.loadSettings()})
 
     console.log(this.categories!);
     console.log(this.items!);
   }
 
-  openModal(item:OwnerItem){
-    this.modalItem = JSON.parse(JSON.stringify(item));
-    if(!this.modalItem!.item_id){
+  editItemModal(item:OwnerItem){
+    this.modalEditItem = JSON.parse(JSON.stringify(item));
+    if(!this.modalEditItem!.item_id){
       console.log("Item Existence Error");
       return;
     }
     this.modalPopUp = true;
+    this.modalMode = 'edit';
     this.cdr.detectChanges();
+  }
+
+  addItemModal(category:OwnerCategory){
+    this.modalAddItem = this.emptyItem();
+    this.modalAddItem.category = category;
+    this.modalAddItem.position = this.items!.length +1;
+    this.modalPopUp = true;
+    this.modalMode = 'add';
   }
 
   closeModal(){
     this.modalPopUp = false;
-    this.modalItem = undefined;
+    this.modalEditItem = undefined;
+    this.modalAddItem = undefined;
     this.cdr.detectChanges();
   }
 
+  emptyItem(){
+    return {
+      item_id:'',
+      restaurant_id:this.restaurant!.restaurant_id,
+      category: this.categories![0],
+      name:"",
+      description:"",
+      position: 100,
+      price: 0,
+      images:[],
+      tags:[]
+    }
+  }
+
   saveItem(){
-    this.ownerService.putItem(this.modalItem!).then(()=>{
+    this.ownerService.putItem(this.modalEditItem!).then(()=>{
+    })
+  }
+
+  postItem(){
+    this.modalAddItem!.position = this.items!.length+1;
+    this.ownerService.postItem(this.modalAddItem!).then(()=>{
+      this.sortItems();
+      return this.saveAllIems()
+    }).then(_=> {
+      return this.loadSettings();
+    }).then(_=>{this.closeModal()})
+  }
+
+  deleteItem(){
+    console.log("")
+    this.ownerService.deleteItem(this.modalEditItem!.item_id).then(()=>{
       this.closeModal();
     })
   }
 
+  isTagSelected(item:OwnerItem, tag: OwnerTag): boolean {
+    return item.tags.some(t => t.tag_id === tag.tag_id);
+  }
+
+  toggleTag(item:OwnerItem,tag: OwnerTag) {
+    const index= item.tags.findIndex(t => t.tag_id === tag.tag_id);
+
+    if (index > -1) {
+      item.tags.splice(index, 1);
+    } else {
+      item.tags.push(tag);
+    }
+  }
 }

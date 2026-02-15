@@ -40,7 +40,6 @@ router.get('',async (req, res) =>{
         transmitError(error, res);
     });
 });
-//TODO: Add Restaurant on POST, or use general controller
 
 router.put('/:id', async (req, res) => {
     const restaurant = req.body.restaurant;
@@ -85,8 +84,6 @@ router.get('/order/:id', async (req, res) => {
         transmitError(error,res);
     }
 });
-
-//TODO: Create order on POST, or use general controller (USER)
 
 /**
  * Only thing that can change in order is Status
@@ -237,26 +234,26 @@ router.get('/item/:id', async (req, res) => {
         const t_res = await tagCtrl.getItemTags(item.item_id);
         item.tags = t_res.rows;
 
-        const i_res = await imageCtrl.getItemImages(item.image_id);
-        item.images = i_res.rows;
+        res.status(200).json({message: "success"});
     }catch(error){
         transmitError(error,res);
     }
 })
 
-//TODO: Finish item routes
 router.post('/item', async (req, res) => {
     const item = req.body.item;
-    const images = item.images;
-    const tags = item.tags;
+    item.category_id = item.category.category_id;
+    console.log(item);
     try{
-        await itemCtrl.createItem(item);
+        const data = await itemCtrl.createItem(item);
+        const new_item = data.rows[0];
+        console.log(new_item);
         await Promise.all(
             item.tags.map(tag => {
-                tagCtrl.assignItemTag(item.item_id, tag.tag_id);
+                tagCtrl.assignItemTag(new_item.item_id, tag.tag_id);
                 })
         );
-        //Images sent separately
+        res.status(200).json({message: "success"});
     } catch (error) {
         transmitError(error,res);
     }
@@ -271,8 +268,6 @@ router.put('/item/:id', async (req, res) => {
         await tagCtrl.removeAllItemTags(id);
         await Promise.all(item.tags.map(tag => tagCtrl.assignItemTag(item.item_id, tag.tag_id)));
         itemCtrl.getItem(id).then(res => console.log(res));
-        //TODO: remove old images
-        //TODO: set new images
         res.status(200).json({message: "success"});
     }catch(error){
         transmitError(error,res);
@@ -284,17 +279,12 @@ router.delete('/item/:id', async (req, res) => {
     try {
         await tagCtrl.removeAllItemTags(id);
         await itemCtrl.deleteItem(id);
-        //TODO: Images
     }catch(error){
         transmitError(error,res);
     }
 })
-//TODO: update order_items, item_images, item_tags on necessary routes
-//TODO: load item images only if wanted
-
 
 //OPENING-TIMES
-
 router.get('/times', async (req, res) => {
     const email = req.user.email;
     timeCtrl.getRestaurantTimes(email).then(result => {

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -31,7 +30,8 @@ export class CategoryCardComponent implements OnInit {
   @Input() category!:OwnerCategory;
   @Input() items!:OwnerItem[];
   @Input() tags!:OwnerTag[];
-  @Output() openModal = new EventEmitter<OwnerItem>();
+  @Output() EditItemEvent = new EventEmitter<OwnerItem>()
+  @Output() AddItemEvent = new EventEmitter<OwnerCategory>()
 
   constructor(private ownerService: OwnerService) {}
 
@@ -70,8 +70,12 @@ export class CategoryCardComponent implements OnInit {
       })
   }
 
-  propagateOpenModal(item:OwnerItem){
-    this.openModal.emit(item);
+  propagateEditItemModal(item:OwnerItem){
+    this.EditItemEvent.emit(item);
+  }
+
+  addItemModal(){
+    this.AddItemEvent.emit(this.category);
   }
 
 }
