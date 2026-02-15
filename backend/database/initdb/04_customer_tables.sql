@@ -6,6 +6,13 @@ CREATE TABLE loyalty_rules (
     discount_value  DECIMAL(5,2) NOT NULL       -- Prozent
 );
 
+CREATE TABLE user_loyalty_usage (
+    usage_id     SERIAL PRIMARY KEY,
+    user_id      INT NOT NULL,
+    period       VARCHAR(10) NOT NULL,   -- 'week' | 'month' | 'year'
+    used_at      TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
 INSERT INTO loyalty_rules (period, min_orders, min_amount, discount_value)
 VALUES
     ('week', 5, NULL, 5),

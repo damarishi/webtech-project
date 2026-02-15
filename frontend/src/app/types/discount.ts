@@ -3,4 +3,5 @@ export interface Discount {
   code: string;
   value: number;
   source?: 'CODE' | 'LOYALTY';
+  period?: 'week' | 'month' | 'year';
 }

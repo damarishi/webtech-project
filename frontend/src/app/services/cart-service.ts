@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { CartItem } from '../types/CartItem';
+import { CartItem } from '../types/cart-item';
 import {HttpClient} from '@angular/common/http';
 import {Discount} from '../types/discount';
 import { LocalStorageService } from "./local-storage-service";
@@ -110,6 +110,8 @@ export class CartService {
       throw new Error('No restaurant selected');
     }
 
+    const currentDiscount = this.discount$.value;
+
     return this.http.post('http://localhost:3000/api/orders', {
       restaurantId: this.restaurantId,
       items: this.cart$.value.map(i => ({
@@ -117,7 +119,8 @@ export class CartService {
         quantity: i.quantity
       })),
       total: this.getTotalWithDiscount(),
-      discountId: this.discount$.value?.discount_id ?? null,
+      discountId: currentDiscount?.discount_id ?? null,
+      loyaltyPeriod: currentDiscount?.period ?? null,
       fee: 3
     });
   }

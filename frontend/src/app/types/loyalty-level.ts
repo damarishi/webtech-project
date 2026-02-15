@@ -3,6 +3,8 @@ export interface LoyaltyLevel {
   discount: number;
   progress: number;
   unlocked: boolean;
+  used: boolean;
+  available: boolean;
   stats: {
     orders: number;
     amount: number;

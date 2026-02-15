@@ -1,7 +1,7 @@
 /* Cart Container */
 :host {
   display: block;
-  max-width: 420px;
+  max-width: 450px;
   margin: 3rem auto;
 }
 
@@ -97,6 +97,15 @@
 .checkout-btn:hover {
   background: #157524;
   transform: translateY(-2px);
+}
+
+.checkout-btn:disabled {
+  opacity: 0.8;
+}
+
+.checkout-btn.success {
+  background-color: #2e7d32;
+  color: white;
 }
 
 @media (max-width: 600px) {

@@ -53,8 +53,12 @@
       <strong>{{ cartService.getTotalWithDiscount() | currency:'EUR' }}</strong>
     </div>
 
-    <button class="checkout-btn" (click)="checkout()">
-      Checkout
+    <button
+      class="checkout-btn"
+      (click)="checkout()"
+      [disabled]="checkoutClicked"
+    >
+      {{ checkoutClicked ? '✓' : 'Checkout' }}
     </button>
 
   </div>

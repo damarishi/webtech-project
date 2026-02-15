@@ -3,10 +3,10 @@ import {FilterSidebar} from '../../../features/restaurant/filter-sidebar/filter-
 import {RestaurantList} from '../../../features/restaurant/restaurant-list/restaurant-list';
 import {UserRoles} from '../../../types/user-roles';
 import {RestaurantStateService} from '../../../services/restaurant-state-service';
-import {RestaurantFilter} from '../../../types/RestaurantFilter';
+import {RestaurantFilter} from '../../../types/restaurant-filter';
 import {Restaurant} from '../../../types/restaurant';
 import {RestaurantService} from '../../../services/restaurant-service';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 
 @Component({
@@ -20,7 +20,6 @@ export class UserDashboard implements OnInit {
 
   activeFilter: RestaurantFilter = {
     cuisines: [],
-    categories: [],
     prices: [],
     maxMinutes: 999
   };
@@ -48,9 +47,6 @@ export class UserDashboard implements OnInit {
       this.activeFilter.sortBy,
       this.activeFilter.sortDirection
     );
-    this.restaurants$.subscribe(restaurants => {
-      console.log('Restaurants:', restaurants);
-    })
   }
 
   onFilterChange(filter: RestaurantFilter) {

@@ -33,6 +33,11 @@ async function calculateLoyaltyDiscount(userId) {
     );
 
     for (const rule of rules.rows) {
+
+        const alreadyUsed = await hasUsedInCurrentPeriod(userId, rule.period);
+
+        if (alreadyUsed) continue;
+
         const stats = await getStatus(userId, rule.period);
 
         const meetsOrders =
@@ -44,7 +49,8 @@ async function calculateLoyaltyDiscount(userId) {
         if (meetsOrders && meetsAmount) {
             return {
                 source: 'LOYALTY',
-                value: rule.discount_value
+                value: rule.discount_value,
+                period: rule.period
             };
         }
     }
@@ -72,11 +78,18 @@ async function getFullProgress(userId) {
 
         const progress = Math.min(orderProgress, amountProgress, 1);
 
+        const unlocked = progress >= 1;
+        const used = unlocked
+            ? await hasUsedInCurrentPeriod(userId, rule.period)
+            : false;
+
         levels.push({
             period: rule.period,
             discount: rule.discount_value,
             progress: Math.round(progress * 100),
             unlocked: progress >= 1,
+            used,
+            available: unlocked && !used,
             stats,
             required: {
                 orders: rule.min_orders,
@@ -86,6 +99,30 @@ async function getFullProgress(userId) {
     }
 
     return { levels };
+};
+
+async function hasUsedInCurrentPeriod(userId, period) {
+    let interval;
+
+    if (period == 'week') interval = '7 days';
+    if (period == 'month') interval = '1 months';
+    if (period == 'year') interval = '1 year';
+
+    const query = {
+        text: `
+            SELECT 1
+            FROM user_loyalty_usage
+            WHERE user_id = $1
+            AND period = $2
+            AND used_at >= NOW() - INTERVAL '${interval}'
+            LIMIT 1
+        `,
+        values: [userId, period]
+    }
+
+    const result = await pool.query(query);
+
+    return result.rowCount > 0;
 }
 
 

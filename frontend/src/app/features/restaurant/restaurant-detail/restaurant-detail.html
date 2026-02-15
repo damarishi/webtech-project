@@ -1,7 +1,11 @@
 @if (restaurant$ | async; as restaurant) {
   <div class="restaurant-detail">
     <h1>{{ restaurant.restaurant_name }}</h1>
-    <p>opening hours</p>
+    <p class="opening-hours"
+       [ngClass]="restaurant.isOpen ? 'open' : 'closed'"
+    >
+      {{ restaurant.isOpen ? 'Open now' : 'Closed'}}
+    </p>
     <p class="cuisine">
       {{ restaurant.cuisine }}
     </p>
@@ -12,7 +16,9 @@
 
   @if (menu$ | async; as menu) {
     @for (category of menu; track category.category_id) {
-      <h2>{{ category.category_name }}</h2>
+      <div class="category-box">
+        <h2>{{ category.category_name }}</h2>
+      </div>
       <div class="menu-items">
         @for (item of category.items; track item.item_id) {
           <div class="menu-item">
@@ -28,7 +34,7 @@
               [class.added]="addedItems.has(item.item_id)"
             >
               @if (addedItems.has(item.item_id)) {
-                Added ✓
+                 ✓
               } @else {
                 Add
               }
@@ -40,8 +46,7 @@
     }
   }
   <br/>
-
-  <h3>Reviews</h3>
+  <div class="divider"></div>
 
   <div class="review-form">
     <select [(ngModel)]="rating">
@@ -62,11 +67,14 @@
     <div class="reviews">
       @for (review of reviews; track review.review_id) {
         <div class="review">
-          <strong>{{ review.username }}</strong>
-          <span>{{ review.rating }} ★</span>
+          <div class="review-header">
+            <strong>{{ review.username }}</strong>
+            <span class="stars">{{ review.rating }} ★</span>
+          </div>
           <p>{{ review.comment }}</p>
-          <small>{{ review.created_at | date:'short' }}</small>
+          <small>{{ review.created_at | date:'mediumDate' }}</small>
         </div>
+
       }
     </div>
   }

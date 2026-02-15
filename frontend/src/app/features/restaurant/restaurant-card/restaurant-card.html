@@ -23,6 +23,12 @@
         {{ restaurant.avg_rating | number:'1.1-1'}}
         <span class="reviews">({{ restaurant.review_count }})</span>
       </p>
+
+      <p class="opening-hours"
+      [ngClass]="restaurant.isOpen ? 'open' : 'closed'"
+      >
+        {{ restaurant.isOpen ? 'Open now' : 'Closed'}}
+      </p>
     </div>
 
   </div>

@@ -3,10 +3,8 @@ import {RestaurantService} from '../../../services/restaurant-service';
 import {CommonModule} from '@angular/common';
 import {Restaurant} from '../../../types/restaurant';
 import {ActivatedRoute} from '@angular/router';
-import {Loading} from '../../../shared/ui/loading/loading';
-import {Error} from '../../../shared/ui/error/error';
 import {Observable} from 'rxjs';
-import {MenuCategory} from '../../../types/MenuCategory';
+import {MenuCategory} from '../../../types/menu-category';
 import {CartService} from '../../../services/cart-service';
 import {Review} from '../../../types/review';
 import {ReviewService} from '../../../services/review-service';
@@ -16,7 +14,7 @@ import {ChangeDetectorRef} from '@angular/core';
 @Component({
   selector: 'app-restaurant-detail',
   standalone: true,
-  imports: [CommonModule, Loading, Error, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './restaurant-detail.html',
   styleUrl: './restaurant-detail.css',
 })
@@ -28,6 +26,7 @@ export class RestaurantDetail implements OnInit {
   rating = 5;
   comment = '';
   addedItems = new Set<number>();
+  reviewSaved = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -70,7 +69,6 @@ export class RestaurantDetail implements OnInit {
   }
 
   submitReview() {
-    console.log('submitReview');
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.reviewService.create({
@@ -78,10 +76,15 @@ export class RestaurantDetail implements OnInit {
       rating: this.rating,
       comment: this.comment
     }).subscribe(() => {
+
       this.comment = '';
       this.rating = 5;
+
       this.reviews$ = this.reviewService.getByRestaurant(id);
+
+      this.cdr.markForCheck();
     });
+
   }
 
 }

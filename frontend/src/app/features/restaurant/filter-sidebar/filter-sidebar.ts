@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RestaurantFilter} from '../../../types/RestaurantFilter';
+import {RestaurantFilter} from '../../../types/restaurant-filter';
 
 @Component({
   selector: 'app-filter-sidebar',
@@ -13,7 +13,6 @@ export class FilterSidebar {
   @Output() filterChange = new EventEmitter<RestaurantFilter>();
 
   cuisines = ['Italian', 'Asian', 'Austrian', 'Mexican'];
-  categories = ['Restaurant', 'Cafe', 'FastFood', 'Bistro'];
   prices = [
     {label: '€', value: 1},
     {label: '€€', value: 2},
@@ -33,7 +32,6 @@ export class FilterSidebar {
 
   filter: RestaurantFilter = {
     cuisines: [],
-    categories: [],
     prices: [],
     maxMinutes: 999,
     sortBy: undefined,

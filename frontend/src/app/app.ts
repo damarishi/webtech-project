@@ -1,15 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {Navbar} from './shared/ui/navbar/navbar';
-import {Loading} from './shared/ui/loading/loading';
-import {Error} from './shared/ui/error/error';
 
 import { ConnectivityService } from './services/connection-service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar, Loading, Error],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

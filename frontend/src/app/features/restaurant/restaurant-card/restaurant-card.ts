@@ -1,12 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {Restaurant} from '../../../types/restaurant';
-import {DecimalPipe} from '@angular/common';
+import {DecimalPipe, NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-restaurant-card',
   standalone: true,
-  imports: [RouterLink, DecimalPipe],
+  imports: [RouterLink, DecimalPipe, NgClass],
   templateUrl: './restaurant-card.html',
   styleUrl: './restaurant-card.css',
 })

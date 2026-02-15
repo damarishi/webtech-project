@@ -2,7 +2,6 @@ import { Component, OnInit} from '@angular/core';
 import { CommonModule} from '@angular/common';
 import {UserRoles} from '../../../types/user-roles';
 import { Observable } from 'rxjs';
-import {Navbar} from '../../../shared/ui/navbar/navbar';
 import {UserService} from '../../../services/user-service';
 import {User} from '../../../types/user'
 import {FormsModule} from '@angular/forms';
@@ -11,7 +10,7 @@ import {AuthService} from '../../../features/auth/auth-service';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, Navbar, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css',
 })
