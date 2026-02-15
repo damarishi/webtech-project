@@ -1,6 +1,4 @@
 <div class="orders-wrapper">
-  <h3 class="title">My Orders</h3>
-
   @if (orders$ | async; as orders) {
     @if (!orders.length){
       <div class="empty">

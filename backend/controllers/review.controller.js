@@ -46,7 +46,7 @@ exports.create = async (req, res) => {
         await updateRestaurantRating(restaurantId);
 
         logger.emit('log', { 
-            description: `Review has been created by UserId: ` + code + ` RestaurantId: ` + restaurantId, 
+            description: `Review has been created by UserId: ` + userId + ` RestaurantId: ` + restaurantId,
             typeOfLog: 2 
         });
 

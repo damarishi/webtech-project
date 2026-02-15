@@ -26,6 +26,7 @@ export class RestaurantDetail implements OnInit {
   rating = 5;
   comment = '';
   addedItems = new Set<number>();
+  reviewSaved = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,7 +69,6 @@ export class RestaurantDetail implements OnInit {
   }
 
   submitReview() {
-    console.log('submitReview');
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.reviewService.create({
@@ -76,10 +76,15 @@ export class RestaurantDetail implements OnInit {
       rating: this.rating,
       comment: this.comment
     }).subscribe(() => {
+
       this.comment = '';
       this.rating = 5;
+
       this.reviews$ = this.reviewService.getByRestaurant(id);
+
+      this.cdr.markForCheck();
     });
+
   }
 
 }

@@ -1,7 +1,7 @@
 /* Cart Container */
 :host {
   display: block;
-  max-width: 420px;
+  max-width: 450px;
   margin: 3rem auto;
 }
 
