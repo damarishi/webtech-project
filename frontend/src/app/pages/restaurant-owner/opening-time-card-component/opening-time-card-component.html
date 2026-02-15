@@ -15,7 +15,9 @@
         <input [(ngModel)]="time.close_time" type="time" />
 
         <button class="delete-btn" (click)="delete($index)">✕</button>
-        <button class="save-btn" (click)="save($index)">Save</button>
+        <button class="save-btn" (click)="save($index)"
+                [disabled]="!time.weekday || !time.open_time || !time.close_time || time.open_time >= time.close_time"
+        >Save</button>
       </div>
     }
   }

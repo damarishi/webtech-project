@@ -30,8 +30,8 @@
           </div>
         </div>
 
-        <button type="submit" [disabled]="f.invalid ||form.location.x || form.location.y ||
-     form.restaurant_name">Save changes</button>
+        <button type="submit" [disabled]="f.invalid || !form.location.x || !form.location.y ||
+     !form.restaurant_name">Save changes</button>
       </form>
     }
   </section>
