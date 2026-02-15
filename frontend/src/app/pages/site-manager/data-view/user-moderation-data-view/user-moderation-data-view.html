@@ -1,13 +1,13 @@
 <app-navbar></app-navbar>
-<nav class="menu-grid">
-    <a routerLink="/site-manager" class="menu-item">
-        <div class="label">Dashboard</div>
-    </a>
-</nav>
-<div class="container">
+<div class="display-container">
+    <nav class="dashboard-button">
+        <a routerLink="/site-manager">
+            <div class="label">Dashboard</div>
+        </a>
+    </nav>
     <h2>Viewing Category: {{ category }}</h2>
     @if(filters.length > 0) {
-        <div class="filter-bar">
+        <div class="filter-bar bottom-margin">
             @for (f of filters; track f.value) {
                 <button 
                     class="btn-filter" 

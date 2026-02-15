@@ -1,13 +1,83 @@
-button {    /* General button styling, TODO Fabian: remove/change later */
-    appearance: button !important; /* Forces browser default look */
+.bottom-margin {
+    margin-bottom: 10px;
+}
+
+.dashboard-button {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.dashboard-button a div {
+    width: min-content;
     background-color: lightgray !important;
     border: 2px solid black !important;
     padding: 5px 15px !important;
-    display: inline-block !important;
     color: black !important;
 }
 
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    
+}
 
+
+button {    /* General button styling, TODO Fabian: remove/change later */
+    background-color: lightgray !important;
+    border: 2px solid black !important;
+    padding: 5px 15px !important;
+    color: black !important;
+}
+
+nav + h2 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.display-container {
+    margin: 20px;
+    width: auto;
+    display: block;
+}
+
+table {
+    width: 100%;
+    table-layout: auto; /* Columns will adjust smoothly based on text size */
+    border-collapse: collapse; /* Removes double borders */
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+}
+
+
+/* --- Header Styling --- */
+thead {
+    background-color: darkgreen; /* Dark professional blue/grey */
+    color: white;
+    text-transform: uppercase;
+}
+
+th {
+    padding: 5px;
+    text-align: left;
+}
+
+/* --- Body & Row Styling --- */
+td {
+    padding: 5px 5px;
+    border-bottom: 1px solid #edf2f7;
+    color: #4a5568;
+    vertical-align: middle;
+}
+
+td:last-child {
+    display: flex;         
+    flex-direction: row;    
+    flex-wrap: nowrap;      /* prevent button stacking */
+    gap: 8px;               
+    white-space: nowrap;    /* Prevent text inside buttons from wrapping */
+}
 
 
 /*
@@ -20,7 +90,7 @@ button {    /* General button styling, TODO Fabian: remove/change later */
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,7 +102,7 @@ button {    /* General button styling, TODO Fabian: remove/change later */
     background: white;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
     min-width: 350px;
     max-width: 500px;
     color: #333;
@@ -46,7 +116,6 @@ button {    /* General button styling, TODO Fabian: remove/change later */
     margin-top: 20px;
 }
 
-/* Make inputs look nice */
 .form-control {
     width: 100%;
     padding: 8px;
@@ -65,36 +134,48 @@ button {    /* General button styling, TODO Fabian: remove/change later */
     text-align: right;
 }
 
+.summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 main columns */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.totalStatistics, .last30DaysStatistics {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.totalStatistics div, .last30DaysStatistics div {
+    background: white;
+    padding: 15px;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1); /* Subtle depth */
+    display: flex;
+}
+
+
 @media(max-width: 700px) {
-    /* 1. Stack the table elements */
+
     table, thead, tbody, th, td, tr {
         display: block;
         width: 100%;
     }
 
-    /* 2. Hide the headers - they don't work in a vertical stack */
     thead {
         display: none;
     }
 
-    /* 3. Style each row as a "Card" */
+    /* Style row as a "Card" */
     tr {
         margin-bottom: 20px;
-        border: 2px solid #000; /* Matching your button style */
+        border: 2px solid #000;
         padding: 15px;
         background-color: #fff;
     }
 
-    /* 4. Style each cell */
-    td {
-        padding: 8px 0;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        justify-content: space-between; /* Pushes content to the right */
-        font-size: 14px;
-    }
-
-    /* Clear border for the last cell (Actions) */
+    /* Move Action buttons to middle */
     td:last-child {
         border-bottom: none;
         justify-content: center;
@@ -102,7 +183,6 @@ button {    /* General button styling, TODO Fabian: remove/change later */
         padding-top: 15px;
     }
 
-    /* 5. Handle the Filter Bar */
     .filter-bar {
         display: flex;
         flex-wrap: wrap;
@@ -110,6 +190,6 @@ button {    /* General button styling, TODO Fabian: remove/change later */
     }
     
     .btn-filter {
-        flex: 1 1 40%; /* 2 buttons per row on mobile */
+        flex: 1 1 40%; /* 2 buttons per row */
     }
 }

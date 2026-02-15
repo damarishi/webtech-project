@@ -1,12 +1,12 @@
 <app-navbar></app-navbar>
-<nav class="menu-grid">
-    <a routerLink="/site-manager" class="menu-item">
-        <div class="label">Dashboard</div>
-    </a>
-</nav>
-<div class="container">
+<div class="display-container">
+    <nav class="dashboard-button">
+        <a routerLink="/site-manager">
+            <div class="label">Dashboard</div>
+        </a>
+    </nav>
     <h2>Viewing Category: {{ category }}</h2>
-    <div class="summary">
+    <div class="summary bottom-margin">
         <div class="totalStatistics">
             <div>Total Order Count:  {{summaryTotalOrders}}</div>
             <div>Total Revenue:  {{summaryRevenue}}</div>
