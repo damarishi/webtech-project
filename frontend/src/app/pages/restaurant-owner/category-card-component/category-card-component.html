@@ -1,11 +1,11 @@
 <div class="category-container">
   <div class="category-header">
     <h2 class="m-4">{{categoryForm.name}}</h2>
-    <button (click)="savePositions()">Save Positions</button>
+    <button (click)="saveItemPositions()">Save Positions</button>
   </div>
   <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
     @for (item of itemsForm; track item.item_id) {
-      <div class="card-item" cdkDrag>{{ item.name }}</div>
+      <item-card-component [item]="item" cdkDrag (itemChange)="propagateOpenModal($event)"></item-card-component>
     }
   </div>
 </div>

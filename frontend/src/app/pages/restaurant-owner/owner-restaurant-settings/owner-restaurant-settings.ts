@@ -28,7 +28,7 @@ enum Settings {
     CdkDrag
   ],
   templateUrl: './owner-restaurant-settings.html',
-  styleUrl: './owner-restaurant-settings.css',
+  styleUrls: ['./owner-restaurant-settings.css']
 })
 export class OwnerRestaurantSettings implements OnInit{
 
@@ -40,7 +40,7 @@ export class OwnerRestaurantSettings implements OnInit{
   dropOrientation: 'horizontal' | 'vertical' = 'horizontal';
 
   mode:Settings = Settings.RESTAURANT;
-  loading = false;
+  loading:boolean = false;
   unavailable = false;
 
   restaurant?: OwnerRestaurant;
@@ -49,6 +49,9 @@ export class OwnerRestaurantSettings implements OnInit{
   items?: OwnerItem[];
   tags?: OwnerTag[];
 
+  modalPopUp = false;
+  modalItem?:OwnerItem;
+
   @HostListener('window:resize')
   onResize() {
     const mq = window.matchMedia('(max-width: 1000px)');
@@ -56,7 +59,6 @@ export class OwnerRestaurantSettings implements OnInit{
   }
 
   async loadSettings(){
-    //Always Load Restaurant
     this.loading = true;
     try{
       this.restaurant = await this.ownerService.getRestaurant();
@@ -101,9 +103,44 @@ export class OwnerRestaurantSettings implements OnInit{
     moveItemInArray(this.categories!, event.previousIndex, event.currentIndex);
 
     this.categories!.forEach((category,index) => category.position = index+1);
+    this.sortItems();
+  }
+
+  sortItems(){
+    this.items = this.categories!.flatMap((category) => this.getItemByCategory(category));
+    this.items.forEach((item, index) => item.position = index+1);
   }
 
   saveCategoryPositions(){
-    //TODO: DB call save positions
+    Promise.allSettled(this.categories!.map(category => this.ownerService.putCategory(category)))
+      .then(()=>{
+          return Promise.allSettled(this.items!.map(item => this.ownerService.putItem(item)));
+      }).then(_=> {this.loadSettings()})
+
+    console.log(this.categories!);
+    console.log(this.items!);
   }
+
+  openModal(item:OwnerItem){
+    this.modalItem = JSON.parse(JSON.stringify(item));
+    if(!this.modalItem!.item_id){
+      console.log("Item Existence Error");
+      return;
+    }
+    this.modalPopUp = true;
+    this.cdr.detectChanges();
+  }
+
+  closeModal(){
+    this.modalPopUp = false;
+    this.modalItem = undefined;
+    this.cdr.detectChanges();
+  }
+
+  saveItem(){
+    this.ownerService.putItem(this.modalItem!).then(()=>{
+      this.closeModal();
+    })
+  }
+
 }

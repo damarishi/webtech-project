@@ -9,9 +9,7 @@
 
     <div class="flex flex-row w-full justify-center items-center flex-wrap gap-4">
       @for (order of orders; track order.order_id){
-        @if(order.status >=0){
-          <order-card-component [order]="order" (updateSuccess)="onOrderUpdate()"></order-card-component>
-        }
+        <order-card-component [order]="order" (updateSuccess)="onOrderUpdate()"></order-card-component>
       }
     </div>
   }

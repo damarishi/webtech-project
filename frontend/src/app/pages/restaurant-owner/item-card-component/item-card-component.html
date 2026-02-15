@@ -1,19 +1,7 @@
-@if (modalPopUp) {
-  <div class="overlay" (click)="closeModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Title</h2>
-        <button (click)="closeModal()">✕</button>
-      </div>
+<div class="flex flex-row items-center justify-between w-full">
+  <p class="text-neutral-700">{{item.name}}</p>
 
-      <div class="modal-body">
-        <p>Anything you want</p>
-      </div>
-
-      <div class="modal-footer">
-        <button class="save-btn" (click)="saveChanges()">Save</button>
-        <button class="delete-btn" (click)="closeModal()">Cancel</button>
-      </div>
-    </div>
-  </div>
-}
+  <button mat-icon-button color="primary" aria-label="Edit Item" (click)=" propagateEditScreen()">
+    <mat-icon class="text-[20px]!">edit</mat-icon>
+  </button>
+</div>

@@ -1,30 +1,27 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
-import {OwnerService} from '../../../services/owner-service';
+import {ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
+import {OwnerItem} from '../../../types/owner-item';
+import {MatIconButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+
 
 @Component({
-  selector: 'app-item-card-component',
-  imports: [],
+  selector: 'item-card-component',
+  imports: [
+    MatIconButton,
+    MatIcon
+  ],
   templateUrl: './item-card-component.html',
   styleUrl: './item-card-component.css',
 })
 export class ItemCardComponent {
 
-  constructor(private ownerService: OwnerService, private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
-  modalPopUp = false;
+  @Input() item!:OwnerItem;
+  @Output() itemChange = new EventEmitter<OwnerItem>();
 
-
-  openModal(){
-    this.modalPopUp = true;
-    this.cdr.detectChanges();
-  }
-
-  saveChanges(){
-    console.log("todo");
-  }
-
-  closeModal(){
-    this.modalPopUp = false;
+  propagateEditScreen(){
+    this.itemChange.emit(this.item);
     this.cdr.detectChanges();
   }
 }

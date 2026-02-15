@@ -34,10 +34,10 @@
             <h1 class="text-2xl font-semibold text-center flex-1 mx-4">Edit Items</h1>
             <button class="category-positon-btn" (click)="saveCategoryPositions()">Save Positions</button>
           </div>
-          <div cdkDropList [cdkDropListOrientation]="dropOrientation" class="card-list" (cdkDropListDropped)="drop($event)">
+          <div cdkDropList [cdkDropListOrientation]="dropOrientation" class="card-list" (cdkDropListDropped)="drop($event) ">
             @for(c of categories; track c.category_id){
               <div class="card-item" cdkDrag>
-                <category-card-component [category]="c" [items]="getItemByCategory(c)" [tags]="tags!"></category-card-component>
+                <category-card-component [category]="c" [items]="getItemByCategory(c)" [tags]="tags!" (openModal)="openModal($event)"></category-card-component>
               </div>
             }
           </div>
@@ -51,6 +51,64 @@
     }
   }
 </div>
+
+@if (modalPopUp) {
+  <div class="overlay">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2 class="text-1xl font-semibold mb-0">Edit Item</h2>
+        </div>
+        <div class="modal-body">
+          <div class="static-data border-b border-gray-300 pb-2 flex gap-x-6 items-center">
+            <p class="text-gray-700 mt-0">Category: {{modalItem!.category.name}}</p>
+            <p class="text-gray-700 mt-0">List Position: {{modalItem!.position}}</p>
+          </div>
+          <div class="form-data">
+            <form #f="ngForm" (ngSubmit)="saveItem()">
+              <div class="form-group">
+                <label>Item Name</label>
+                <input
+                  type="text"
+                  name="item-name"
+                  [(ngModel)]="modalItem!.name"
+                  required/>
+              </div>
+
+
+              <div class="form-group">
+                <label>Item Price</label>
+                <input
+                  type="number"
+                  name="item-price"
+                  min="0.1"
+                  max="10000"
+                  [(ngModel)]="modalItem!.price"
+                  required/>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  name="item-description"
+                  [(ngModel)]="modalItem!.description"
+                  rows="4"
+                  class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:border-transparent"
+                ></textarea>
+              </div>
+
+            </form>
+
+
+          </div>
+
+        <div class="modal-footer">
+          <button class="delete-btn" (click)="closeModal()">Cancel</button>
+          <button class="save-btn" (click)="saveItem()" [disabled]="f.invalid || false">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
 
 
 

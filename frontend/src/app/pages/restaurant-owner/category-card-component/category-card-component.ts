@@ -3,10 +3,8 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
-  Output,
-  SimpleChanges
+  Output
 } from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {OwnerItem} from '../../../types/owner-item';
@@ -14,6 +12,7 @@ import {OwnerService} from '../../../services/owner-service';
 import {OwnerCategory} from '../../../types/owner-category';
 import {FormsModule} from '@angular/forms';
 import {OwnerTag} from '../../../types/owner-tag';
+import {ItemCardComponent} from '../item-card-component/item-card-component';
 
 @Component({
   selector: 'category-card-component',
@@ -21,19 +20,20 @@ import {OwnerTag} from '../../../types/owner-tag';
   imports: [
     CdkDropList,
     CdkDrag,
-    FormsModule
+    FormsModule,
+    ItemCardComponent
   ],
   templateUrl: './category-card-component.html',
   styleUrl: './category-card-component.css',
 })
-export class CategoryCardComponent implements OnInit, OnChanges {
+export class CategoryCardComponent implements OnInit {
 
   @Input() category!:OwnerCategory;
   @Input() items!:OwnerItem[];
   @Input() tags!:OwnerTag[];
-  @Output() updateSuccess = new EventEmitter<string>();
+  @Output() openModal = new EventEmitter<OwnerItem>();
 
-  constructor(private ownerService: OwnerService, private cdr: ChangeDetectorRef) {}
+  constructor(private ownerService: OwnerService) {}
 
   categoryForm!:OwnerCategory;
   itemsForm!:OwnerItem[];
@@ -53,15 +53,6 @@ export class CategoryCardComponent implements OnInit, OnChanges {
     this.loadData();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    /*
-    if('items' in changes && this.items) {
-      this.loadData();
-      console.log("hello");
-    }
-
-     */
-  }
 
   drop(event: CdkDragDrop<OwnerItem[]>){
 
@@ -71,14 +62,16 @@ export class CategoryCardComponent implements OnInit, OnChanges {
     console.log(this.itemsForm);
   }
 
-  savePositions(){
+  saveItemPositions(){
     console.log(this.itemsForm);
     Promise.all(this.itemsForm.map(item => this.ownerService.putItem(item)))
       .then( _ =>{
-          console.log("Done");
-          //this.updateSuccess.emit(`Item Positions Saved`);
+          console.log("Item Positions Updated");
       })
   }
 
+  propagateOpenModal(item:OwnerItem){
+    this.openModal.emit(item);
+  }
 
 }

@@ -1,8 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {OwnerOrder} from '../../../types/owner-order';
-import {OwnerRestaurant} from '../../../types/owner-restaurant';
 import {OwnerService} from '../../../services/owner-service';
-import {JsonPipe} from '@angular/common';
 import {OrderCardComponent} from '../order-card-component/order-card-component';
 
 @Component({
@@ -36,7 +34,7 @@ export class OwnerDashboard implements OnInit {
 
   getOrders() {
     this.ownerService.getAllOrders().then(data => {
-      this.orders = data.orders;
+      this.orders = data.orders.filter(order => order.status >= 0);
       console.log(this.orders);
       this.cdr.detectChanges();
       })
