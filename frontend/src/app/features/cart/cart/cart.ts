@@ -22,6 +22,7 @@ export class Cart implements OnInit {
   discountCode = '';
   discountError = '';
   discount$ ;
+  checkoutClicked = false;
 
 
   constructor(
@@ -43,7 +44,8 @@ export class Cart implements OnInit {
       if (discount) {
         this.cartService.applyDiscount({
           ...discount,
-          code: 'LOYALTY'
+          code: 'LOYALTY',
+          period: discount.period
         });
       }
     })
@@ -74,13 +76,25 @@ export class Cart implements OnInit {
   }
 
   checkout() {
+    this.checkoutClicked = true;
+
     this.cartService.checkout().subscribe({
       next: order => {
         console.log('Order created', order);
+
+        setTimeout(() => {
+          this.checkoutClicked = false;
+        }, 500);
+
+        this.cartService.clearDiscount();
         this.cartService.clear();
+        this.discountCode = '';
         this.cdr.markForCheck();
       },
-      error: err => console.error(err),
-    })
+      error: err => {
+        console.error(err)
+        this.checkoutClicked = false;
+      }
+    });
   }
 }

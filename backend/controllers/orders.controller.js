@@ -52,7 +52,15 @@ exports.createOrder = async (req, res) => {
 
         await client.query('COMMIT');
 
-        //Owner benachrichtigen ??
+        if (discountId === null && req.body.loyaltyPeriod) {
+            await client.query(
+                `
+                INSERT INTO user_loyalty_usage (user_id, period)
+                VALUES ($1, $2)
+                `,
+                [userId, req.body.loyaltyPeriod]
+            );
+        }
 
         logger.emit('log', { 
             description: `Order has been created: ` + orderId,
@@ -87,9 +95,9 @@ exports.getMyOrders = async (req, res) => {
         const result = await db.query(query);
 
         if (result.rowCount === 0) {
-            return res.status(404).json({message: 'No orders fount' + error.message});
+            return res.status(200);
         }
-        console.log(id);
+
         for (let order of result.rows) {
             console.log(order);
         };

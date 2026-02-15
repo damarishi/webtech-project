@@ -99,6 +99,15 @@
   transform: translateY(-2px);
 }
 
+.checkout-btn:disabled {
+  opacity: 0.8;
+}
+
+.checkout-btn.success {
+  background-color: #2e7d32;
+  color: white;
+}
+
 @media (max-width: 600px) {
   :host {
     max-width: 100%;

@@ -1,7 +1,9 @@
 @if (levels$ | async; as data) {
   <div class="loyalty-grid">
     @for (level of data.levels; track level.period) {
-      <div class="card" [class.locked]="!level.unlocked">
+      <div class="card"
+           [class.locked]="!level.unlocked"
+            [class.used]="level.unlocked && level.used">
 
         <div class="header">
           <strong>
@@ -25,8 +27,11 @@
           </span>
         </div>
 
-        @if (level.unlocked) {
-          <span class="badge">Unlocked</span>
+        @if (level.available) {
+          <span class="badge available">Available</span>
+        }
+        @else if (level.used) {
+          <span class="badge used">Used this {{ level.period }}</span>
         } @else {
           <span class="badge locked">Locked</span>
         }

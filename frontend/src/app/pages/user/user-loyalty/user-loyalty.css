@@ -28,6 +28,11 @@
   background: #ccc;
 }
 
+.card.used {
+  opacity: 0.6;
+  border: 1px solid orange;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -75,6 +80,14 @@
 
 .badge.locked {
   background: #bbb;
+}
+
+.badge.used {
+  background: orange;
+}
+
+.bage.available {
+  background: #1D902E;
 }
 
 .stats {
